@@ -13,7 +13,7 @@
 	--input-color: 205, 210, 220;
 	--placeholder-color: 115, 115, 115;
 
-	font-size: 1.1250em;
+	font-size: 1em;
 
 	scroll-behavior: smooth;
 }
@@ -67,20 +67,20 @@ body, #root {
 
 #root *::-webkit-scrollbar {
 	appearance: none;
-	width: 1.25em;
+	width: 1.25rem;
 	background: transparent;
 }
 
 #root *::-webkit-scrollbar-track {
-	border-radius: 1em;
+	border-radius: 1rem;
 	background: transparent;
-	margin-block: 0.6em;
+	margin-block: 0.6rem;
 }
 
 #root *::-webkit-scrollbar-thumb {
 	border: 0.35em solid transparent;
-	border-radius: 1em;
-	margin-block: 0.5em;
+	border-radius: 1rem;
+	margin-block: 0.5rem;
 	background-clip: padding-box;
 
 	background-color: rgba(var(--text-color), 0.25);
@@ -93,6 +93,10 @@ body, #root {
 p, a, h1, h2, h3, h4, h5, h6, ul {
 	margin-bottom: 1em;
 	font-weight: normal;
+}
+
+a, strong, span {
+	white-space: break-spaces;
 }
 
 a {
@@ -147,8 +151,8 @@ button, input, select {
 .glass {
 	position: relative;
     display: grid;
-    background: linear-gradient(to bottom, rgba(var(--bg-color-0), 0.5), rgba(var(--bg-color-1), 0.75));
-	backdrop-filter: blur(1.5em);
+    background: linear-gradient(to bottom, rgba(var(--bg-color-0), 0.25), rgba(var(--bg-color-1), 0.5));
+	backdrop-filter: blur(.5em);
     outline: solid rgba(var(--bg-color-1), 1) thin;
     box-shadow: 
 		0 25px 25px -15px rgba(0, 10, 20, 0.1);

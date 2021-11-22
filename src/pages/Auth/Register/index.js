@@ -801,7 +801,6 @@ function Register(props) {
                             >
                                 <option value="movel">Móvel</option>
                                 <option value="fixo">Fixo</option>
-                                <option disabled={true}>Fixo</option>
                             </Radio>
                         </fieldset>
                         <button
