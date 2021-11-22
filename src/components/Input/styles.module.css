@@ -1,0 +1,276 @@
+.formControl {
+	width: 350px;
+
+	display: grid;
+	grid-template-rows: auto 1fr;
+	grid-template-columns: auto;
+	row-gap: 0.5em;
+
+	margin-bottom: 1em;
+
+}
+
+.formControl label {
+	margin-left: 1em;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.formControl .select {
+	position: relative;
+	display: grid;
+	max-width: 100%;
+}
+
+.formControl .select .input {
+	--border-color: var(--text-color);
+	--border-visibility: 0;
+
+	display: block;
+	position: relative;
+	margin: 0;
+	padding: 1em;
+	padding-right: 2.5em;
+
+	border-radius: 1em;
+
+	text-transform: none;
+	font-weight: normal;
+	color: rgb(var(--text-color));
+	
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+
+    background: rgba(var(--input-color), 1);
+	box-shadow:
+		inset 0 10px 15px -10px rgba(var(--text-color), 0.25),
+		inset 0 0 0 2em rgba(var(--input-color), 0.75),
+		0 0 0 0.125em rgba(var(--border-color), var(--border-visibility));
+
+	outline-style: solid;
+	outline-width: 0.35em;
+	outline-offset: -0.1em;
+	outline-color: transparent;
+
+	transition: 150ms ease-in-out;
+	cursor: pointer;
+}
+
+.formControl .select .toggle {
+	display: none;
+}
+
+.formControl .select .value[value=""] ~ .input {
+	color: rgb(var(--placeholder-color));
+}
+
+.formControl .select .toggle:checked ~ .input {
+	outline-color: rgba(var(--border-color), 0.25);
+	--border-color: var(--main-color-1);
+	--border-visibility: 1;
+}
+
+.formControl .select .input::before {
+	content: '';
+	display: none;
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	background: transparent;
+
+	isolation: isolate;
+	z-index: 99;
+
+	cursor: default;
+}
+
+.formControl .select .toggle:checked ~ .input::before {
+	display: block;
+}
+
+.formControl .select .input::after {
+	font-size: .75rem;
+	content: '';
+	position: absolute;
+	width: 1em;
+	height: 1em;
+	right: 1.5em;
+	top: calc(50% - .2em);
+	
+	background-color: rgb(var(--placeholder-color));;
+	clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 20%, 55% 60%, 45% 60%, 0 20%, 0 10%);
+
+	transform-origin: 50% 25%;
+	transition: 200ms ease-in-out;
+}
+
+.formControl .select .toggle:checked ~ ::after {
+	transform: rotateZ(180deg);
+}
+
+.formControl .select .options {
+	position: absolute;
+	top: 0;
+	margin: 0;
+	padding: 1em 0.5em;
+	border-radius: 1em;
+
+
+	width: 100%;
+	opacity: 0;
+	height: fit-content;
+	max-height: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	
+	user-select: none;
+	pointer-events: none;
+	z-index: 99;
+
+	transition: 200ms ease-in-out, max-height 200ms 200ms ease-in-out;
+}
+
+.formControl .select .options li {
+	display: inline-block;
+	padding: 0.25em 0.5em;
+	border-radius: 0.5em;
+
+	transition: 200ms ease-in-out;
+
+	font-weight: 500;
+	
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+
+	cursor: pointer;
+}
+
+.formControl .select .options li:hover {
+	background-color: rgba(var(--main-color-1), 0.75);
+
+	color: white;
+}
+
+.formControl .select .toggle:checked ~ .options {
+	top: calc(100% - 0.5em);;
+
+	opacity: 1;
+	max-height: 10.5em;
+
+	pointer-events: all;
+
+	transition: 200ms ease-in-out, max-height 0ms;
+}
+
+.formControl .select .options .searchbox {
+	background: none !important;
+
+	padding-inline: 0;
+	padding-bottom: 0.5em;
+}
+
+.formControl .select .options .searchbox input {
+	width: 100%;
+	padding: 0.5em 0.5em;
+	border-radius: 0.5em;
+
+	background-color: rgba(var(--input-color));
+
+	outline: none;
+	box-shadow: 
+		inset 0 10px 15px -10px rgba(var(--text-color), 0.25),
+		inset 0 0 0 .1em rgba(var(--border-color), 0.1);
+}
+
+.formControl .select .options .searchbox input:focus {
+	box-shadow: 
+		inset 0 10px 15px -10px rgba(var(--text-color), 0.25),
+		inset 0 0 0 .25em rgba(var(--border-color), 0.25),
+		inset 0 0 0 .1em rgba(var(--border-color), 0.25);
+}
+
+.formControl .radio {
+	display: flex;
+	flex-flow: wrap;
+	padding: 0;
+	padding-left: 1em;
+	padding-top: 0.25em;
+	gap: 1em;
+	margin: 0;
+}
+
+.formControl .radio li .label {
+	position: relative;
+	margin: 0 0.5em;
+
+	text-transform: none;
+	font-weight: 500;
+}
+/* 
+.formControl .radio li .label::after {
+	content: '';
+	position: absolute;
+	top: calc(100% + 0.1em);
+	left: 0;
+
+	width: 0;
+	height: 0.1em;
+
+	border-radius: 1em;
+	background-color: rgb(var(--main-color-1));
+
+	opacity: 0;
+	pointer-events: none;
+	
+	transition: 200ms ease-in-out;
+}
+
+.formControl .radio .input:hover ~ .label::after {
+	opacity: 1;
+	width: 100%;
+}
+*/
+
+.formControl .radio .input:hover ~ .label {
+	opacity: 1;
+	width: 100%;
+
+	color: rgb(var(--main-color-0));
+
+}
+
+.formControl .radio li input:disabled ~ .label {
+	opacity: 0.5 !important;
+}
+
+.formControl .radio li input:disabled ~ .label::after {
+	all: unset;
+}
+
+.formControl strong {
+	padding-left: 1em;
+
+	font-size: 0.75em;
+	font-weight: normal;
+
+	color: rgba(var(--main-color-4), 1);
+}
+
+.formControl strong::after {
+	content: '.';
+    visibility: hidden;
+}
+
+.formControl.invalid .input,
+.formControl.invalid .select .input {
+	--border-color: var(--main-color-4);
+	--border-visibility: 0.75;
+}
+
+.formControl.invalid label {
+	color: rgba(var(--main-color-4), 1);
+}
