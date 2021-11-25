@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import _uniqueId from 'lodash/uniqueId';
 
+import { phoneMask } from '../../services/helpers';
+
 import styles from './styles.module.css';
 
 export default function Input({
@@ -16,42 +18,76 @@ export default function Input({
         message: "",
     },
 }) {
+    const [showPassword, setShowPassword] = useState(false);
     const input = () => {
-        let inputProps = {};
-        let ph = placeholder || label;
+        let inputProps = {
+            type,
+            placeholder: placeholder || label,
+            title: `${label}: ${value || '...'}`,
+            name,
+            value,
+            onChange,
+        };
 
         switch (type) {
             case "email":
                 inputProps = {
+                    ...inputProps,
                     type: "email",
                     title: `${label}: ${value || '...'}`
                 }
+
                 break;
             case "password":
                 inputProps = {
-                    type: "password",
+                    ...inputProps,
+                    type: showPassword ? "text" : "password",
                     title: label,
+                    placeholder: showPassword ? inputProps.placeholder : [...inputProps.placeholder].map(c => "•").join(""),
                 }
-                ph = "••••••••";
+
                 break;
+            case "phone":
+                const newOnChange = (event) => {
+                    const newValue = phoneMask(event.target.value);
+
+                    onChange({...event, target: {...event.target, value: newValue}});
+                };
+
+                inputProps = {
+                    ...inputProps,
+                    onChange: newOnChange,
+                }
+
+                break;
+            case "number": break;
             default:
                 inputProps = {
+                    ...inputProps,
                     type: "text",
                     title: `${label}: ${value || '...'}`
                 }
         }
 
-        return (
-            <input
-                id={id}
-                placeholder={ph}
-                className={styles.input}
-                {...inputProps}
-                name={name}
-                value={value}
-                onChange={onChange}
-            />
-        );
+        let inputElement = <input id={id} className={styles.input} {...inputProps} />
+
+        if (type === "password") {
+            inputElement = (
+                <div className={styles.password}>
+                    <input
+                        className={styles.toggle}
+                        id={id + "-suffix"}
+                        type="checkbox"
+                        checked={showPassword}
+                        onChange={() => setShowPassword(!showPassword)}
+                    />
+                    <label className={styles.toggleIcon} htmlFor={id + "-suffix"} />
+                    {inputElement}
+                </div>
+            );
+        }
+
+        return inputElement;
     }
 
     let className = styles.formControl;

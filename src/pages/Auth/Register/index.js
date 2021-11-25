@@ -652,7 +652,7 @@ import styles from './styles.module.css';
 
 function Register(props) {
     const formRef = useRef(null);
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(4);
 
     // primeiro passo
     const [name, setName] = useState("");
@@ -666,49 +666,49 @@ function Register(props) {
     const emailId = useRef(_uniqueId(`email-id-`)).current;
     const phoneTypeId = useRef(_uniqueId(`phoneType-id-`)).current;
     const phoneNumberId = useRef(_uniqueId(`phoneNumber-id-`)).current;
-    
-    
+
+
     // segundo passo
     const [password, setPassword] = useState("");
 
     const passwordId = useRef(_uniqueId(`password-id-`)).current;
-    
-    
-	// - pessoa física
+
+
+    // - pessoa física
     const [CPF, setCPF] = useState("");
-    
+
     const CPFId = useRef(_uniqueId(`CPF-id-`)).current;
 
-    
+
     // - pessoa jurídica
     const [CNPJ, setCNPJ] = useState("");
     const [companyName, setCompanyName] = useState("");
 
     const CNPJId = useRef(_uniqueId(`CNPJ-id-`)).current;
     const companyNameId = useRef(_uniqueId(`companyName-id-`)).current;
-    
-    
+
+
     // terceiro passo
     const [PABXName, setPABXName] = useState("");
     const [city, setCity] = useState("");
     const [PABXNumber, setPABXNumber] = useState("");
     const [branchesAmount, setBranchesAmount] = useState("");
-    
+
     const PABXNameId = useRef(_uniqueId(`PABXName-id-`)).current;
     const cityId = useRef(_uniqueId(`city-id-`)).current;
     const PABXNumberId = useRef(_uniqueId(`PABXNumber-id-`)).current;
     const branchesAmountId = useRef(_uniqueId(`branchesAmount-id-`)).current;
-    
-    
-	// quarto passo
+
+
+    // quarto passo
     const [branchName, setBranchName] = useState("");
     const [branchNumber, setBranchNumber] = useState("");
     const [branchPassword, setBranchPassword] = useState("");
-    
+
     const branchNameId = useRef(_uniqueId(`branchName-id-`)).current;
     const branchNumberId = useRef(_uniqueId(`branchNumber-id-`)).current;
     const branchPasswordId = useRef(_uniqueId(`branchPassword-id-`)).current;
-    
+
 
     const [validation, setValidation] = useState({
         name: {
@@ -723,85 +723,303 @@ function Register(props) {
             isInvalid: false,
             message: ""
         },
+        phoneNumber: {
+            isInvalid: false,
+            message: ""
+        },
         phoneType: {
+            isInvalid: false,
+            message: ""
+        },
+        CPF: {
+            isInvalid: false,
+            message: ""
+        },
+        companyName: {
+            isInvalid: false,
+            message: ""
+        },
+        PABXName: {
+            isInvalid: false,
+            message: ""
+        },
+        city: {
+            isInvalid: false,
+            message: ""
+        },
+        PABXNumber: {
+            isInvalid: false,
+            message: ""
+        },
+        branchesAmount: {
+            isInvalid: false,
+            message: ""
+        },
+        branchName: {
+            isInvalid: false,
+            message: ""
+        },
+        branchNumber: {
+            isInvalid: false,
+            message: ""
+        },
+        branchPassword: {
             isInvalid: false,
             message: ""
         },
     });
 
-	const stepField = () => {
-		let fieldset = (<>
+    const fieldset = () => {
+        let inputs;
 
+        switch (step) {
+            case 1:
+                inputs = (<>
+                    <Input
+                        id={nameId}
+                        type="text"
+                        label="Nome"
+                        placeholder="Nome do responsável legal"
+                        name="name"
+                        value={name}
+                        onChange={(event) => {
+                            setName(event.target.value);
+                        }}
+                        validation={validation.name}
+                    />
+                    <Input
+                        id={emailId}
+                        type="email"
+                        label="E-mail"
+                        placeholder="Endereço de e-mail"
+                        name="email"
+                        value={email}
+                        onChange={(event) => {
+                            setEmail(event.target.value);
+                        }}
+                        validation={validation.email}
+                    />
+                    <Input
+                        id={passwordId}
+                        type="password"
+                        label="Senha"
+                        name="password"
+                        value={password}
+                        onChange={(event) => {
+                            setPassword(event.target.value);
+                        }}
+                        validation={validation.password}
+                    />
+                </>);
+                break;
+            case 2:
+                inputs = (<>
+                    <Input
+                        id={phoneNumberId}
+                        type="tel"
+                        label="Telefone"
+                        placeholder="Telefone para contato"
+                        name="phoneNumber"
+                        value={phoneNumber}
+                        onChange={(event) => {
+                            setPhoneNumber(event.target.value);
+                        }}
+                        validation={validation.phoneNumber}
+                    />
+                    <Input
+                        id={CPFId}
+                        type="text"
+                        label="CPF/CNPJ"
+                        placeholder="Cadastro de Pessoa Física ou Jurídica"
+                        name="CPF"
+                        value={CPF}
+                        onChange={(event) => {
+                            setCPF(event.target.value);
+                        }}
+                        validation={validation.CPF}
+                    />
+                    <Input
+                        id={companyNameId}
+                        type="text"
+                        label="Nome da empresa"
+                        placeholder="Nome da empresa"
+                        name="companyName"
+                        value={companyName}
+                        onChange={(event) => {
+                            setCompanyName(event.target.value);
+                        }}
+                        validation={validation.companyName}
+                    />
+                </>);
+                break;
+            case 3:
+                // PABXName,
+                // city,
+                // PABXNumber,
+                // branchesAmount,
+                inputs = (<>
+                    <Input
+                        id={PABXNameId}
+                        type="text"
+                        label="PABX"
+                        placeholder="Nome do PABX"
+                        name="PABXName"
+                        value={PABXName}
+                        onChange={(event) => {
+                            setPABXName(event.target.value);
+                        }}
+                        validation={validation.PABXName}
+                    />
+                    <Select
+                        id={cityId}
+                        label="Cidade"
+                        name="city"
+                        placeholder="Cidades disponíveis..."
+                        value={city}
+                        onChange={(event) => {
+                            setCity(event.target.value);
+                        }}
+                        validation={validation.city}
+                    >
+                        <option value="0">Sorocaba</option>
+                        <option value="1">Votorantim</option>
+                    </Select>
+                    <Select
+                        id={PABXNumberId}
+                        label="Telefone"
+                        name="PABXNumber"
+                        placeholder="Telefones para contratar..."
+                        value={PABXNumber}
+                        onChange={(event) => {
+                            setPABXNumber(event.target.value);
+                        }}
+                        validation={validation.PABXNumber}
+                    >
+                        <option value="0">Sorocaba</option>
+                        <option value="1">Votorantim</option>
+                    </Select>
+                    <Input
+                        id={branchesAmountId}
+                        type="number"
+                        label="Ramais"
+                        placeholder="Quantos deseja contratar"
+                        name="branchesAmount"
+                        value={branchesAmount}
+                        onChange={(event) => {
+                            setBranchesAmount(event.target.value);
+                        }}
+                        validation={validation.branchesAmount}
+                    />
+                </>);
+                break;
+            case 4:
+                // branchName,
+                // branchNumber,
+                // branchPassword,
+                inputs = (<>
+                    <Input
+                        id={branchNameId}
+                        type="text"
+                        label="Primeiro Ramal"
+                        placeholder="Nome do Ramal"
+                        name="branchName"
+                        value={branchName}
+                        onChange={(event) => {
+                            setBranchName(event.target.value);
+                        }}
+                        validation={validation.branchName}
+                    />
+                    <Input
+                        id={branchNumberId}
+                        type="phone"
+                        label="Número do Ramal"
+                        placeholder="Número do primeiro Ramal"
+                        name="branchNumber"
+                        value={branchNumber}
+                        onChange={(event) => {
+                            setBranchNumber(event.target.value);
+                        }}
+                        validation={validation.branchNumber}
+                    />
+                    <Input
+                        id={branchPasswordId}
+                        type="password"
+                        label="Senha do Ramal"
+                        name="branchPassword"
+                        value={branchPassword}
+                        onChange={(event) => {
+                            setBranchPassword(event.target.value);
+                        }}
+                        validation={validation.branchPassword}
+                    />
+                </>);
+                break;
+            default:
+                inputs = (<>
+                    <Input
+                        id={nameId}
+                        type="text"
+                        label="Nome"
+                        placeholder="Nome do responsável legal"
+                        name="name"
+                        value={name}
+                        onChange={(event) => {
+                            setName(event.target.value);
+                        }}
+                        validation={validation.name}
+                    />
+                    <Select
+                        id={personTypeId}
+                        label="Tipo de pessoa"
+                        name="personType"
+                        value={personType}
+                        onChange={(event) => {
+                            setPersonType(event.target.value);
+                        }}
+                        validation={validation.name}
+                    >
+                        <option value="fisica">Pessoa Física</option>
+                        <option value="juridica">Pessoa Jurídica</option>
+                    </Select>
+                    <Input
+                        id={emailId}
+                        type="email"
+                        label="E-mail"
+                        placeholder="Endereço de e-mail"
+                        name="email"
+                        value={email}
+                        onChange={(event) => {
+                            setEmail(event.target.value);
+                        }}
+                        validation={validation.email}
+                    />
+                    <Radio
+                        id={phoneTypeId}
+                        label="Tipo de telefone"
+                        name="phoneType"
+                        value={phoneType}
+                        onChange={(event) => {
+                            setPhoneType(event.target.value);
+                        }}
+                        validation={validation.phoneType}
+                    >
+                        <option value="movel">Móvel</option>
+                        <option value="fixo">Fixo</option>
+                    </Radio>
+                </>);
+        }
 
-		</>);
-
-		switch (step) {
-			default: 
-				fieldset = (<>
-
-
-				</>);
-				break;
-		}
-	}
+        return inputs;
+    }
 
     return (
         <>
             <main className={styles.main}>
                 <div className={`${styles.register} container`}>
-                    <h1>Cadastro <span>Passo {step}</span></h1>
+                    <h1>Cadastro <strong><span>Passo {step}</span></strong></h1>
                     <form ref={formRef} className={styles.form}>
                         <fieldset>
-                            <Input
-                                id={nameId}
-                                type="text"
-                                label="Nome"
-                                placeholder="Nome do responsável legal"
-                                name="name"
-                                value={name}
-                                onChange={(event) => {
-                                    setName(event.target.value);
-                                }}
-                                validation={validation.name}
-                            />
-                            <Select
-								id={personTypeId}
-                                label="Tipo de pessoa"
-                                name="personType"
-                                value={personType}
-                                onChange={(event) => {
-                                    setPersonType(event.target.value);
-                                }}								
-                                validation={validation.name}
-							>
-                                <option value="fisica">Pessoa Física</option>
-                                <option value="juridica">Pessoa Jurídica</option>
-                            </Select>
-                            <Input
-                                id={emailId}
-                                type="email"
-                                label="E-mail"
-                                placeholder="Endereço de e-mail"
-                                name="email"
-                                value={email}
-                                onChange={(event) => {
-                                    setEmail(event.target.value);
-                                }}
-                                validation={validation.email}
-                            />
-                            <Radio
-                                id={phoneTypeId}
-                                label="Tipo de telefone"
-                                name="phoneType"
-                                value={phoneType}
-                                onChange={(event) => {
-                                    setPhoneType(event.target.value);
-                                }}
-                                validation={validation.phoneType}
-                            >
-                                <option value="movel">Móvel</option>
-                                <option value="fixo">Fixo</option>
-                            </Radio>
+                            {fieldset()}
                         </fieldset>
                         <button
                             onClick={(e) => {
