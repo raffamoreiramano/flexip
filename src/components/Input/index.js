@@ -132,6 +132,7 @@ export function Select({
     });
     const [active, setActive] = useState(false);
     const initialRender = useRef(true);
+    const searchboxRef = useRef(null);
 
     useEffect(() => {
         if (initialRender.current) {
@@ -183,6 +184,8 @@ export function Select({
                             setTimeout(() => {
                                 setSearchValue("");
                             }, 200);
+                        } else if (search) {
+                            searchboxRef.current.focus();
                         }
                     }}
                 /> 
@@ -197,7 +200,8 @@ export function Select({
                         search && <li className={styles.searchbox}>
                             <input
                                 type="text"
-                                value={searchValue}                                
+                                value={searchValue}
+                                ref={searchboxRef}                               
                                 onChange={(event) => setSearchValue(event.target.value)} 
                             />
                         </li>

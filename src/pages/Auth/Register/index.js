@@ -874,6 +874,7 @@ function Register(props) {
                         id={cityId}
                         label="Cidade"
                         name="city"
+                        search
                         placeholder="Cidades disponíveis..."
                         value={city}
                         onChange={(event) => {
@@ -881,8 +882,9 @@ function Register(props) {
                         }}
                         validation={validation.city}
                     >
-                        <option value="0">Sorocaba</option>
-                        <option value="1">Votorantim</option>
+                        <option value="0">São Roque</option>
+                        <option value="1">Sorocaba</option>
+                        <option value="2">Votorantim</option>
                     </Select>
                     <Select
                         id={PABXNumberId}
@@ -895,8 +897,8 @@ function Register(props) {
                         }}
                         validation={validation.PABXNumber}
                     >
-                        <option value="0">Sorocaba</option>
-                        <option value="1">Votorantim</option>
+                        <option value="0">(11) 4158-1714</option>
+                        <option value="1">(11) 4717-1787</option>
                     </Select>
                     <Input
                         id={branchesAmountId}
