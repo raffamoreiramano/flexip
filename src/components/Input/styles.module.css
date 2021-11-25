@@ -82,7 +82,7 @@
 	background: transparent;
 
 	isolation: isolate;
-	z-index: 99;
+	z-index: 1;
 
 	cursor: default;
 }
@@ -115,7 +115,8 @@
 	position: absolute;
 	top: 0;
 	margin: 0;
-	padding: 1em 0.5em;
+	padding: 0;
+	padding-top: 1em;
 	border-radius: 1em;
 
 
@@ -124,21 +125,36 @@
 	height: fit-content;
 	max-height: 0;
 	overflow-x: hidden;
-	overflow-y: auto;
+	overflow-y: hidden;
 	
-	user-select: none;
+	z-index: 1;
 	pointer-events: none;
-	z-index: 99;
-
+	
 	transition: 200ms ease-in-out, max-height 200ms 200ms ease-in-out;
 }
 
-.formControl .select .options li {
-	display: inline-block;
+.formControl .select .optionsList {
+	padding: 0 0.5em;
+	padding-bottom: 1em;
+	position: relative;
+	list-style: auto;
+	margin: 0;
+	user-select: none;
+	pointer-events: none;
+
+	width: 100%;
+	height: max-content;
+	max-height: 8.5em;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.formControl .select .optionsList li {
+	display: block;
 	padding: 0.25em 0.5em;
 	border-radius: 0.5em;
 
-	transition: 200ms ease-in-out;
+	transition: 100ms 25ms ease-in-out, color 0ms 25ms;
 
 	font-weight: 500;
 	
@@ -149,33 +165,38 @@
 	cursor: pointer;
 }
 
-.formControl .select .options li:hover {
+.formControl .select .optionsList li:hover {
 	background-color: rgba(var(--main-color-1), 0.75);
+
+	transition: 100ms ease-in-out, color 25ms 25ms;
 
 	color: white;
 }
 
 .formControl .select .toggle:checked ~ .options {
-	top: calc(100% - 0.5em);;
-
+	top: calc(100% - 0.5em);
+	
 	opacity: 1;
-	max-height: 10.5em;
-
-	pointer-events: all;
-
+	max-height: 12.5em;
+	
+	
 	transition: 200ms ease-in-out, max-height 0ms;
 }
 
-.formControl .select .options .searchbox {
-	background: none !important;
+.formControl .select .toggle:checked ~ .options .optionsList {
+	pointer-events: all;
+}
 
-	padding-inline: 0;
-	padding-bottom: 0.5em;
+.formControl .select .options .searchbox {
+	padding-right: 1em;
+
 }
 
 .formControl .select .options .searchbox input {
 	width: 100%;
-	padding: 0.5em 0.5em;
+	padding: 0.5em;
+	margin: 0.5em;
+	margin-right: 0;
 	border-radius: 0.5em;
 
 	background-color: rgba(var(--input-color));
@@ -184,6 +205,8 @@
 	box-shadow: 
 		inset 0 10px 15px -10px rgba(var(--text-color), 0.25),
 		inset 0 0 0 .1em rgba(var(--border-color), 0.1);
+
+	pointer-events: all;
 }
 
 .formControl .select .options .searchbox input:focus {
@@ -191,6 +214,11 @@
 		inset 0 10px 15px -10px rgba(var(--text-color), 0.25),
 		inset 0 0 0 .25em rgba(var(--border-color), 0.25),
 		inset 0 0 0 .1em rgba(var(--border-color), 0.25);
+}
+
+.formControl .select .options .optionsList::-webkit-scrollbar-track {
+	margin: 0 !important;
+	margin-bottom: 1em !important;
 }
 
 .formControl .radio {

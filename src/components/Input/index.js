@@ -195,29 +195,31 @@ export function Select({
                     title={"Tipo de pessoa: " + selected.target.children}
                     children={selected.target.children || '⠀'}
                 />
-                <ul className={`${styles.options} glass`}>
+                <div className={`${styles.options} glass`}>
                     {
-                        search && <li className={styles.searchbox}>
+                        search && <div className={styles.searchbox}>
                             <input
                                 type="text"
                                 value={searchValue}
                                 ref={searchboxRef}                               
                                 onChange={(event) => setSearchValue(event.target.value)} 
                             />
-                        </li>
+                        </div>
                     }
-                    {
-                        options.map((option, index) => <li
-                            key={index}
-                            children={option.props.children}
-                            title={option.props.children}
-                            onClick={() => {
-                                setSelected({ target: option.props });
-                                setActive(false);
-                            }}
-                        />)
-                    }
-                </ul>
+                    <ul className={styles.optionsList}>
+                        {
+                            options.map((option, index) => <li
+                                key={index}
+                                children={option.props.children}
+                                title={option.props.children}
+                                onClick={() => {
+                                    setSelected({ target: option.props });
+                                    setActive(false);
+                                }}
+                            />)
+                        }
+                    </ul>
+                </div>
             </div>
             <strong className="error-message">{validation.message}</strong>
         </div>

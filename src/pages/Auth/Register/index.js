@@ -874,7 +874,6 @@ function Register(props) {
                         id={cityId}
                         label="Cidade"
                         name="city"
-                        search
                         placeholder="Cidades disponíveis..."
                         value={city}
                         onChange={(event) => {
@@ -884,6 +883,8 @@ function Register(props) {
                     >
                         <option value="0">São Roque</option>
                         <option value="1">Sorocaba</option>
+                        <option value="2">Votorantim</option>
+                        <option value="2">Votorantim</option>
                         <option value="2">Votorantim</option>
                     </Select>
                     <Select
