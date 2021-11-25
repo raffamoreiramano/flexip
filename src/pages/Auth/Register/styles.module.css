@@ -8,6 +8,18 @@
 
 .register {
     border-radius: 0;
+    min-height: 100vh;
+
+    display: grid;
+    grid-template-rows: 1fr minmax(28.25em, min-content) 1fr;
+}
+
+.register > h1 {
+    margin-top: auto;
+}
+
+.form {
+    display: contents;
 }
 
 .form button ~ button {
@@ -15,5 +27,15 @@
 }
 
 .form a {
-    margin: 0.5rem 0 1rem 1rem;
+    margin-top: 2em;
+    text-align: center;
+    width: 100%;
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    height: fit-content;
 }

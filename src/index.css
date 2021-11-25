@@ -298,13 +298,17 @@ button {
 	background-color: rgb(var(--btn-color));
 	box-shadow: 0 15px 30px -15px rgba(var(--btn-color),0.5);
 
-	transition: 750ms cubic-bezier(0.5, 3, 0, -0.5);
+	transition: 750ms cubic-bezier(0.5, 3, 0, -0.5), background-color 500ms ease, color 500ms ease;
 	transform-origin: bottom;
 	cursor: pointer;
 }
 
 button.full-size {
 	min-width: 100%;
+}
+
+button.main-color-0 {
+	--btn-color: var(--main-color-0);
 }
 
 button.main-color-1 {

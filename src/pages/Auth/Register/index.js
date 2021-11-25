@@ -652,7 +652,7 @@ import styles from './styles.module.css';
 
 function Register(props) {
     const formRef = useRef(null);
-    const [step, setStep] = useState(4);
+    const [step, setStep] = useState(1);
 
     // primeiro passo
     const [name, setName] = useState("");
@@ -1020,29 +1020,42 @@ function Register(props) {
                     <form ref={formRef} className={styles.form}>
                         <fieldset>
                             {fieldset()}
+                            {step <= 1 && <a href="/auth/login">Já tenho conta!</a>}
                         </fieldset>
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
+                        <div className={styles.actions}>
+                            {
+                                step > 1 &&
+                                <button
+                                    className={"transparent"}
+                                    onClick={(e) => {
+                                        e.preventDefault();
 
-                                const formData = new FormData(formRef.current);
-                                const formEntries = formData.entries();
+                                        if (step > 1) {
+                                            setStep(step - 1);
+                                        } else {
+                                            props.history.push("/auth");
+                                        }
 
-                                console.log((Array.from(formEntries)))
-                            }}
-                        >
-                            Cadastrar
-                        </button>
-                        <button
-                            className="transparent"
-                            onClick={(e) => {
-                                e.preventDefault();
+                                    }}
+                                >
+                                    Voltar
+                                </button>
+                            }
+                            <button
+                                className={step <= 3 ? "main-color-1" : "main-color-2"}
+                                onClick={(e) => {
+                                    e.preventDefault();
 
-                                props.history.push("/auth");
-                            }}
-                        >
-                            Entrar
-                        </button>
+                                    if (step < 4) {
+                                        setStep(step + 1);
+                                    } else {
+                                        props.history.push("/auth");
+                                    }
+                                }}
+                            >
+                                {step <= 3 ? "Continuar" : "Cadastrar"}
+                            </button>                            
+                        </div>                        
                     </form>
                 </div>
             </main>
