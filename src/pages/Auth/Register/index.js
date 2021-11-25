@@ -1020,7 +1020,7 @@ function Register(props) {
                     <form ref={formRef} className={styles.form}>
                         <fieldset>
                             {fieldset()}
-                            {step <= 1 && <a href="/auth/login">Já tenho conta!</a>}
+                            {step <= 1 && <a href="/auth">Já tenho conta!</a>}
                         </fieldset>
                         <div className={styles.actions}>
                             {

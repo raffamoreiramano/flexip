@@ -47,7 +47,7 @@ export default function Input({
                 }
 
                 break;
-            case "phone":
+            case "tel":
                 const newOnChange = (event) => {
                     const newValue = phoneMask(event.target.value);
 
