@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import * as UserActions from "../../../store/actions/user";
 
 import Input, { Select, Radio } from "../../../components/Input";
+import { CPMask } from '../../../services/helpers';
 
 import Logo from "../../../assets/images/logo/flexip.svg";
 
@@ -675,16 +676,12 @@ function Register(props) {
 
 
     // - pessoa física
-    const [CPF, setCPF] = useState("");
-
-    const CPFId = useRef(_uniqueId(`CPF-id-`)).current;
+    const [CP, setCP] = useState("");
+    const CPId = useRef(_uniqueId(`CP-id-`)).current;
 
 
     // - pessoa jurídica
-    const [CNPJ, setCNPJ] = useState("");
     const [companyName, setCompanyName] = useState("");
-
-    const CNPJId = useRef(_uniqueId(`CNPJ-id-`)).current;
     const companyNameId = useRef(_uniqueId(`companyName-id-`)).current;
 
 
@@ -731,7 +728,7 @@ function Register(props) {
             isInvalid: false,
             message: ""
         },
-        CPF: {
+        CP: {
             isInvalid: false,
             message: ""
         },
@@ -818,7 +815,7 @@ function Register(props) {
                         id={phoneNumberId}
                         type="tel"
                         label="Telefone"
-                        placeholder="Telefone para contato"
+                        placeholder="Telefone fixo ou móvel"
                         name="phoneNumber"
                         value={phoneNumber}
                         onChange={(event) => {
@@ -827,29 +824,41 @@ function Register(props) {
                         validation={validation.phoneNumber}
                     />
                     <Input
-                        id={CPFId}
+                        id={CPId}
                         type="text"
                         label="CPF/CNPJ"
                         placeholder="Cadastro de Pessoa Física ou Jurídica"
-                        name="CPF"
-                        value={CPF}
+                        name="CP"
+                        value={CP}
                         onChange={(event) => {
-                            setCPF(event.target.value);
+                            const maskedCP = CPMask(event.target.value);
+
+                            if (maskedCP.length === 18) {
+                                setPersonType('juridica');
+                            } else {
+                                setPersonType('fisica');
+                            }
+
+                            setCP(maskedCP);
                         }}
-                        validation={validation.CPF}
+                        validation={validation.CP}
                     />
-                    <Input
-                        id={companyNameId}
-                        type="text"
-                        label="Nome da empresa"
-                        placeholder="Nome da empresa"
-                        name="companyName"
-                        value={companyName}
-                        onChange={(event) => {
-                            setCompanyName(event.target.value);
-                        }}
-                        validation={validation.companyName}
-                    />
+                    {
+                        personType === 'juridica' &&
+                        <Input
+                            id={companyNameId}
+                            type="text"
+                            label="Nome da empresa"
+                            placeholder="Nome da empresa"
+                            name="companyName"
+                            value={companyName}
+                            onChange={(event) => {
+                                setCompanyName(event.target.value);
+                            }}
+                            validation={validation.companyName}
+                        />
+                    }
+                    
                 </>);
                 break;
             case 3:
@@ -934,7 +943,7 @@ function Register(props) {
                     />
                     <Input
                         id={branchNumberId}
-                        type="phone"
+                        type="tel"
                         label="Número do Ramal"
                         placeholder="Número do primeiro Ramal"
                         name="branchNumber"
