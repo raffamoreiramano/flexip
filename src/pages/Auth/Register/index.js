@@ -5,7 +5,13 @@ import { bindActionCreators } from "redux";
 import * as UserActions from "../../../store/actions/user";
 
 import Input, { Select, Radio } from "../../../components/Input";
-import { CPMask } from '../../../services/helpers';
+import { 
+    CPMask,
+    validateEmail,
+    validateName,
+    validatePassword,
+    validatePhone
+} from '../../../services/helpers';
 
 import Logo from "../../../assets/images/logo/flexip.svg";
 
@@ -657,31 +663,25 @@ function Register(props) {
 
     // primeiro passo
     const [name, setName] = useState("");
-    const [personType, setPersonType] = useState("");
     const [email, setEmail] = useState("");
-    const [phoneType, setPhoneType] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-
-    const nameId = useRef(_uniqueId(`name-id-`)).current;
-    const personTypeId = useRef(_uniqueId(`personType-id-`)).current;
-    const emailId = useRef(_uniqueId(`email-id-`)).current;
-    const phoneTypeId = useRef(_uniqueId(`phoneType-id-`)).current;
-    const phoneNumberId = useRef(_uniqueId(`phoneNumber-id-`)).current;
-
-
-    // segundo passo
     const [password, setPassword] = useState("");
-
+    
+    const nameId = useRef(_uniqueId(`name-id-`)).current;
+    const emailId = useRef(_uniqueId(`email-id-`)).current;
     const passwordId = useRef(_uniqueId(`password-id-`)).current;
-
-
-    // - pessoa física
+    
+    
+    // segundo passo
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [phoneType, setPhoneType] = useState("");
     const [CP, setCP] = useState("");
-    const CPId = useRef(_uniqueId(`CP-id-`)).current;
-
-
-    // - pessoa jurídica
+    const [personType, setPersonType] = useState("");
     const [companyName, setCompanyName] = useState("");
+    
+    const phoneNumberId = useRef(_uniqueId(`phoneNumber-id-`)).current;
+    const phoneTypeId = useRef(_uniqueId(`phoneType-id-`)).current;
+    const CPId = useRef(_uniqueId(`CP-id-`)).current;
+    const personTypeId = useRef(_uniqueId(`personType-id-`)).current;
     const companyNameId = useRef(_uniqueId(`companyName-id-`)).current;
 
 
@@ -765,6 +765,67 @@ function Register(props) {
             message: ""
         },
     });
+
+    const validateStep = () => {
+        let newValidation = validation;
+        let veredict = true;
+
+        switch (step) {
+            // name,
+            // email,
+            // phoneNumber,
+            case 1: {
+                if (validateName(name)) {
+                    newValidation.name = {
+                        isInvalid: true,
+                        message: "Nome inválido!",
+                    }
+                }
+
+                if (validateEmail(email)) {
+                    newValidation.email = {
+                        isInvalid: true,
+                        message: "E-mail inválido!",
+                    }
+                }
+
+                if (validatePassword(password)) {
+                    newValidation.password = {
+                        isInvalid: true,
+                        message: "Senha inválida! (Deve conter de 8 a 32 caracteres alfanuméricos e/ou especiais)",
+                    }
+                }
+            } break;
+            case 2: {
+                if (validatePhone(phoneNumber)) {
+                    newValidation.phoneNumber = {
+                        isInvalid: true,
+                        message: "Número de telefone inválido!",
+                    }
+                }
+
+                switch (personType) {
+                    case "juridica": {
+                        if (validateCNPJ(CP)) {
+                            newValidation.CP = {
+                                isInvalid: true,
+                                message: "CNPJ inválido!",
+                            }
+                        }
+                    } break;
+                    default: {
+                        if (validateCPF(CP)) {
+                            newValidation.CP = {
+                                isInvalid: true,
+                                message: "CPF inválido!",
+                            }
+                        }
+                    }
+                }
+            } break;
+            default: veredict = false;
+        }
+    }
 
     const fieldset = () => {
         let inputs;

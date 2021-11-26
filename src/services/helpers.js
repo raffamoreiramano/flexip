@@ -101,6 +101,77 @@ export function CPMask(value) {
 	}
 }
 
+export function validateName(value, min = 1, max = 64) {
+	// Nome do Sujeito
+	const regex = /^([A-Z\u00C0-\u00DE][a-zA-Z\u00C0-\u00FF]+\s?[a-zA-Z\u00C0-\u00FF]*\s?)*$/g;
+
+	if (value.length < min || value.length > max) {
+		return false;
+	}
+
+	if (!value.match(regex)) {
+		return false;
+	}
+	
+	return true;
+}
+
+export function validateEmail(value) {
+	// e-mail.local_part@domain.com.br
+	const characters = '[0-9a-z\u00C0-\u00FF]';
+	const punctuation = '[0-9a-z\u00C0-\u00FF\+\-.]';
+	const special = '[0-9a-z\u00C0-\u00FF!#$%&*\+\-_.]';
+	const regex = new RegExp(
+		'^' +
+		characters + '+' +
+		special + '{4,}@' +
+		characters + '+' +
+		punctuation + '*' +
+		characters + '+$',
+		'gi'
+	);
+
+	if (!value.match(regex)) {
+		return false;
+	}
+
+	return true;
+}
+
+export function validatePassword(value) {
+	// permite requer entre 8 e 32 caracteres, e permite caracteres alfanuméricos e especiais (!@#$%&*\-_.)
+	const regex = /^[\w!@#$%&*\-_.]{8,32}$/gi
+
+	if (!value.match(regex)) {
+		return false;
+	}
+	
+	return true;
+}
+
+export function validatePhone(value) {
+	const digits = value.replace(/\D/g, "");
+
+	const regex = /(\([0-9]{2}\))/g;
+
+	if (digits.length < 10 || digits.length > 11) {
+		return false;
+	}
+
+	if (!value.match(regex)) {
+		return false;
+	}
+	
+	return true;
+}
+
+export function validateCPF(value) {
+	return true;
+}
+
+export function validateCNPJ(value) {
+	return true;
+}
 // const CNPJValidation = (event) => {
 // 	var cnpjsm = event.target.value;
 // 	var cnpj = cnpjsm.replace(/[^\d]+/g, '');
