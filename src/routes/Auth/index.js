@@ -15,6 +15,7 @@ function Auth(props) {
 	useEffect(() => {
 		props.setIsLoading(true);
 		setTimeout(() => props.setIsLoading(false), 1)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.location]);
 
 	return (

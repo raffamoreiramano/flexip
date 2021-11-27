@@ -2,7 +2,7 @@ export function phoneMask(value) {
 	if (value) {
 		const digits = value.replace(/\D/g, "");
 
-		if (digits.length <= 4) {
+		if (digits.length <= 5) {
 			return digits;
 		}
 
@@ -87,7 +87,7 @@ export function CPMask(value) {
 			.replace(/(\d{3})(\d+?)$/, "$1.$2")
 			.replace(/(\d{3})\.(\d{3})(\d+?)$/, "$1.$2.$3")
 			.replace(/(\d{3})\.(\d{3})\.(\d{3})(\d{1,2})$/, "$1.$2.$3-$4")
-			.replace(/(\d{3})\.(\d{3})\.(\d{3})\-(\d{2})(\d+?)$/, "$1.$2.$3-$4");
+			.replace(/(\d{3})\.(\d{3})\.(\d{3})-(\d{2})(\d+?)$/, "$1.$2.$3-$4");
 	}
 
 	// XX.XXX.XXX/0001-XX
@@ -97,7 +97,7 @@ export function CPMask(value) {
 			.replace(/(\d{2})\.(\d{3})(\d+?)$/, "$1.$2.$3")
 			.replace(/(\d{2})\.(\d{3})\.(\d{3})(\d+?)$/, "$1.$2.$3/$4")
 			.replace(/(\d{2})\.(\d{3})\.(\d{3})\/(\d{4})(\d+?)$/, "$1.$2.$3/$4-$5")
-			.replace(/(\d{2})\.(\d{3})\.(\d{3})\/(\d{4})\-(\d{2})(\d+?)$/, "$1.$2.$3/$4-$5");
+			.replace(/(\d{2})\.(\d{3})\.(\d{3})\/(\d{4})-(\d{2})(\d+?)$/, "$1.$2.$3/$4-$5");
 	}
 }
 
@@ -119,8 +119,8 @@ export function validateName(value, min = 1, max = 64) {
 export function validateEmail(value) {
 	// e-mail.local_part@domain.com.br
 	const characters = '[0-9a-z\u00C0-\u00FF]';
-	const punctuation = '[0-9a-z\u00C0-\u00FF\+\-.]';
-	const special = '[0-9a-z\u00C0-\u00FF!#$%&*\+\-_.]';
+	const punctuation = '[0-9a-z\u00C0-\u00FF+-.]';
+	const special = '[0-9a-z\u00C0-\u00FF!#$%&*+-_.]';
 	const regex = new RegExp(
 		'^' +
 		characters + '+' +
@@ -151,7 +151,6 @@ export function validatePassword(value) {
 
 export function validatePhone(value) {
 	const digits = value.replace(/\D/g, "");
-
 	const regex = /(\([0-9]{2}\))/g;
 
 	if (digits.length < 10 || digits.length > 11) {
@@ -162,15 +161,15 @@ export function validatePhone(value) {
 		return false;
 	}
 	
-	return true;
+	return digits ? true : false;
 }
 
 export function validateCPF(value) {
-	return true;
+	return value ? true : false;
 }
 
 export function validateCNPJ(value) {
-	return true;
+	return value ? true : false;
 }
 // const CNPJValidation = (event) => {
 // 	var cnpjsm = event.target.value;

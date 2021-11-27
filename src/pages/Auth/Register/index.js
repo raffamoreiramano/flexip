@@ -10,7 +10,9 @@ import {
     validateEmail,
     validateName,
     validatePassword,
-    validatePhone
+    validatePhone,
+    validateCPF,
+    validateCNPJ,
 } from '../../../services/helpers';
 
 import Logo from "../../../assets/images/logo/flexip.svg";
@@ -673,15 +675,12 @@ function Register(props) {
     
     // segundo passo
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [phoneType, setPhoneType] = useState("");
     const [CP, setCP] = useState("");
     const [personType, setPersonType] = useState("");
     const [companyName, setCompanyName] = useState("");
     
     const phoneNumberId = useRef(_uniqueId(`phoneNumber-id-`)).current;
-    const phoneTypeId = useRef(_uniqueId(`phoneType-id-`)).current;
     const CPId = useRef(_uniqueId(`CP-id-`)).current;
-    const personTypeId = useRef(_uniqueId(`personType-id-`)).current;
     const companyNameId = useRef(_uniqueId(`companyName-id-`)).current;
 
 
@@ -689,25 +688,25 @@ function Register(props) {
     const [PABXName, setPABXName] = useState("");
     const [city, setCity] = useState("");
     const [PABXNumber, setPABXNumber] = useState("");
-    const [branchesAmount, setBranchesAmount] = useState("");
-
+    const [PABXPassword, setPABXPassword] = useState("");
+    
     const PABXNameId = useRef(_uniqueId(`PABXName-id-`)).current;
     const cityId = useRef(_uniqueId(`city-id-`)).current;
     const PABXNumberId = useRef(_uniqueId(`PABXNumber-id-`)).current;
-    const branchesAmountId = useRef(_uniqueId(`branchesAmount-id-`)).current;
-
-
+    const PABXPasswordId = useRef(_uniqueId(`PABXPassword-id-`)).current;
+    
+    
     // quarto passo
+    const [branchesAmount, setBranchesAmount] = useState("");
     const [branchName, setBranchName] = useState("");
     const [branchNumber, setBranchNumber] = useState("");
-    const [branchPassword, setBranchPassword] = useState("");
-
+    
+    const branchesAmountId = useRef(_uniqueId(`branchesAmount-id-`)).current;
     const branchNameId = useRef(_uniqueId(`branchName-id-`)).current;
     const branchNumberId = useRef(_uniqueId(`branchNumber-id-`)).current;
-    const branchPasswordId = useRef(_uniqueId(`branchPassword-id-`)).current;
 
-
-    const [validation, setValidation] = useState({
+    const [isValidated, setIsValidated] = useState(false);
+    const initialValidation = {
         name: {
             isInvalid: false,
             message: ""
@@ -760,44 +759,48 @@ function Register(props) {
             isInvalid: false,
             message: ""
         },
-        branchPassword: {
+        PABXPassword: {
             isInvalid: false,
             message: ""
         },
-    });
+    };
+    const [validation, setValidation] = useState(initialValidation);
 
     const validateStep = () => {
-        let newValidation = validation;
+        let newValidation = initialValidation;
         let veredict = true;
 
         switch (step) {
             // name,
             // email,
             // phoneNumber,
-            case 1: {
-                if (validateName(name)) {
+            case 1: 
+                if (!validateName(name)) {
                     newValidation.name = {
                         isInvalid: true,
                         message: "Nome inválido!",
                     }
                 }
 
-                if (validateEmail(email)) {
+                if (!validateEmail(email)) {
                     newValidation.email = {
                         isInvalid: true,
                         message: "E-mail inválido!",
                     }
                 }
 
-                if (validatePassword(password)) {
+                if (!validatePassword(password)) {
                     newValidation.password = {
                         isInvalid: true,
-                        message: "Senha inválida! (Deve conter de 8 a 32 caracteres alfanuméricos e/ou especiais)",
+                        message: "Deve ter de 8 a 32 caracteres [a-Z, 0-9, !@#$%&*-_.]!",
                     }
                 }
-            } break;
-            case 2: {
-                if (validatePhone(phoneNumber)) {
+                break;
+            // phoneNumber,
+            // CPF/CNPJ,
+            // companyName,
+            case 2:
+                if (!validatePhone(phoneNumber)) {
                     newValidation.phoneNumber = {
                         isInvalid: true,
                         message: "Número de telefone inválido!",
@@ -805,33 +808,120 @@ function Register(props) {
                 }
 
                 switch (personType) {
-                    case "juridica": {
-                        if (validateCNPJ(CP)) {
+                    case "juridica":
+                        if (!validateCNPJ(CP)) {
                             newValidation.CP = {
                                 isInvalid: true,
                                 message: "CNPJ inválido!",
                             }
                         }
-                    } break;
-                    default: {
-                        if (validateCPF(CP)) {
+
+                        if (companyName.length < 2) {
+                            newValidation.companyName = {
+                                isInvalid: true,
+                                message: "Nome de empresa inválido!",
+                            }
+                        }
+                        break;
+                    default:
+                        if (!validateCPF(CP)) {
                             newValidation.CP = {
                                 isInvalid: true,
                                 message: "CPF inválido!",
                             }
                         }
+                }
+                break;
+            // PABXName,
+            // city,
+            // PABXNumber,
+            // branchesAmount,
+            case 3:
+                if (!PABXName) {
+                    newValidation.PABXName = {
+                        isInvalid: true,
+                        message: "Nome de PABX inválido!",
                     }
                 }
-            } break;
+                
+                if (!city) {
+                    newValidation.city = {
+                        isInvalid: true,
+                        message: "Escolha uma cidade!",
+                    }
+                }
+                
+                if (!PABXNumber) {
+                    newValidation.PABXNumber = {
+                        isInvalid: true,
+                        message: "Escolha um telefone!",
+                    }
+                }
+                 
+                if (!validatePassword(PABXPassword)) {
+                    newValidation.PABXPassword = {
+                        isInvalid: true,
+                        message: "Deve ter de 8 a 32 caracteres [a-Z, 0-9, !@#$%&*-_.]!",
+                    }
+                }
+                break;
+            // branchesAmount
+            // branchName,
+            // branchNumber,
+            case 4:
+                if (branchesAmount < 1) {
+                    newValidation.branchesAmount = {
+                        isInvalid: true,
+                        message: "Você precisa ter pelo menos 1 ramal!",
+                    }
+                }
+
+                if (!branchName) {
+                    newValidation.branchName = {
+                        isInvalid: true,
+                        message: "Nome de ramal inválido!",
+                    }
+                }
+                
+                if (branchNumber.length < 3 || branchNumber.length > 5) {
+                    newValidation.branchNumber = {
+                        isInvalid: true,
+                        message: "Número deve ter entre 3 e 5 dígitos!",
+                    }
+                }
+                break;
             default: veredict = false;
         }
+
+        if (Object.values(newValidation).some(item => item.isInvalid)) {
+            veredict = false;
+        }
+
+        setValidation(newValidation);
+        setIsValidated(true);
+
+        return veredict;
     }
+
+    const handleChange = (callback) => {
+        if (isValidated) {
+            setIsValidated(false);
+            cleanValidation();
+        }
+
+        callback.call();
+    }
+
+    const cleanValidation = () => setValidation(initialValidation);
 
     const fieldset = () => {
         let inputs;
 
         switch (step) {
             case 1:
+                // name,
+                // email,
+                // phoneNumber,
                 inputs = (<>
                     <Input
                         id={nameId}
@@ -840,9 +930,9 @@ function Register(props) {
                         placeholder="Nome do responsável legal"
                         name="name"
                         value={name}
-                        onChange={(event) => {
+                        onChange={(event) => handleChange(() => {
                             setName(event.target.value);
-                        }}
+                        })}
                         validation={validation.name}
                     />
                     <Input
@@ -863,14 +953,17 @@ function Register(props) {
                         label="Senha"
                         name="password"
                         value={password}
-                        onChange={(event) => {
+                        onChange={(event) => handleChange(() => {
                             setPassword(event.target.value);
-                        }}
+                        })}
                         validation={validation.password}
                     />
                 </>);
                 break;
             case 2:
+                // phoneNumber,
+                // CPF/CNPJ,
+                // companyName,
                 inputs = (<>
                     <Input
                         id={phoneNumberId}
@@ -879,9 +972,9 @@ function Register(props) {
                         placeholder="Telefone fixo ou móvel"
                         name="phoneNumber"
                         value={phoneNumber}
-                        onChange={(event) => {
+                        onChange={(event) => handleChange(() => {
                             setPhoneNumber(event.target.value);
-                        }}
+                        })}
                         validation={validation.phoneNumber}
                     />
                     <Input
@@ -891,7 +984,7 @@ function Register(props) {
                         placeholder="Cadastro de Pessoa Física ou Jurídica"
                         name="CP"
                         value={CP}
-                        onChange={(event) => {
+                        onChange={(event) => handleChange(() => {
                             const maskedCP = CPMask(event.target.value);
 
                             if (maskedCP.length === 18) {
@@ -901,7 +994,7 @@ function Register(props) {
                             }
 
                             setCP(maskedCP);
-                        }}
+                        })}
                         validation={validation.CP}
                     />
                     {
@@ -913,9 +1006,9 @@ function Register(props) {
                             placeholder="Nome da empresa"
                             name="companyName"
                             value={companyName}
-                            onChange={(event) => {
+                            onChange={(event) => handleChange(() => {
                                 setCompanyName(event.target.value);
-                            }}
+                            })}
                             validation={validation.companyName}
                         />
                     }
@@ -926,7 +1019,7 @@ function Register(props) {
                 // PABXName,
                 // city,
                 // PABXNumber,
-                // branchesAmount,
+                // PABXPassword,
                 inputs = (<>
                     <Input
                         id={PABXNameId}
@@ -935,9 +1028,9 @@ function Register(props) {
                         placeholder="Nome do PABX"
                         name="PABXName"
                         value={PABXName}
-                        onChange={(event) => {
+                        onChange={(event) => handleChange(() => {
                             setPABXName(event.target.value);
-                        }}
+                        })}
                         validation={validation.PABXName}
                     />
                     <Select
@@ -946,9 +1039,9 @@ function Register(props) {
                         name="city"
                         placeholder="Cidades disponíveis..."
                         value={city}
-                        onChange={(event) => {
+                        onChange={(event) => handleChange(() => {
                             setCity(event.target.value);
-                        }}
+                        })}
                         validation={validation.city}
                     >
                         <option value="0">São Roque</option>
@@ -963,14 +1056,32 @@ function Register(props) {
                         name="PABXNumber"
                         placeholder="Telefones para contratar..."
                         value={PABXNumber}
-                        onChange={(event) => {
+                        onChange={(event) => handleChange(() => {
                             setPABXNumber(event.target.value);
-                        }}
+                        })}
                         validation={validation.PABXNumber}
                     >
                         <option value="0">(11) 4158-1714</option>
                         <option value="1">(11) 4717-1787</option>
                     </Select>
+                    <Input
+                        id={PABXPasswordId}
+                        type="password"
+                        label="Senha do PABX"
+                        name="PABXPassword"
+                        value={PABXPassword}
+                        onChange={(event) => handleChange(() => {
+                            setPABXPassword(event.target.value);
+                        })}
+                        validation={validation.PABXPassword}
+                    />
+                </>);
+                break;
+            case 4:
+                // branchesAmount
+                // branchName,
+                // branchNumber,
+                inputs = (<>
                     <Input
                         id={branchesAmountId}
                         type="number"
@@ -978,53 +1089,39 @@ function Register(props) {
                         placeholder="Quantos deseja contratar"
                         name="branchesAmount"
                         value={branchesAmount}
-                        onChange={(event) => {
+                        onChange={(event) => handleChange(() => {
                             setBranchesAmount(event.target.value);
-                        }}
+                        })}
                         validation={validation.branchesAmount}
                     />
-                </>);
-                break;
-            case 4:
-                // branchName,
-                // branchNumber,
-                // branchPassword,
-                inputs = (<>
-                    <Input
-                        id={branchNameId}
-                        type="text"
-                        label="Primeiro Ramal"
-                        placeholder="Nome do Ramal"
-                        name="branchName"
-                        value={branchName}
-                        onChange={(event) => {
-                            setBranchName(event.target.value);
-                        }}
-                        validation={validation.branchName}
-                    />
-                    <Input
-                        id={branchNumberId}
-                        type="tel"
-                        label="Número do Ramal"
-                        placeholder="Número do primeiro Ramal"
-                        name="branchNumber"
-                        value={branchNumber}
-                        onChange={(event) => {
-                            setBranchNumber(event.target.value);
-                        }}
-                        validation={validation.branchNumber}
-                    />
-                    <Input
-                        id={branchPasswordId}
-                        type="password"
-                        label="Senha do Ramal"
-                        name="branchPassword"
-                        value={branchPassword}
-                        onChange={(event) => {
-                            setBranchPassword(event.target.value);
-                        }}
-                        validation={validation.branchPassword}
-                    />
+                    {
+                        branchesAmount > 0 && (<>
+                            <Input
+                                id={branchNameId}
+                                type="text"
+                                label="Primeiro Ramal"
+                                placeholder="Nome do Ramal"
+                                name="branchName"
+                                value={branchName}
+                                onChange={(event) => handleChange(() => {
+                                    setBranchName(event.target.value);
+                                })}
+                                validation={validation.branchName}
+                            />
+                            <Input
+                                id={branchNumberId}
+                                type="tel"
+                                label="Número do Ramal"
+                                placeholder="Número do primeiro Ramal"
+                                name="branchNumber"
+                                value={branchNumber}
+                                onChange={(event) => handleChange(() => {
+                                    setBranchNumber(event.target.value);
+                                })}
+                                validation={validation.branchNumber}
+                            />
+                        </>)
+                    }
                 </>);
                 break;
             default:
@@ -1036,24 +1133,11 @@ function Register(props) {
                         placeholder="Nome do responsável legal"
                         name="name"
                         value={name}
-                        onChange={(event) => {
+                        onChange={(event) => handleChange(() => {
                             setName(event.target.value);
-                        }}
+                        })}
                         validation={validation.name}
                     />
-                    <Select
-                        id={personTypeId}
-                        label="Tipo de pessoa"
-                        name="personType"
-                        value={personType}
-                        onChange={(event) => {
-                            setPersonType(event.target.value);
-                        }}
-                        validation={validation.name}
-                    >
-                        <option value="fisica">Pessoa Física</option>
-                        <option value="juridica">Pessoa Jurídica</option>
-                    </Select>
                     <Input
                         id={emailId}
                         type="email"
@@ -1066,19 +1150,17 @@ function Register(props) {
                         }}
                         validation={validation.email}
                     />
-                    <Radio
-                        id={phoneTypeId}
-                        label="Tipo de telefone"
-                        name="phoneType"
-                        value={phoneType}
-                        onChange={(event) => {
-                            setPhoneType(event.target.value);
-                        }}
-                        validation={validation.phoneType}
-                    >
-                        <option value="movel">Móvel</option>
-                        <option value="fixo">Fixo</option>
-                    </Radio>
+                    <Input
+                        id={passwordId}
+                        type="password"
+                        label="Senha"
+                        name="password"
+                        value={password}
+                        onChange={(event) => handleChange(() => {
+                            setPassword(event.target.value);
+                        })}
+                        validation={validation.password}
+                    />
                 </>);
         }
 
@@ -1118,12 +1200,15 @@ function Register(props) {
                                 className={step <= 3 ? "main-color-1" : "main-color-2"}
                                 onClick={(e) => {
                                     e.preventDefault();
+                                    cleanValidation();
 
-                                    if (step < 4) {
-                                        setStep(step + 1);
-                                    } else {
-                                        props.history.push("/auth");
-                                    }
+                                    if (validateStep()) {
+                                        if (step < 4) {
+                                            setStep(step + 1);
+                                        } else {
+                                            props.history.push("/auth");
+                                        }
+                                    }                                    
                                 }}
                             >
                                 {step <= 3 ? "Continuar" : "Cadastrar"}
