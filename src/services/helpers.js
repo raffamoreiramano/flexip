@@ -56,28 +56,6 @@ export function IPMask(value) {
 	return slices.join(".");
 }
 
-// function CPFValidation(strCPF) {
-// 	var Soma;
-// 	var Resto;
-// 	var i;
-// 	Soma = 0;
-// 	if (strCPF === "00000000000") return false;
-
-// 	for (i = 1; i <= 9; i++) Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
-// 	Resto = (Soma * 10) % 11;
-
-// 	if ((Resto === 10) || (Resto === 11)) Resto = 0;
-// 	if (Resto !== parseInt(strCPF.substring(9, 10))) return false;
-
-// 	Soma = 0;
-// 	for (i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (12 - i);
-// 	Resto = (Soma * 10) % 11;
-
-// 	if ((Resto === 10) || (Resto === 11)) Resto = 0;
-// 	if (Resto !== parseInt(strCPF.substring(10, 11))) return false;
-// 	return true;
-// }
-
 export function CPMask(value) {
 	const digits = value.replace(/\D/g, "");
 
@@ -112,7 +90,7 @@ export function validateName(value, min = 1, max = 64) {
 	if (!value.match(regex)) {
 		return false;
 	}
-	
+
 	return true;
 }
 
@@ -139,13 +117,13 @@ export function validateEmail(value) {
 }
 
 export function validatePassword(value) {
-	// permite requer entre 8 e 32 caracteres, e permite caracteres alfanuméricos e especiais (!@#$%&*\-_.)
+	// requer entre 8 e 32 caracteres, e permite caracteres alfanuméricos e especiais (!@#$%&*\-_.)
 	const regex = /^[\w!@#$%&*\-_.]{8,32}$/gi
 
 	if (!value.match(regex)) {
 		return false;
 	}
-	
+
 	return true;
 }
 
@@ -160,34 +138,113 @@ export function validatePhone(value) {
 	if (!value.match(regex)) {
 		return false;
 	}
-	
+
 	return digits ? true : false;
 }
 
 export function validateCPF(value) {
-	return value ? true : false;
+	let cpf = value.replace(/\D/g, "");
+
+	if (cpf == '') return false;
+
+	if (cpf.length != 11) return false;
+	
+	let invalidArray = [...Array(10).keys()];
+
+	invalidArray = invalidArray.map((item) => {
+		return Array(cpf.length + 1).join(item);
+	});
+
+	if (invalidArray.some((item) => item == cpf)) {
+		return false;
+	}
+
+	let sum = 0;
+
+	for (let i = 0; i < 9; i++) {
+		sum += parseInt(cpf.charAt(i)) * (10 - i);
+	}
+
+	let remainder = 11 - (sum % 11);
+
+	if (remainder == 10 || remainder == 11)	{
+		remainder = 0;
+	}
+
+	if (remainder != parseInt(cpf.charAt(9)))	{
+		return false;
+	}
+
+	sum = 0;
+
+	for (let i = 0; i < 10; i++) {
+		sum += parseInt(cpf.charAt(i)) * (11 - i);
+	}
+
+	remainder = 11 - (sum % 11);
+
+	if (remainder == 10 || remainder == 11)	{
+		remainder = 0;
+	}
+
+	if (remainder != parseInt(cpf.charAt(10))) {
+		return false;		
+	}
+	
+	return true;
 }
 
 export function validateCNPJ(value) {
-	return value ? true : false;
+	let cnpj = value.replace(/\D/g, "");
+
+	if (cnpj == '') return false;
+
+	if (cnpj.length != 14) return false;
+
+	let invalidArray = [...Array(10).keys()];
+
+	invalidArray = invalidArray.map((item) => {
+		return Array(cnpj.length + 1).join(item);
+	});
+
+	if (invalidArray.some((item) => item == cnpj)) {
+		return false;
+	}
+
+	let length = cnpj.length - 2
+	let number = cnpj.substring(0, length);
+	let digits = cnpj.substring(length);
+	let sum = 0;
+	let position = length - 7;
+
+	for (var i = length; i >= 1; i--) {
+		sum += number.charAt(length - i) * position--;
+
+		if (position < 2) {
+			position = 9;
+		}
+	}
+
+	let result = sum % 11 < 2 ? 0 : 11 - sum % 11;
+
+	if (result != digits.charAt(0)) return false;
+
+	length = length + 1;
+	number = cnpj.substring(0, length);
+	sum = 0;
+	position = length - 7;
+
+	for (i = length; i >= 1; i--) {
+		sum += number.charAt(length - i) * position--;
+
+		if (position < 2) {
+			position = 9;
+		}
+	}
+
+	result = sum % 11 < 2 ? 0 : 11 - sum % 11;
+
+	if (result != digits.charAt(1))	return false;
+
+	return true;
 }
-// const CNPJValidation = (event) => {
-// 	var cnpjsm = event.target.value;
-// 	var cnpj = cnpjsm.replace(/[^\d]+/g, '');
-// 	var i;
-// 	var valida = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-// 	var dig1 = 0;
-// 	var dig2 = 0;
-// 	var digito = cnpj.charAt(12) + cnpj.charAt(13);
-// 	for (i = 0; i < valida.length; i++) {
-// 		dig1 += (i > 0 ? (cnpj.charAt(i - 1) * valida[i]) : 0);
-// 		dig2 += cnpj.charAt(i) * valida[i];
-// 	}
-// 	dig1 = (((dig1 % 11) < 2) ? 0 : (11 - (dig1 % 11)));
-// 	dig2 = (((dig2 % 11) < 2) ? 0 : (11 - (dig2 % 11)));
-// 	if (((dig1 * 10) + dig2) !== parseInt(digito)) {
-// 		setVerificaCNPJ(true);
-// 	} else {
-// 		setVerificaCNPJ(false);
-// 	}
-// }

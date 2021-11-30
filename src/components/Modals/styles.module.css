@@ -1,0 +1,54 @@
+.dialog {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	display: contents;
+
+	isolation: isolate;
+}
+
+.dialog .card {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translateY(-50%) translateX(-50%);
+
+	min-width: 350px;
+	max-width: 450px;
+	margin: auto;
+	padding: 2em;
+	border-radius: 2em;
+
+	background: linear-gradient(to bottom, rgba(var(--bg-color-0), 0.25), rgba(var(--bg-color-1), 0.5));
+	backdrop-filter: blur(.5em);
+    outline: solid rgba(var(--bg-color-1), 1) thin;
+    box-shadow: 
+		0 25px 25px -15px rgba(0, 10, 20, 0.1);
+
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+.dialog[open=""]::before {
+	content: '';
+	top: 0;
+	left: 0;
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+
+	backdrop-filter: blur(1em);
+}
+
+.dialog:not([open=""]) {
+	display: none;
+}
+
+.dialog .card button {
+	margin-bottom: 0;
+	align-self: flex-end;
+}

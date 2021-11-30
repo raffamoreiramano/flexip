@@ -12,6 +12,7 @@ export default function Input({
     type,
     name,
     value = "",
+    autoComplete,
     onChange,
     validation = {
         isInvalid: false,
@@ -26,6 +27,7 @@ export default function Input({
             title: `${label}: ${value || '...'}`,
             name,
             value,
+            autoComplete: autoComplete ?? "off",
             onChange,
         };
 
@@ -208,7 +210,8 @@ export function Select({
                     }
                     <ul className={styles.optionsList}>
                         {
-                            options.map((option, index) => <li
+                            options.length > 0
+                            ? options.map((option, index) => <li
                                 key={index}
                                 children={option.props.children}
                                 title={option.props.children}
@@ -217,6 +220,14 @@ export function Select({
                                     setActive(false);
                                 }}
                             />)
+                            : <li
+                                className={styles.disabledOption}
+                                onClick={() => {
+                                    setActive(false);
+                                }}
+                            >
+                                Nenuma opção disponível...
+                            </li>
                         }
                     </ul>
                 </div>

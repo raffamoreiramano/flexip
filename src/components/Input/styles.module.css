@@ -173,6 +173,19 @@
 	color: white;
 }
 
+.formControl .select .optionsList li.disabledOption {
+	font-weight: normal;
+	cursor: default;
+
+	color: rgb(var(--placeholder-color));
+}
+
+.formControl .select .optionsList li.disabledOption:hover {
+	font-weight: normal;
+	background-color: rgb(var(--placeholder-color));
+	color: white;
+}
+
 .formControl .select .toggle:checked ~ .options {
 	top: calc(100% - 0.5em);
 	
@@ -238,30 +251,6 @@
 	text-transform: none;
 	font-weight: 500;
 }
-/* 
-.formControl .radio li .label::after {
-	content: '';
-	position: absolute;
-	top: calc(100% + 0.1em);
-	left: 0;
-
-	width: 0;
-	height: 0.1em;
-
-	border-radius: 1em;
-	background-color: rgb(var(--main-color-1));
-
-	opacity: 0;
-	pointer-events: none;
-	
-	transition: 200ms ease-in-out;
-}
-
-.formControl .radio .input:hover ~ .label::after {
-	opacity: 1;
-	width: 100%;
-}
-*/
 
 .formControl .radio .input:hover ~ .label {
 	opacity: 1;
