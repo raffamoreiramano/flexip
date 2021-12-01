@@ -24,7 +24,7 @@ export default function Alert({
             open={open}
             className={styles.dialog}
         >
-            <div className={styles.card}>
+            <div className={`${styles.card} glass`}>
                 {
                     children || (<>
                         <h3>{title || "Alerta!"}</h3>

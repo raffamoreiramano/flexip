@@ -147,7 +147,7 @@ function Login(props) {
 
                     let newValidation = initialValidation;
 
-                    fields.map((item) => {
+                    fields.forEach((item) => {
                         const message = errors[item];
 
                         newValidation[item] = {

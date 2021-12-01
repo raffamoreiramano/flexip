@@ -388,7 +388,7 @@ function Register(props) {
             return false;
         });
 
-        invalidFields.map((key, index) => {
+        invalidFields.forEach((key, index) => {
             const message = errors[fields[index]];
 
             newValidation[key] = {
