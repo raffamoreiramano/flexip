@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as UserActions from "../../../store/actions/user";
 
-import Input, { Select, Radio } from "../../../components/Input";
+import Input, { Select } from "../../../components/Input";
 
 import { 
     CPMask,
@@ -472,7 +472,6 @@ function Register(props) {
                     }
 
                     const { errors } = error.response.data;
-                    const fields = Object.keys(errors);
 
                     validateByResponse(errors);
                 }

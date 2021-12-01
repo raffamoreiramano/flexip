@@ -2,7 +2,7 @@
 	width: 350px;
 
 	display: grid;
-	grid-template-rows: repeat(auto, 3);
+	grid-template-rows: repeat(3, auto);
 	grid-template-columns: auto;
 	row-gap: 0.5em;
 
@@ -360,6 +360,10 @@
 	font-weight: normal;
 
 	color: rgba(var(--main-color-4), 1);
+
+	opacity: 0;
+	pointer-events: none;
+	user-select: none;
 }
 
 .formControl strong::after {
@@ -375,4 +379,10 @@
 
 .formControl.invalid label {
 	color: rgba(var(--main-color-4), 1);
+}
+
+.formControl.invalid strong {
+	opacity: 1;
+	pointer-events: all;
+	user-select: all;
 }

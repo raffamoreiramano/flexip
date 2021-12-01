@@ -16,9 +16,11 @@ import { API_GUARD } from "../../../services/env";
 
 import styles from './styles.module.css';
 import Alert from "../../../components/Modals/Alert";
+import Prompt from "../../../components/Modals/Prompt";
 
 function Login(props) {
     const [isAlertActive, setIsAlertActive] = useState(false);
+    const [isPromptActive, setIsPromptActive] = useState(false);
     const [alertContent, setAlertContent] = useState({
         title: "Ops!",
         message: "Parece que houve um erro... Por favor, tente mais tarde!"
@@ -26,6 +28,7 @@ function Login(props) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [passwordRecovery, setPasswordRecovery] = useState("");
 
     const emailId = useRef(_uniqueId(`email-id-`)).current;
     const passwordId = useRef(_uniqueId(`password-id-`)).current;
@@ -37,6 +40,10 @@ function Login(props) {
             message: ""
         },
         password: {
+            isInvalid: false,
+            message: ""
+        },
+        passwordRecovery: {
             isInvalid: false,
             message: ""
         },
@@ -121,6 +128,13 @@ function Login(props) {
                     title: title || content.title,
                     message: message || content.message,
                 }
+
+                if (error.response.status === 401) {
+                    content = {
+                        title: "Ops!",
+                        message: "Usuário e/ou senha inválidos...",
+                    }
+                }
                 
                 if (error.response.status === 422) {
                     content = {
@@ -144,6 +158,71 @@ function Login(props) {
 
                     setValidation(newValidation);
                 }
+            }
+
+            setAlertContent(content);
+            setIsAlertActive(true);
+        }
+    }
+
+    const recover = async () => {
+        props.setIsLoading(true);
+
+        const body = {
+            email: passwordRecovery.trim(),
+        }
+
+        try {
+            const response = await api.post(`/v1/${API_GUARD}/auth/recover`, body);
+
+            if (response.status && response.status === 200) {
+                props.setIsLoading(false);
+
+                const content = {
+                    title: "Envio realizado...",
+                    message: "Cheque sua caixa de entrada!"
+                }
+
+                setAlertContent(content);
+                setIsAlertActive(true);
+            }
+        } catch (error) {
+            props.setIsLoading(false);
+
+            let content = {
+                title: "Ops!",
+                message: "Parece que houve um erro... Por favor, tente mais tarde!",
+            }            
+
+            if (error.response) {
+                const { title, message } = error.response.data;
+
+                content = {
+                    title: title || content.title,
+                    message: message || content.message,
+                }
+
+                if (error.response.status === 401) {
+                    content = {
+                        title: "E-mail não encontrado!",
+                        message: "Não há nenhum usuário cadastrado com esse e-mail.",
+                    }
+                }
+                
+                if (error.response.status === 422) {
+                    content = {
+                        title: "E-mail inválido!",
+                        message: "Verifique se o e-mail foi digitado corretamente.",
+                    }
+                }
+
+                setValidation({
+                    ...validation,
+                    passwordRecovery: {
+                        isInvalid: true,
+                        message: "E-mail inválido!"
+                    }
+                })
             }
 
             setAlertContent(content);
@@ -188,7 +267,15 @@ function Login(props) {
                                 validation={validation.password}
                             />
                         </fieldset>
-                        <a href="/auth/esqueci-minha-senha">Esqueci minha senha!</a>
+                        <a href="/auth" onClick={(event) => {
+                            event.preventDefault();
+
+                            setPasswordRecovery(passwordRecovery || email);
+
+                            setIsPromptActive(true);
+                        }}>
+                            Esqueci minha senha!
+                        </a>
                         <button
                             className={`${styles.btnSignin} full-size`}
                             type="submit"
@@ -249,6 +336,47 @@ function Login(props) {
                 title={alertContent.title}
                 message={alertContent.message}
                 state={[isAlertActive, setIsAlertActive]}
+            />
+            <Prompt
+                title="Recuperação de senha"
+                message="Insira seu e-mail de cadastro"
+                state={[isPromptActive, setIsPromptActive]}
+                inputProps={{
+                    autoComplete: "off",
+                    type:"email",
+                    label: "E-mail",
+                    name: "passwordRecovery",
+                    value: passwordRecovery,
+                    validation: validation.passwordRecovery,
+                    onFocus: (event) => {
+                        setPasswordRecovery(event.target.value)
+                    },
+                    onChange: (event) => {
+                        setPasswordRecovery(event.target.value);
+
+                        setValidation({
+                            ...validation,
+                            passwordRecovery: {
+                                isInvalid: false,
+                                message: "",
+                            }
+                        });
+                    },
+                }}
+                onSubmit={() => {
+                    if (validateEmail(passwordRecovery)) {
+                        setIsPromptActive(false);
+                        recover();
+                    } else {
+                        setValidation({
+                            ...validation,
+                            passwordRecovery: {
+                                isInvalid: true,
+                                message: "E-mail inválido!",
+                            }
+                        });
+                    }
+                }}
             />
         </>
     );

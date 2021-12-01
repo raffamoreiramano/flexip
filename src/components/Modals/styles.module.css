@@ -52,3 +52,26 @@
 	margin-bottom: 0;
 	align-self: flex-end;
 }
+
+.dialog .card button ~ button {
+	margin-left: 1rem;
+}
+
+.dialog .card .actions {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
+.dialog .card .form {
+	margin: 1.5em auto 0 auto;
+	width: 100%;
+}
+
+.dialog .card .form > div {
+	width: 100%;
+}
+
+.dialog .card .form ~ .actions button {
+	margin-top: 0;
+}

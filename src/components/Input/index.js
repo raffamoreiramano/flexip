@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import _uniqueId from 'lodash/uniqueId';
 
 import { phoneMask } from '../../services/helpers';
 
@@ -14,6 +13,7 @@ export default function Input({
     value = "",
     autoComplete,
     onChange,
+    onFocus = () => {},
     validation = {
         isInvalid: false,
         message: "",
@@ -29,6 +29,7 @@ export default function Input({
             value,
             autoComplete: autoComplete ?? "off",
             onChange,
+            onFocus,
         };
 
         switch (type) {

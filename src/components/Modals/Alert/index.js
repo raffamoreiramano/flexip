@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import styles from '../styles.module.css'
 
@@ -7,7 +7,6 @@ export default function Alert({
     message,
     children,
     state,
-    active,
     onClose = () => {
         console.log('Dialog closed...')
     },
@@ -40,7 +39,6 @@ export default function Alert({
                     Fechar
                 </button>
             </div>
-            
         </dialog>
     );
 }
