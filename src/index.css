@@ -153,15 +153,48 @@ button, input, select {
 }
 
 .glass {
-    background: linear-gradient(to bottom, rgba(var(--bg-color-0), 0.75), rgba(var(--bg-color-1), 1));
+	--glass-bg-color-0: var(--bg-color-0);
+	--glass-bg-color-1: var(--bg-color-1);
+
+    background: linear-gradient(to bottom, rgba(var(--glass-bg-color-0), 0.75), rgba(var(--glass-bg-color-1), 1));
     outline: solid rgba(var(--bg-color-1), 1) thin;
     box-shadow: 
 		0 25px 25px -15px rgba(0, 10, 20, 0.1);
 }
 
+.glass.main-color-0 {
+	--glass-bg-color-0: var(--main-color-0);
+	--glass-bg-color-1: var(--main-color-0);
+}
+
+.glass.main-color-1 {
+	--glass-bg-color-0: var(--main-color-1);
+	--glass-bg-color-1: var(--main-color-1);
+}
+
+.glass.main-color-2 {
+	--glass-bg-color-0: var(--main-color-2);
+	--glass-bg-color-1: var(--main-color-2);
+}
+
+.glass.main-color-3 {
+	--glass-bg-color-0: var(--main-color-3);
+	--glass-bg-color-1: var(--main-color-3);
+}
+
+.glass.main-color-4 {
+	--glass-bg-color-0: var(--main-color-4);
+	--glass-bg-color-1: var(--main-color-4);
+}
+
+.glass.main-color-5 {
+	--glass-bg-color-0: var(--main-color-5);
+	--glass-bg-color-1: var(--main-color-5);
+}
+
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
 	.glass {
-		background: linear-gradient(to bottom, rgba(var(--bg-color-0), 0.25), rgba(var(--bg-color-1), 0.5));
+		background: linear-gradient(to bottom, rgba(var(--glass-bg-color-0), 0.25), rgba(var(--glass-bg-color-1), 0.5));
 		backdrop-filter: blur(.5em);
 	}
 }

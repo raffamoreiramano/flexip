@@ -102,7 +102,7 @@ export function validateEmail(value) {
 	const regex = new RegExp(
 		'^' +
 		characters + '+' +
-		special + '{4,}@' +
+		special + '{3,}@' +
 		characters + '+' +
 		punctuation + '*' +
 		characters + '+$',

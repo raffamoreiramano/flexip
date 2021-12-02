@@ -192,7 +192,6 @@
 	opacity: 1;
 	max-height: 12.5em;
 	
-	
 	transition: 200ms ease-in-out, max-height 0ms;
 }
 
@@ -202,7 +201,6 @@
 
 .formControl .select .options .searchbox {
 	padding-right: 1em;
-
 }
 
 .formControl .select .options .searchbox input {

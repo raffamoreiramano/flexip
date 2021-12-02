@@ -2,9 +2,11 @@ import React from "react";
 
 
 export default function Dashboard({ history }) {
-    return (
-        <div>
+    return (<>
+        <header>
             <h1>Dashboard</h1>
-        </div>
-    );
+        </header>
+        <main>
+        </main>
+    </>);
 }
