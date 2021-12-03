@@ -4,7 +4,7 @@ const INITIAL_STATE = {
 
 export default function navigation(state = INITIAL_STATE, action) {
   if (action.type === 'UPDATE_ACTIVE') {
-    return { ...state, path: action.path }
+    return { path: action.path }
   }
 
   return state;

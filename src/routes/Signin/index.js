@@ -3,7 +3,7 @@ import { Route } from "react-router-dom";
 
 import Login from "../../pages/Auth/Login";
 
-export default function Signin({ history }) {
+export default function Signin() {
 	return (
 		<>
 			<Route exact path="*" component={Login} />

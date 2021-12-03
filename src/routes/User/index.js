@@ -26,8 +26,14 @@ export default function User({ location, history }) {
 	]
 
 	useEffect(() => {
+		const path = location?.pathname;
+
 		dispatch(setIsLoading(true));
-		dispatch(setActiveLink(location.pathname));
+
+		if (path?.length > 1) {
+			dispatch(setActiveLink(path));
+		}
+
 		setTimeout(() => dispatch(setIsLoading(false)), 1);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location]);

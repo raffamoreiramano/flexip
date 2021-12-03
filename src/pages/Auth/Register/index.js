@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import _uniqueId from 'lodash/uniqueId';
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as UserActions from "../../../store/actions/user";
+import { useDispatch } from "react-redux";
+import { setIsLoading } from "../../../store/actions/user";
 
 import Input, { Select } from "../../../components/Input";
 
@@ -23,7 +22,9 @@ import styles from './styles.module.css';
 import Alert from "../../../components/Modals/Alert";
 
 
-function Register(props) {
+export default function Register(props) {
+    const dispatch = useDispatch();
+
     const formRef = useRef(null);
     const [step, setStep] = useState(1);
 
@@ -422,7 +423,7 @@ function Register(props) {
     }
 
     const register = async () => {
-        props.setIsLoading(true);
+        dispatch(setIsLoading(true));
 
         const body = {
             name: name.trim(),
@@ -443,14 +444,14 @@ function Register(props) {
             const response = await api.post(`/v1/${API_GUARD}/auth/register`, body);
 
             if (response.status && response.status === 200) {
-                props.setIsLoading(false);
+                dispatch(setIsLoading(false));
 
                 props.history.push('/auth');
 
                 console.log(response.data);
             }
         } catch(error) {
-            props.setIsLoading(false);
+            dispatch(setIsLoading(false));
 
             let content = {
                 title: "Ops!",
@@ -805,8 +806,3 @@ function Register(props) {
         </>
     );
 }
-
-const mapDispatchToProps = dispatch =>
-    bindActionCreators(UserActions, dispatch);
-
-export default connect(null, mapDispatchToProps)(Register);

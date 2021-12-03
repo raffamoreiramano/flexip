@@ -9,8 +9,8 @@ export function updateUser(name, email) {
 export function updatePABX(id, name) {
   return {
     type: 'UPDATE_PABX', // Sempre precisa dessa chave para o redux
-    pabxId: id,
-    pabxName: name
+    id,
+    name
   };
 }
 
