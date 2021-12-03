@@ -47,13 +47,9 @@ export default function Routes({ history }) {
 				} catch (error) {
 					localStorage.removeItem("access_token");
 					setAuthenticated(false);
-	
-					history.push("/");
 				}
 			} else {
 				setAuthenticated(false);
-	
-				history.push("/");
 			}
 
 			dispatch(setIsLoading(false));
