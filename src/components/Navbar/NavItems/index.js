@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { IoGrid } from 'react-icons/io5';
 import { FaWrench, FaDirections, FaDollarSign } from 'react-icons/fa';
 import { BsTelephoneFill } from 'react-icons/bs';
@@ -31,7 +29,7 @@ function navItem({
 
 const NavItems = [
     navItem({
-        name: "Home",
+        name: "Dashboard",
         key: "/admin/dashboard",
         icon: IoGrid,
     }),

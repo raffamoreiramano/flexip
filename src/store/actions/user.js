@@ -25,3 +25,10 @@ export function setIsLoading(loading) {
     };
   }
 }
+
+export function setActiveLink(path) {
+  return {
+    type: 'UPDATE_ACTIVE', // Sempre precisa dessa chave para o redux
+    path,
+  };
+}

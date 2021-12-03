@@ -1,8 +1,7 @@
 import React, { useState, useRef } from "react";
 import _uniqueId from 'lodash/uniqueId';
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as UserActions from "../../../store/actions/user";
+import { useDispatch } from "react-redux";
+import { setIsLoading, updatePABX, updateUser } from "../../../store/actions/user";
 
 import Input from "../../../components/Input";
 
@@ -18,7 +17,9 @@ import styles from './styles.module.css';
 import Alert from "../../../components/Modals/Alert";
 import Prompt from "../../../components/Modals/Prompt";
 
-function Login(props) {
+export default function Login(props) {
+    const dispatch = useDispatch();
+
     const [isAlertActive, setIsAlertActive] = useState(false);
     const [isPromptActive, setIsPromptActive] = useState(false);
     const [alertContent, setAlertContent] = useState({
@@ -90,7 +91,7 @@ function Login(props) {
     }
 
     const login = async () => {
-        props.setIsLoading(true);
+        dispatch(setIsLoading(true));
 
         const body = {
             email: email.trim(),
@@ -101,20 +102,20 @@ function Login(props) {
             const response = await api.post(`/v1/${API_GUARD}/auth/login`, body);
 
             if (response.status && response.status === 200) {
-                props.setIsLoading(false);
+                dispatch(setIsLoading(false));
 
                 const { access_token } = response.data.token;
                 const { user } = response.data;
                 const { company } = user;
                 const { pabx } = company;
 
-                props.updateUser(user.name, user.email);
-                props.updatePABX(pabx[0].id, pabx[0].name);
+                dispatch(updateUser(user.name, user.email));
+                dispatch(updatePABX(pabx[0].id, pabx[0].name));
                 localStorage.setItem("access_token", access_token);
                 props.history.push("/admin/dashboard");
             }
         } catch (error) {
-            props.setIsLoading(false);
+            dispatch(setIsLoading(false));
 
             let content = {
                 title: "Ops!",
@@ -166,7 +167,7 @@ function Login(props) {
     }
 
     const recover = async () => {
-        props.setIsLoading(true);
+        dispatch(setIsLoading(true));
 
         const body = {
             email: passwordRecovery.trim(),
@@ -176,7 +177,7 @@ function Login(props) {
             const response = await api.post(`/v1/${API_GUARD}/auth/recover`, body);
 
             if (response.status && response.status === 200) {
-                props.setIsLoading(false);
+                dispatch(setIsLoading(false));
 
                 const content = {
                     title: "Envio realizado...",
@@ -187,7 +188,7 @@ function Login(props) {
                 setIsAlertActive(true);
             }
         } catch (error) {
-            props.setIsLoading(false);
+            dispatch(setIsLoading(false));
 
             let content = {
                 title: "Ops!",
@@ -381,7 +382,3 @@ function Login(props) {
         </>
     );
 }
-
-const mapDispatchToProps = dispatch => bindActionCreators(UserActions, dispatch);
-
-export default connect(null, mapDispatchToProps)(Login);

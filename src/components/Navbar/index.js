@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
+import { useSelector } from 'react-redux';
 
 import Logo from '../../assets/images/logo/flexip.svg';
-import LogoIcon from '../../assets/images/logo/flexip-white.svg';
 
 import { IoCaretDown } from 'react-icons/io5';
 
@@ -10,8 +10,9 @@ import styles from "./styles.module.css";
 import NavItems from "./NavItems";
 
 export default function Navbar(props) {
+    const activeLink = useSelector(state => state.navigation);
+
     const navRef = useRef(null);
-    const [activeLink, setActiveLink] = useState(NavItems[0]);
 
     const toggleCollapse = () => {
         collapseItems();
@@ -39,7 +40,6 @@ export default function Navbar(props) {
     }
 
     const navigate = (navItem) => {
-        setActiveLink(navItem);
         props.history.push(navItem.key);
     }
 
@@ -66,10 +66,16 @@ export default function Navbar(props) {
                     if (item.nested) {                        
                         child = (
                             <div className={styles.expandableItem}>
-                                <a className={styles.expandLink} onClick={(event) => {
-                                    const exp = event.currentTarget.parentElement;
+                                <a 
+                                    href={`.${styles.navbarNestedList}`}
+                                    className={styles.expandLink}
+                                    onClick={(event) => {
+                                        event.preventDefault();
 
-                                    toggleExpandable(exp)}
+                                        const exp = event.currentTarget.parentElement;
+
+                                        toggleExpandable(exp)
+                                    }
                                 }>
                                     <i>{item.icon()}</i> <span className={styles.itemName}>{item.name}</span>
                                     <i className={styles.expandIcon}><IoCaretDown /></i>
@@ -84,14 +90,19 @@ export default function Navbar(props) {
                                     }
                                 >{
                                     item.nested.map((nestedItem, nestedIndex) => {
-                                        if (nestedItem == activeLink) {
+                                        if (nestedItem.key == activeLink.path) {
                                             liClassName = styles.activeLink;
                                         }
 
                                         return (
                                             <li key={nestedIndex} className={styles.navbarItem}>
                                                 <a 
-                                                    onClick={() => navigate(nestedItem)}
+                                                    href={`#${nestedItem.key}`}
+                                                    onClick={(event) => {
+                                                        event.preventDefault();
+
+                                                        navigate(nestedItem);
+                                                    }}
                                                 >
                                                     <span className={styles.itemName}>{nestedItem.name}</span>
                                                 </a>
@@ -101,13 +112,20 @@ export default function Navbar(props) {
                             </div>
                         );
                     } else {
-                        if (item == activeLink) {
+                        if (item.key == activeLink.path) {
                             liClassName = styles.activeLink;
                         }
 
                         child = (
                             <>
-                                <a onClick={() => navigate(item)}>
+                                <a 
+                                    href={`#${item.key}`}
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        
+                                        navigate(item);
+                                    }}
+                                >
                                     <i>{item.icon()}</i> <span className={styles.itemName}>{item.name}</span>
                                 </a>
                                 <div className={`${styles.tooltip} glass`}><span className={styles.itemName}>{item.name}</span></div>
