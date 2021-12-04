@@ -1,5 +1,5 @@
 .main {
-    height: 100vh !important;
+    height: 100vh;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -9,4 +9,12 @@
     display: inline-block !important;
     width: fit-content !important;
     text-align: center !important;
+}
+
+header ~ .main {
+    height: calc(100vh - 7.5rem);
+}
+
+header ~ .main h1 {
+    padding-bottom: 7.5rem;
 }

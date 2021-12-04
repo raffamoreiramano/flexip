@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setIsLoading, updatePABX, updateUser } from "../store/actions/user";
+import { setIsLoading, updatePABX, updateUser } from "../store/actions";
 
 import api from "../services/api";
 import { API_GUARD } from "../services/env";

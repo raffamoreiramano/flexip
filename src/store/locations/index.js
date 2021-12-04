@@ -3,7 +3,7 @@ import { FaWrench, FaDirections, FaDollarSign } from 'react-icons/fa';
 import { BsTelephoneFill } from 'react-icons/bs';
 import { RiBarChart2Fill } from 'react-icons/ri';
 
-function navItem({
+function location({
     icon,
     name = "", 
     key = "", 
@@ -27,70 +27,70 @@ function navItem({
     return obj;
 }
 
-const NavItems = [
-    navItem({
+const LOCATIONS = [
+    location({
         name: "Dashboard",
         key: "/admin/dashboard",
         icon: IoGrid,
     }),
-    navItem({
+    location({
         name: "Administração",
         key: "/admin",
         icon: FaWrench,
         nested: [
-            navItem({
+            location({
                 name: "Usuários",
                 key: "/admin/usuarios"
             }),
-            navItem({
+            location({
                 name: "Configurações Gerais",
                 key: "/admin/configuracoes-gerais"
             }),
         ]
     }),
-    navItem({
+    location({
         name: "PABX",
         key: "/admin/PABX",
         icon: BsTelephoneFill,
     }),
-    navItem({
+    location({
         name: "Recepção",
         key: "/admin/recepcao",
         icon: FaDirections,
         nested: [
-            navItem({
+            location({
                 name: "Status de Ramais",
                 key: "/admin/recepcao/status-de-ramais",
                 disabled: true,
             }),
-            navItem({
+            location({
                 name: "Chamadas Online",
                 key: "/admin/recepcao/chamadas-online",
                 disabled: true,
             }),
-            navItem({
+            location({
                 name: "Detalhes Fila",
                 key: "/admin/recepcao/detalhes-fila",
                 disabled: true,
             }),
         ]
     }),
-    navItem({
+    location({
         name: "Financeiro",
         key: "/admin/financeiro",
         icon: FaDollarSign,
         nested: [
-            navItem({
+            location({
                 name: "Extrato",
                 key: "/admin/financeiro/extrato"
             }),
-            navItem({
+            location({
                 name: "Inserir Créditos",
                 key: "/admin/financeiro/inserir-creditos"
             }),
         ]
     }),
-    navItem({
+    location({
         name: "Status",
         key: "/admin/status",
         icon: RiBarChart2Fill,
@@ -98,4 +98,4 @@ const NavItems = [
     })
 ];
 
-export default NavItems;
+export default LOCATIONS;

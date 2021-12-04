@@ -154,7 +154,7 @@
 }
 
 .navbar .navbarList > li:hover,
-.navbar .navbarList li.activeLink {
+.navbar .navbarList li.active {
     background: var(--hover-color);
 }
 
@@ -219,12 +219,12 @@
 }
 
 .navbar .navbarList > li:hover,
-.navbar .navbarList li.activeLink {
+.navbar .navbarList li.active {
     background: var(--hover-color);
 }
 
 .navbar .navbarList > li:hover *,
-.navbar .navbarList li.activeLink * {
+.navbar .navbarList li.active * {
     color: white;
 }
 

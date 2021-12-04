@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import _uniqueId from 'lodash/uniqueId';
 import { useDispatch } from "react-redux";
-import { setIsLoading } from "../../../store/actions/user";
+import { setIsLoading } from "../../../store/actions";
 
 import Input, { Select } from "../../../components/Input";
 

@@ -7,10 +7,10 @@ import { IoCaretDown } from 'react-icons/io5';
 
 import styles from "./styles.module.css";
 
-import NavItems from "./NavItems";
+import LOCATIONS from "../../store/locations";
 
 export default function Navbar(props) {
-    const activeLink = useSelector(state => state.navigation);
+    const location = useSelector(state => state.navigation);
 
     const navRef = useRef(null);
 
@@ -59,7 +59,7 @@ export default function Navbar(props) {
                 </button>
             </div>
             <ul className={styles.navbarList}>{
-                NavItems.map((item, index) => {
+                LOCATIONS.map((item, index) => {
                     let child;
                     let liClassName;
 
@@ -90,8 +90,8 @@ export default function Navbar(props) {
                                     }
                                 >{
                                     item.nested.map((nestedItem, nestedIndex) => {
-                                        if (nestedItem.key == activeLink.path) {
-                                            liClassName = styles.activeLink;
+                                        if (location.path.match(nestedItem.key)) {
+                                            liClassName = styles.active;
                                         }
 
                                         return (
@@ -112,8 +112,8 @@ export default function Navbar(props) {
                             </div>
                         );
                     } else {
-                        if (item.key == activeLink.path) {
-                            liClassName = styles.activeLink;
+                        if (location.path.match(item.key)) {
+                            liClassName = styles.active;
                         }
 
                         child = (

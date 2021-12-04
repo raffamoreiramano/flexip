@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setIsLoading } from "../../store/actions/user";
+import { setIsLoading } from "../../store/actions";
 
 import NotFound from "../Errors/NotFound";
 
