@@ -10,11 +10,9 @@ import { setIsLoading, updatePABX, updateUser } from "../store/actions";
 
 import validateToken from "../services/token";
 
-import NotFound from './Errors/NotFound';
 import Rendering from "./Errors/Rendering";
-
-import User from './User';
 import Auth from './Auth';
+import User from './User';
 
 export default function Routes() {
 	const [authenticated, setAuthenticated] = useState(false);
@@ -58,13 +56,12 @@ export default function Routes() {
 			return <Route exact path="*" component={User} />;
 		}
 
-		if (!authenticated) {
-			return (
-				<Switch>
-					<Route exact path="*" component={Auth} />
-				</Switch>
-			);
-		}
+		return (
+			<Switch>
+				<Route exact path="*" component={Auth} />
+			</Switch>
+		);
+		
 	}
 
 	return (

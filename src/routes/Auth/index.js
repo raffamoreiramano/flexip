@@ -3,8 +3,6 @@ import { Route, Switch } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setIsLoading } from "../../store/actions";
 
-import NotFound from "../Errors/NotFound";
-
 import Login from "../../pages/Auth/Login";
 import Register from "../../pages/Auth/Register";
 
