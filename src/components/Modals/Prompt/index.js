@@ -9,12 +9,8 @@ export default function Prompt({
     message,
     children,
     state,
-    onClose = () => {
-        console.log('Not confirmed...')
-    },
-    onSubmit = () => {
-        console.log('Confirmed...')
-    },
+    onClose = () => {},
+    onSubmit = () => {},
     inputProps = {
         autoComplete: undefined,
         type: undefined,

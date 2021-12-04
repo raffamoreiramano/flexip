@@ -7,9 +7,7 @@ export default function Alert({
     message,
     children,
     state,
-    onClose = () => {
-        console.log('Dialog closed...')
-    },
+    onClose = () => {},
 }) {
     const [open, setOpen] = state;
 

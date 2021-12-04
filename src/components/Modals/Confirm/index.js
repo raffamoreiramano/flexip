@@ -7,12 +7,8 @@ export default function Confirm({
     message,
     children,
     state,
-    onCancel = () => {
-        console.log('Not confirmed...')
-    },
-    onConfirm = () => {
-        console.log('Confirmed...')
-    },
+    onCancel = () => {},
+    onConfirm = () => {},
 }) {
     const [open, setOpen] = state;
 

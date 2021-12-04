@@ -22,9 +22,7 @@ export default function Auth(props) {
 			<Switch>
 				<Route exact path="/auth/cadastrar" component={Register} />
 				<Route exact path="/auth" component={Login} />
-				<Route exact path="/" component={Login} />
-
-				<Route component={NotFound} />
+				<Route path="/" component={Login} />
 			</Switch>
 		</>
 	);

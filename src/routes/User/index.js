@@ -3,10 +3,12 @@ import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
-import { setIsLoading, setLocation } from "../../store/actions";
+import { setIsLoading, setLocation, updateUser, updatePABX } from "../../store/actions";
 import LOCATIONS from "../../store/locations";
 
 import NotFound from "../Errors/NotFound";
+
+import validateToken from "../../services/token";
 
 import Dashboard from "../../pages/User/Dashboard";
 import Navbar from "../../components/Navbar";
@@ -30,10 +32,9 @@ export default function User({ location, history }) {
 	useEffect(() => {
 		const path = location?.pathname;
 
-		const updateLocation = () => {
+		const updateLocation = (path = "/admin/dashboard") => {
 			let location = {
-				path: "",
-				title: "",
+				path,
 			};
 
 			LOCATIONS.forEach(item => {
@@ -55,12 +56,19 @@ export default function User({ location, history }) {
 		}
 
 		dispatch(setIsLoading(true));
+			
+		validateToken().catch(error => {				
+			dispatch(updateUser());
+			dispatch(updatePABX());
+		}).finally(() => {
+			dispatch(setIsLoading(false));
+		});
 
 		if (path?.length > 1) {
+			updateLocation(path);
+		} else {
 			updateLocation();
 		}
-
-		setTimeout(() => dispatch(setIsLoading(false)), 1);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location]);
 

@@ -109,10 +109,10 @@ export default function Login(props) {
                 const { company } = user;
                 const { pabx } = company;
 
+                localStorage.setItem("access_token", access_token);
+
                 dispatch(updateUser(user.name, user.email));
                 dispatch(updatePABX(pabx[0].id, pabx[0].name));
-                localStorage.setItem("access_token", access_token);
-                props.history.push("/admin/dashboard");
             }
         } catch (error) {
             dispatch(setIsLoading(false));
