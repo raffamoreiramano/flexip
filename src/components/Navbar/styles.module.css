@@ -359,7 +359,7 @@
 @media screen and (max-width: 768px) {
     .navbar:not(.collapsed) {
         position: fixed;
-        background: linear-gradient(to bottom, rgba(var(--bg-color-0), 0.75), rgba(var(--bg-color-1), 1));
+        background: linear-gradient(to bottom, rgb(var(--bg-color-0)), rgb(var(--bg-color-1)));
         outline: solid rgba(var(--bg-color-1), 1) thin;
         box-shadow: 
             0 25px 25px -15px rgba(0, 10, 20, 0.1);
