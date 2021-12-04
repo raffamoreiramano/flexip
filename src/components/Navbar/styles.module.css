@@ -291,7 +291,7 @@
     font-weight: 600;
     white-space: nowrap;
     padding: 0.5em;
-	border-radius: 0.5em;
+	border-radius: 0.75em;
     transition: all 300ms ease;
 }
 
