@@ -27,10 +27,6 @@ export default function Routes() {
 		setValidated(false);
 		dispatch(setIsLoading(true));
 
-		if (initialRender.current) {
-			initialRender.current = false;
-		}
-
 		validateToken().then(({user, pabx}) => {
 			setAuthenticated(true);
 
@@ -43,7 +39,13 @@ export default function Routes() {
 		}).finally(() => {			
 			setValidated(true);
 			dispatch(setIsLoading(false));
+
+			if (initialRender.current) {
+				initialRender.current = false;
+			}
 		});
+
+		
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user]);
 

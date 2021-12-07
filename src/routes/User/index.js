@@ -52,6 +52,10 @@ export default function User({ location, history }) {
 				}
 			});
 
+			if (path === "/admin/dashboard") {
+				location.subtitle = "Bem-vindo!"
+			}
+
 			dispatch(setLocation(location));
 		}
 

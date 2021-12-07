@@ -1,3 +1,54 @@
 .header ~ main {
     height: calc(100vh - 7.5rem);
 }
+
+.header h1 {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: auto;
+    overflow: hidden;
+    overflow-wrap: normal;
+}
+
+.header aside {
+    margin: auto;
+    margin-right: 2rem;
+
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+
+    align-items: center;
+}
+
+.header aside p {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.header aside button {
+    all: unset;
+
+    font-size: 1.5rem;
+
+    box-sizing: border-box;
+    display: flex;
+    width: max-content;
+    
+    cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+    .header strong,
+    .header p {
+        display: none;
+    }
+
+    .header aside {
+        margin-right: 0;
+    }
+
+    .header aside button {
+        padding: 1rem;
+    }
+}

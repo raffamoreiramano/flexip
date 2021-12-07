@@ -111,6 +111,10 @@ export default function Login(props) {
 
                 localStorage.setItem("access_token", access_token);
 
+                if (props.location.pathname.match('auth')) {
+                    props.history.push("/");
+                }
+
                 dispatch(updateUser(user.name, user.email));
                 dispatch(updatePABX(pabx[0].id, pabx[0].name));
             }

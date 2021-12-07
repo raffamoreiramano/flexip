@@ -1,9 +1,13 @@
 import React, { useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-import Logo from '../../assets/images/logo/flexip.svg';
+import { updateUser, updatePABX } from '../../store/actions';
+
+import LightLogo from '../../assets/images/logo/flexip.svg';
+import DarkLogo  from '../../assets/images/logo/flexip-white.svg';
 
 import { IoCaretDown } from 'react-icons/io5';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
 import styles from "./styles.module.css";
 
@@ -11,6 +15,10 @@ import LOCATIONS from "../../store/locations";
 
 export default function Navbar(props) {
     const location = useSelector(state => state.navigation);
+    const theme = useSelector(state => state.theme);
+    const user = useSelector(state => state.user);
+
+    const dispatch = useDispatch();
 
     const navRef = useRef(null);
 
@@ -43,11 +51,20 @@ export default function Navbar(props) {
         props.history.push(navItem.key);
     }
 
+    const logout = () => {
+        localStorage.removeItem("access_token");
+
+        dispatch(updateUser());
+        dispatch(updatePABX());
+
+        props.history.push("/");
+    }
+
     return (
         <nav ref={navRef} className={`${styles.navbar} ${styles.collapsed}`}>
             <div className={styles.navbarHeader}>
                 <figure className={styles.logo}>
-                    <img src={Logo}
+                    <img src={theme.dark ? DarkLogo : LightLogo}
                         alt="Flex IP"
                     />
                 </figure>
@@ -138,6 +155,50 @@ export default function Navbar(props) {
                     );
                 })                    
             }</ul>
+            <section className={styles.profile}>
+                <figure>
+                    <img
+                        className={styles.profilePic}
+                        src="#"
+                        alt={`Foto de perfil: ${user.name}`}
+                        title={`Foto de perfil: ${user.name}`}
+                        onClick={toggleCollapse}
+                    />
+                </figure>
+                <h4 className={styles.profileName} title={user.name}>{user.name}</h4>
+                <div className={styles.profileMenu}>
+                    <input
+                        id="profile-menu-checkbox"
+                        type="checkbox"
+                        className={styles.profileMenuToggle}
+                    />
+                    <label htmlFor="profile-menu-checkbox" className={styles.profileMenuButton}>
+                        <BsThreeDotsVertical />
+                    </label>
+                    <ul className={`${styles.profileMenuOptions} glass`}>
+                        <li>
+                            <label
+                                htmlFor="profile-menu-checkbox"
+                                onClick={() => {
+                                    console.log('Suporte')
+                                }}
+                            >
+                                Suporte
+                            </label>
+                        </li>
+                        <li>
+                            <label
+                                htmlFor="profile-menu-checkbox"
+                                onClick={() => {
+                                    logout();
+                                }}
+                            >
+                                Sair
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </section>
         </nav>
     );
 }

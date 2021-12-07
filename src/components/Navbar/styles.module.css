@@ -12,17 +12,27 @@
     position: fixed;
     top: 0;
     left: 0;
+
     height: 100%;
     width: 20rem;
+
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+
     z-index: 999;
-    transition: width 300ms ease;
+
+    transition: width 300ms ease-in-out;
+}
+
+.navbar > * {
+    min-width: 0;
 }
 
 .navbar ~ main,
 .navbar ~ header {
     width: calc(100% - 20rem);
     float: right;
-    transition: width 300ms ease;
+    transition: width 300ms ease-in-out;
     padding: 0 2rem;
 }
 
@@ -51,7 +61,7 @@
     height: 7.5rem;
     padding: 0 1rem;
 
-    transition: 200ms ease;
+    transition: 200ms ease-in-out;
 }
 
 .navbar:not(.collapsed) .navbarHeader {
@@ -63,7 +73,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    transition: all 300ms 100ms ease;
+    transition: all 300ms 100ms ease-in-out;
 }
 
 .navbar .logo > img {
@@ -150,7 +160,7 @@
     position: relative;
     border-radius: 1rem;
 
-    transition: all 200ms ease;
+    transition: all 200ms ease-in-out;
 }
 
 .navbar .navbarList > li:hover,
@@ -175,7 +185,7 @@
 
 .navbar .navbarList li i,
 .navbar .navbarList li i * {
-    transition: 300ms ease;
+    transition: 300ms ease-in-out;
 }
 
 .navbar:not(.collapsed) .navbarList li i {
@@ -199,7 +209,7 @@
 .navbar .navbarList li .expandableItem .expandLink .expandIcon {
     font-size: 1.5rem;
     margin-left: auto;
-    transition: all 200ms ease;
+    transition: all 200ms ease-in-out;
 }
 
 .navbar .navbarList li .expandableItem.expanded .expandLink .expandIcon {
@@ -215,7 +225,7 @@
 .navbar .navbarList li .itemName {
     font-weight: 400;
     color: rgb(var(--text-color));
-    transition: all 300ms ease;
+    transition: all 300ms ease-in-out;
 }
 
 .navbar .navbarList > li:hover,
@@ -244,7 +254,7 @@
 
     opacity: 0;
     pointer-events: none;
-    transition: 200ms ease;
+    transition: 200ms ease-in-out;
 
     gap: .5em;
 }
@@ -292,7 +302,7 @@
     white-space: nowrap;
     padding: 0.5em;
 	border-radius: 0.75em;
-    transition: all 300ms ease;
+    transition: all 300ms ease-in-out;
 }
 
 .navbar .navbarList li .navbarNestedList a span {
@@ -318,7 +328,7 @@
     border-radius: 1rem;
     opacity: 0;
     pointer-events: none;
-    transition: all 300ms ease;
+    transition: all 300ms ease-in-out;
 }
 
 .navbar.collapsed .navbarList li .navbarNestedList::before {
@@ -356,6 +366,126 @@
     transition-delay: 0ms;
 }
 
+.navbar .profile {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+}
+
+.profile .profilePic {
+    display: block;
+
+    width: 4rem;
+    height: 4rem;
+
+    overflow: hidden;
+    color: transparent;
+
+    margin: 1rem .75rem 1rem 1.75rem;
+
+    border-radius: 1rem;
+
+    background-color: rgb(var(--text-color));
+    
+    transition: 200ms ease-in-out;
+}
+
+.profile .profileName {
+    font-size: 1rem;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: anywhere;
+    white-space: nowrap;
+}
+
+.navbar .profile .profileMenu {
+    position: relative;
+}
+
+.navbar .profile .profileMenuButton {
+    font-size: 1.5rem;
+
+    padding: .5rem;
+    margin-right: 2.25rem;
+
+    display: flex;
+
+    cursor: pointer;
+}
+
+.navbar .profile .profileMenuToggle {
+    display: none;
+}
+
+.navbar .profile .profileMenu .profileMenuOptions {
+    position: absolute;
+    bottom: 50%;
+    left: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 0.5rem;
+    border-radius: 1rem;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: all 300ms ease-in-out;
+
+    gap: .5rem;
+}
+
+.navbar .profile .profileMenu .profileMenuToggle {
+    position: relative;
+}
+
+.navbar .profile .profileMenu .profileMenuToggle:checked ~ .profileMenuOptions {
+    left: 50%;
+    bottom: 0;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.navbar .profile .profileMenu .profileMenuToggle:checked ~ .profileMenuButton::before {
+    content: '';
+    position: fixed;
+    width: 200vw;
+    height: 200vh;
+    transform: translateY(-50%) translateX(-50%);
+    cursor: default;
+}
+
+.navbar .profile .profileMenu .profileMenuOptions li label {
+    display: block;
+
+    padding: 0.5em;
+	border-radius: 0.75em;
+
+    text-decoration: none;
+    font-weight: 600;
+    color: rgb(var(--text-color));
+
+    white-space: nowrap;
+    transition: all 300ms ease-in-out;
+
+    cursor: pointer;
+}
+
+.navbar .profile .profileMenu .profileMenuOptions li label:hover {
+    color: white;
+    background: rgb(var(--main-color-2));
+}
+
+.navbar.collapsed .profileMenu {
+    visibility: hidden;
+}
+
+.navbar.collapsed .profile .profilePic {
+    margin: 1rem;
+}
+
 @media screen and (max-width: 768px) {
     .navbar:not(.collapsed) {
         position: fixed;
@@ -375,6 +505,7 @@
     .navbar ~ main,
     .navbar ~ header {
         width: calc(100% - 6rem);
+        padding: 0 1rem;
     }
 
     .navbar.collapsed ~ main,
