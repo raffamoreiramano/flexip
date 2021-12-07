@@ -292,7 +292,7 @@ export default function Login(props) {
                             onClick={(e) => {
                                 e.preventDefault();
 
-                                props.history.push("/auth");
+                                props.history.push("/auth/cadastrar");
                             }}
                         >
                             Cadastrar
