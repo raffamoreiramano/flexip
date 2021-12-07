@@ -163,6 +163,9 @@ export default function Navbar(props) {
                         alt={`Foto de perfil: ${user.name}`}
                         title={`Foto de perfil: ${user.name}`}
                         onClick={toggleCollapse}
+                        onError={(event)=> {
+                            event.currentTarget.classList.add(styles.notFound);
+                        }}
                     />
                 </figure>
                 <h4 className={styles.profileName} title={user.name}>{user.name}</h4>

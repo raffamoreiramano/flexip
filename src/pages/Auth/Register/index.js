@@ -756,7 +756,19 @@ export default function Register(props) {
                     <form ref={formRef} className={styles.form} autoComplete="off" onSubmit={(event) => event.preventDefault()}>
                         <fieldset>
                             {fieldset()}
-                            {step <= 1 && <a href="/auth" onClick={() => { props.history.push('/auth') }}>Já tenho conta!</a>}
+                            {
+                                step <= 1 &&
+                                <a 
+                                    href="/auth" 
+                                    onClick={(event) => { 
+                                        event.preventDefault();
+                                        
+                                        props.history.push('/auth') 
+                                    }}
+                                >
+                                    Já tenho conta!
+                                </a>
+                            }
                         </fieldset>
                         <div className={styles.actions}>
                             {
