@@ -21,12 +21,6 @@
 .dark-theme {
 	--bg-color-0: 10, 20, 25;
 	--bg-color-1: 30, 40, 45;
-	--main-color-0: 70, 90, 100;
-	--main-color-1: 35, 140, 175;
-	--main-color-2: 140, 175, 35;
-	--main-color-3: 175, 140, 40;
-	--main-color-4: 175, 35, 70;
-	--main-color-5: 140, 70, 140;
 	--text-color: 170, 180, 190;
 	--input-color: 100, 110, 120;
 }
@@ -39,11 +33,17 @@ html {
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
+
+	overflow: hidden;
 }
 
 body, #root {
 	width: 100vw;
 	min-height: 100vh !important;
+}
+
+#root {
+	overflow: auto;
 }
 
 *, * > * {
@@ -65,19 +65,19 @@ body, #root {
   box-sizing: border-box;
 }
 
-#root *::-webkit-scrollbar {
+body *::-webkit-scrollbar {
 	appearance: none;
 	width: 1.25rem;
 	background: transparent;
 }
 
-#root *::-webkit-scrollbar-track {
+body *::-webkit-scrollbar-track {
 	border-radius: 1rem;
 	background: transparent;
 	margin-block: 0.6rem;
 }
 
-#root *::-webkit-scrollbar-thumb {
+body *::-webkit-scrollbar-thumb {
 	border: 0.35em solid transparent;
 	border-radius: 1rem;
 	margin-block: 0.5rem;
@@ -86,7 +86,7 @@ body, #root {
 	background-color: rgba(var(--text-color), 0.25);
 }
 
-#root *:hover::-webkit-scrollbar-thumb {
+body *:hover::-webkit-scrollbar-thumb {
 	background-color: rgba(var(--text-color), 0.5);
 }
 

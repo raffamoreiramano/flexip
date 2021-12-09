@@ -2,6 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from 'react-redux';
 import { setIsLoading } from "../../../store/actions";
 
+import {
+    ResponsiveContainer,
+    ComposedChart,
+    Bar,
+    Area,
+    XAxis,
+    YAxis,
+    Tooltip,
+    CartesianGrid
+} from 'recharts';
+
 import api from "../../../services/api";
 import { API_GUARD } from "../../../services/env";
 
@@ -47,7 +58,7 @@ export default function Dashboard({ history }) {
 
                     if (response.status === 200) {
                         const { call_dispositions: callDispositionData } = response.data;
-                        const { 
+                        const {
                             total,
                             answered,
                             busy,
@@ -73,7 +84,7 @@ export default function Dashboard({ history }) {
 
         if (initialRender.current) {
             dispatch(setIsLoading(true));
-            
+
             fetchData().finally(() => {
                 dispatch(setIsLoading(false));
 
@@ -182,9 +193,106 @@ export default function Dashboard({ history }) {
         );
     }
 
+    const CallsPerHour = () => {
+        const data = [];
+
+        for (let num = 0; num < 24; num++) {
+            const now = new Date();
+            now.setHours(now.getDate() - num, 0, 0, 0);
+
+            data.push({
+                time: now.toLocaleTimeString('pt-BR').substr(0, 5),
+                value: parseInt((Math.random()) * 10) + 1,
+            });
+        }
+
+        const CustomTooltip = ({ active, payload, label }) => {
+            if (active) {
+                const value = payload[0].value;
+                const calls = value > 1 ? "chamadas" : "chamada";
+                return (
+                    <aside className={`${styles.customTooltip} glass`}>
+                        <h3>{`${value} ${calls}`}</h3>
+                        <time>{`${label}H`}</time>
+                    </aside>
+                );
+            }
+
+            return null;
+        };
+
+        return (
+            <article className={`${styles.callsPerHour} glass`}>
+                <h2>Ligações por hora</h2>
+                <div className={styles.chart}>
+                    <ResponsiveContainer>
+                        <ComposedChart data={data} throttleDelay={250}>
+                            <defs>
+                                <linearGradient id="area" x1="0" x2="0" y1="0" y2="1">
+                                    <stop offset="0%" stopColor="rgb(var(--main-color-1))" stopOpacity={0.05} />
+                                    <stop offset="75%" stopColor="rgb(var(--main-color-1))" stopOpacity={0} />
+                                </linearGradient>
+                                <linearGradient id="line" x1="0" x2="1" y1="0" y2="1">
+                                    <stop offset="0%" stopColor="rgb(var(--main-color-1))" stopOpacity={0.5} />
+                                    <stop offset="5%" stopColor="rgb(var(--main-color-1))" stopOpacity={0.75} />
+                                    <stop offset="100%" stopColor="rgb(var(--main-color-1))" stopOpacity={0.5} />
+                                </linearGradient>
+                                <linearGradient id="bar" x1="0" x2="0" y1="0" y2="1">
+                                    <stop offset="0%" stopColor="rgb(var(--input-color))" stopOpacity={0} />
+                                    <stop offset="20%" stopColor="rgb(var(--input-color))" stopOpacity={0} />
+                                    <stop offset="25%" stopColor="rgb(var(--input-color))" stopOpacity={1} />
+                                    <stop offset="100%" stopColor="rgb(var(--input-color))" stopOpacity={1} />
+                                </linearGradient>
+                            </defs>
+
+                            <Area
+                                type="monotone"
+                                dataKey="value"
+                                stroke="url(#line)"
+                                fill="url(#area)"
+                                strokeWidth={2}
+                                strokeLinejoin="round"
+                                strokeLinecap="round"
+                            />
+
+                            <Bar
+                                type="monotone"
+                                dataKey="value"
+                                fill="url(#bar)"
+                                barSize={2}
+                                from={0}
+                            />
+
+                            <XAxis
+                                dataKey="time"
+                                interval={0}
+                                tickLine={false}
+                                stroke="rgb(var(--text-color))"
+                            />
+
+                            <YAxis
+                                dataKey="value"
+                                tickLine={false}
+                                stroke="rgb(var(--text-color))"
+                            />
+
+                            <Tooltip
+                                content={<CustomTooltip />}
+                                animationEasing="ease-in-out"
+                                animationDuration={300}
+                            />
+
+                        </ComposedChart>
+                    </ResponsiveContainer>
+                </div>
+            </article>
+        )
+    }
+
     return (
-        <main>
+        <main className={styles.main}>
             <CallDisposition />
+            <CallsPerHour />
         </main>
     );
 }

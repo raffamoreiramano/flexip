@@ -1,9 +1,16 @@
-/* callDisposition */
+.main {
+    display: grid;
+    gap: 1.5rem;
+}
 
-.callDisposition {
+.callDisposition, 
+.callsPerHour {
     padding: 2rem;
     border-radius: 1rem;
 }
+
+
+/* CallDisposition */
 
 .callDisposition h2 {
     font-size: 2.5rem;
@@ -77,4 +84,37 @@
 }
 
 
-/*  */
+/* CallsPerHour */
+
+.callsPerHour {
+    padding-left: 0;
+}
+
+.callsPerHour .chart {
+    min-height: 20rem;
+    display: grid;
+}
+
+.callsPerHour > h2 {
+    font-size: 2.5rem;
+    padding: 0 2rem;
+}
+
+.customTooltip {
+    padding: 1rem;
+
+    border-radius: 1rem;
+    box-shadow: none;
+}
+
+.customTooltip h3 {
+    margin-bottom: 1rem;
+}
+
+.customTooltip time {
+    margin-bottom: 1rem;
+    text-align: end;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: .25rem;
+}

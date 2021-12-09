@@ -537,7 +537,7 @@ export default function Register(props) {
                     <Input
                         id={phoneNumberId}
                         type="tel"
-                        label="Telefone"
+                        label="Telefone para contato"
                         placeholder="Telefone fixo ou móvel"
                         name="phoneNumber"
                         value={phoneNumber}
