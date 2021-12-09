@@ -88,22 +88,28 @@ export default function Dashboard({ history }) {
         let children = (
             <>
                 <h2>Nenhuma chamada realizada</h2>
-                <section>
-                    <h3>Atendida</h3>
-                    <p>0 <small>100%</small></p>
-                </section>
-                <section>
-                    <h3>Ocupadas</h3>
-                    <p>0 <small>100%</small></p>
-                </section>
-                <section>
-                    <h3>Não atendidas</h3>
-                    <p>0 <small>100%</small></p>
-                </section>
-                <section>
-                    <h3>Sem resposta</h3>
-                    <p>0 <small>100%</small></p>
-                </section>
+                <div>
+                    <div>
+                        <section>
+                            <h3>Atendida</h3>
+                            <p>0 <small>100%</small></p>
+                        </section>
+                        <section>
+                            <h3>Ocupadas</h3>
+                            <p>0 <small>100%</small></p>
+                        </section>
+                    </div>
+                    <div>
+                        <section>
+                            <h3>Não atendidas</h3>
+                            <p>0 <small>100%</small></p>
+                        </section>
+                        <section>
+                            <h3>Sem resposta</h3>
+                            <p>0 <small>100%</small></p>
+                        </section>
+                    </div>
+                </div>
             </>
         );
 
@@ -111,22 +117,28 @@ export default function Dashboard({ history }) {
             children = (
                 <>
                     <h2><strong>1</strong> chamada realizada</h2>
-                    <section>
-                        <h3>Atendida</h3>
-                        <p>{answered.total} <small>{answered.percentage}%</small></p>
-                    </section>
-                    <section>
-                        <h3>Ocupada</h3>
-                        <p>{busy.total} <small>{busy.percentage}%</small></p>
-                    </section>
-                    <section>
-                        <h3>Não atendida</h3>
-                        <p>{notAnswered.total} <small>{notAnswered.percentage}%</small></p>
-                    </section>
-                    <section>
-                        <h3>Sem resposta</h3>
-                        <p>{noResponse.total} <small>{noResponse.percentage}%</small></p>
-                    </section>
+                    <div>
+                        <div>
+                            <section>
+                                <h3>Atendida</h3>
+                                <p>{answered.total} <small>{answered.percentage}%</small></p>
+                            </section>
+                            <section>
+                                <h3>Ocupada</h3>
+                                <p>{busy.total} <small>{busy.percentage}%</small></p>
+                            </section>
+                        </div>
+                        <div>
+                            <section>
+                                <h3>Não atendida</h3>
+                                <p>{notAnswered.total} <small>{notAnswered.percentage}%</small></p>
+                            </section>
+                            <section>
+                                <h3>Sem resposta</h3>
+                                <p>{noResponse.total} <small>{noResponse.percentage}%</small></p>
+                            </section>
+                        </div>
+                    </div>
                 </>
             );
         }
@@ -135,22 +147,28 @@ export default function Dashboard({ history }) {
             children = (
                 <>
                     <h2><strong>{total}</strong> chamadas realizadas</h2>
-                    <section>
-                        <h3>Atendidas</h3>
-                        <p>{answered.total} <small>{answered.percentage}%</small></p>
-                    </section>
-                    <section>
-                        <h3>Ocupadas</h3>
-                        <p>{busy.total} <small>{busy.percentage}%</small></p>
-                    </section>
-                    <section>
-                        <h3>Não atendidas</h3>
-                        <p>{notAnswered.total} <small>{notAnswered.percentage}%</small></p>
-                    </section>
-                    <section>
-                        <h3>Sem resposta</h3>
-                        <p>{noResponse.total} <small>{noResponse.percentage}%</small></p>
-                    </section>
+                    <div>
+                        <div>
+                            <section>
+                                <h3>Atendidas</h3>
+                                <p>{answered.total} <small>{answered.percentage}%</small></p>
+                            </section>
+                            <section>
+                                <h3>Ocupadas</h3>
+                                <p>{busy.total} <small>{busy.percentage}%</small></p>
+                            </section>
+                        </div>
+                        <div>
+                            <section>
+                                <h3>Não atendidas</h3>
+                                <p>{notAnswered.total} <small>{notAnswered.percentage}%</small></p>
+                            </section>
+                            <section>
+                                <h3>Sem resposta</h3>
+                                <p>{noResponse.total} <small>{noResponse.percentage}%</small></p>
+                            </section>
+                        </div>
+                    </div>
                 </>
             );
         }
