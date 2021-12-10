@@ -10,7 +10,7 @@ import {
     XAxis,
     YAxis,
     Tooltip,
-    CartesianGrid
+    CartesianGrid,
 } from 'recharts';
 
 import api from "../../../services/api";
@@ -46,6 +46,20 @@ export default function Dashboard({ history }) {
         },
     });
 
+    const callsPerHourInitialState = [];
+
+    for (let num = 0; num < 12; num++) {
+        const now = new Date();
+        now.setUTCHours(now.getUTCHours() - num, 0, 0, 0);
+
+        callsPerHourInitialState.push({
+            count: 0,
+            datetime: now.toLocaleString('pt-BR'),
+        });
+    }
+
+    const [callsPerHour, setCallsPerHour] = useState(callsPerHourInitialState.reverse());
+
     useEffect(() => {
         const fetchData = async () => {
             const access_token = localStorage.getItem("access_token");
@@ -57,24 +71,28 @@ export default function Dashboard({ history }) {
                     });
 
                     if (response.status === 200) {
-                        const { call_dispositions: callDispositionData } = response.data;
+                        const {
+                            call_dispositions: callDisposition,
+                            call_chart: callsPerHour,
+                        } = response.data;
+
                         const {
                             total,
                             answered,
                             busy,
                             no_answered: notAnswered,
                             no: noResponse
-                        } = callDispositionData;
+                        } = callDisposition;
 
-                        const newCallDisposition = {
+                        setCallDisposition({
                             total,
                             answered,
                             busy,
                             notAnswered,
                             noResponse,
-                        }
+                        });
 
-                        setCallDisposition(newCallDisposition);
+                        setCallsPerHour(callsPerHour.reverse());
                     }
                 } catch (error) {
                     console.log(error);
@@ -98,7 +116,7 @@ export default function Dashboard({ history }) {
         const { answered, busy, notAnswered, noResponse } = callDisposition;
         let children = (
             <>
-                <h2>Nenhuma chamada realizada</h2>
+                <h2>Nenhuma ligação realizada</h2>
                 <div>
                     <div>
                         <section>
@@ -127,7 +145,7 @@ export default function Dashboard({ history }) {
         if (total === 1) {
             children = (
                 <>
-                    <h2><strong>1</strong> chamada realizada</h2>
+                    <h2><strong>1</strong> ligação realizada</h2>
                     <div>
                         <div>
                             <section>
@@ -194,26 +212,17 @@ export default function Dashboard({ history }) {
     }
 
     const CallsPerHour = () => {
-        const data = [];
-
-        for (let num = 0; num < 24; num++) {
-            const now = new Date();
-            now.setHours(now.getDate() - num, 0, 0, 0);
-
-            data.push({
-                time: now.toLocaleTimeString('pt-BR').substr(0, 5),
-                value: parseInt((Math.random()) * 10) + 1,
-            });
-        }
+        const data = callsPerHour;
 
         const CustomTooltip = ({ active, payload, label }) => {
             if (active) {
-                const value = payload[0].value;
-                const calls = value > 1 ? "chamadas" : "chamada";
+                const count = payload?.at(0)?.payload?.count || 0;
+                const time = label.substr(11, 5);
+                const calls = count > 1 ? "chamadas" : "chamada";
                 return (
                     <aside className={`${styles.customTooltip} glass`}>
-                        <h3>{`${value} ${calls}`}</h3>
-                        <time>{`${label}H`}</time>
+                        <h3>{`${count} ${calls}`}</h3>
+                        <time>{`${time}H`}</time>
                     </aside>
                 );
             }
@@ -229,7 +238,7 @@ export default function Dashboard({ history }) {
                         <ComposedChart data={data} throttleDelay={250}>
                             <defs>
                                 <linearGradient id="area" x1="0" x2="0" y1="0" y2="1">
-                                    <stop offset="0%" stopColor="rgb(var(--main-color-1))" stopOpacity={0.05} />
+                                    <stop offset="0%" stopColor="rgb(var(--main-color-1))" stopOpacity={0.1} />
                                     <stop offset="75%" stopColor="rgb(var(--main-color-1))" stopOpacity={0} />
                                 </linearGradient>
                                 <linearGradient id="line" x1="0" x2="1" y1="0" y2="1">
@@ -247,33 +256,36 @@ export default function Dashboard({ history }) {
 
                             <Area
                                 type="monotone"
-                                dataKey="value"
+                                dataKey="count"
                                 stroke="url(#line)"
                                 fill="url(#area)"
                                 strokeWidth={2}
                                 strokeLinejoin="round"
                                 strokeLinecap="round"
+                                dot={{r: 2}}
+                                animationDuration={2500}
                             />
 
                             <Bar
                                 type="monotone"
-                                dataKey="value"
+                                dataKey="count"
                                 fill="url(#bar)"
                                 barSize={2}
                                 from={0}
                             />
 
                             <XAxis
-                                dataKey="time"
-                                interval={0}
-                                tickLine={false}
+                                dataKey="datetime"
                                 stroke="rgb(var(--text-color))"
+                                minTickGap={5}
+                                tickFormatter={(data) => data.substr(11, 5)}
                             />
 
                             <YAxis
-                                dataKey="value"
+                                dataKey="count"
                                 tickLine={false}
                                 stroke="rgb(var(--text-color))"
+                                allowDecimals={false}
                             />
 
                             <Tooltip
@@ -282,6 +294,13 @@ export default function Dashboard({ history }) {
                                 animationDuration={300}
                             />
 
+                            <CartesianGrid
+                                opacity={.5}
+                                vertical={false}
+                                stroke="rgb(var(--text-color))"
+                                strokeWidth={.25}
+                                strokeDasharray={[5, 5]}
+                            />
                         </ComposedChart>
                     </ResponsiveContainer>
                 </div>

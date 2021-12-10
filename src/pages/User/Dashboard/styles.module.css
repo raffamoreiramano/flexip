@@ -88,11 +88,17 @@
 
 .callsPerHour {
     padding-left: 0;
+    height: fit-content;
 }
 
 .callsPerHour .chart {
-    min-height: 20rem;
+    min-height: 16rem;
+    padding-right: 1rem;
     display: grid;
+}
+
+.callsPerHour .chart * {
+    min-width: 0;
 }
 
 .callsPerHour > h2 {
