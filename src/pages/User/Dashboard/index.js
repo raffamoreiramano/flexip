@@ -11,6 +11,10 @@ import {
     YAxis,
     Tooltip,
     CartesianGrid,
+    PieChart,
+    Pie,
+    Cell,
+    Legend,
 } from 'recharts';
 
 import api from "../../../services/api";
@@ -93,6 +97,9 @@ export default function Dashboard({ history }) {
                         });
 
                         setCallsPerHour(callsPerHour.reverse());
+
+                        // remover futuramente
+                        console.log(response.data);
                     }
                 } catch (error) {
                     console.log(error);
@@ -101,12 +108,11 @@ export default function Dashboard({ history }) {
         }
 
         if (initialRender.current) {
+            initialRender.current = false;
             dispatch(setIsLoading(true));
 
             fetchData().finally(() => {
                 dispatch(setIsLoading(false));
-
-                initialRender.current = false;
             });
         }
     });
@@ -305,13 +311,87 @@ export default function Dashboard({ history }) {
                     </ResponsiveContainer>
                 </div>
             </article>
-        )
+        );
     }
 
+    const CallsPerType = () => {
+        const data = [
+            {name: 'Fixo', value: 18},
+            {name: 'Móvel', value: 77},
+            {name: '0800', value: 2},
+            {name: 'Internacional', value: 3},
+        ];
+
+        const CustomTooltip = ({ active, payload, label }) => {
+            if (active) {
+                const value = payload?.at(0)?.value || 0;
+                const name = payload?.at(0)?.name || "";
+
+                return (
+                    <aside className={`${styles.customTooltip} glass`}>
+                        <h3>{`${name}: ${value}%`}</h3>
+                    </aside>
+                );
+            }
+
+            return null;
+        };
+
+        return (
+            <article className={`${styles.callsPerType} glass`}>
+                <h2>Ligações por tipo</h2>
+                <div className={styles.legend}>
+                    <ul>
+                        {
+                            data.map((item, index) => (
+                                <li key={index}>
+                                    <span>{item.name}</span>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </div>
+                <div className={styles.chart}>
+                    <ResponsiveContainer>
+                        <PieChart>
+                            <Pie
+                                data={data}
+                                dataKey="value"
+                                strokeWidth={0}
+                                strokeOpacity={0}
+                                startAngle={450}
+                                endAngle={90}
+                                innerRadius="50%"
+                            >
+                                {
+                                    data.map((item, index) => (
+                                        <Cell
+                                            key={`cell-${index}`}
+                                            fill={`rgb(var(--main-color-${index + 1}))`}
+                                            strokeWidth={0}
+                                            strokeOpacity={0}
+                                        />
+                                    ))
+                                }
+                            </Pie>
+                            <Tooltip
+                                content={<CustomTooltip />}
+                                animationEasing="ease-in-out"
+                                animationDuration={300}
+                            />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+            </article>
+        );
+    }
+
+    
     return (
         <main className={styles.main}>
             <CallDisposition />
             <CallsPerHour />
+            <CallsPerType />
         </main>
     );
 }

@@ -1,12 +1,16 @@
 .main {
     display: grid;
     gap: 1.5rem;
+    grid-template-columns: repeat(12, 1fr);
 }
 
 .callDisposition, 
-.callsPerHour {
+.callsPerHour,
+.callsPerType,
+.callsPerQueue {
     padding: 2rem;
     border-radius: 1rem;
+    grid-column: span 12;
 }
 
 
@@ -106,21 +110,111 @@
     padding: 0 2rem;
 }
 
-.customTooltip {
+.callsPerHour .customTooltip {
     padding: 1rem;
 
     border-radius: 1rem;
     box-shadow: none;
 }
 
-.customTooltip h3 {
+.callsPerHour .customTooltip h3 {
     margin-bottom: 1rem;
 }
 
-.customTooltip time {
+.callsPerHour .customTooltip time {
     margin-bottom: 1rem;
     text-align: end;
     display: inline-block;
     width: 100%;
     margin-bottom: .25rem;
 }
+
+
+/* CallsPerType */
+
+.callsPerType {
+    grid-column: span 7;
+    display: grid;
+    grid-template-rows: 4rem 12rem;
+    grid-template-columns: auto 20rem;
+}
+
+.callsPerType h2 {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+.callsPerType .legend {
+    grid-column: span 1;
+    grid-row: 2 / span 1;
+
+    display: flex;
+    align-items: center;
+}
+
+.callsPerType .chart {
+    grid-column: 2 / -1;
+    grid-row: 1 / -1;
+    min-height: 16rem;
+    min-width: 16rem;
+    display: grid;
+    max-width: 200px;
+    justify-self: end;
+}
+
+.callsPerType .chart svg {
+    transform: scale(1.25);
+}
+
+.callsPerType .chart * {
+    min-width: 0;
+}
+
+.callsPerType .legend ul li {
+    position: relative;
+}
+
+.callsPerType .legend ul li::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 2rem;
+    height: .5rem;
+    transform: translateY(-50%);
+}
+
+.callsPerType .legend ul li:first-child::before {
+    background-color: rgb(var(--main-color-1));
+}
+
+.callsPerType .legend ul li:nth-child(2)::before {
+    background-color: rgb(var(--main-color-2));
+}
+
+.callsPerType .legend ul li:nth-child(3)::before {
+    background-color: rgb(var(--main-color-3));
+}
+
+.callsPerType .legend ul li:last-child::before {
+    background-color: rgb(var(--main-color-4));
+}
+
+.callsPerType .legend ul li span {
+    color: rgb(var(--text-color));
+    margin-left: 2.5rem;
+}
+
+.callsPerType .customTooltip {
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: none;
+}
+
+.callsPerType .customTooltip h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+/* CallsPerQueue */
