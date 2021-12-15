@@ -172,6 +172,9 @@
 
 .callsPerType .legend ul li {
     position: relative;
+    margin-block: .25rem;
+
+    cursor: pointer;
 }
 
 .callsPerType .legend ul li::before {
@@ -182,22 +185,27 @@
     width: 2rem;
     height: .5rem;
     transform: translateY(-50%);
+    background-color: rgb(var(--marker-color));
 }
 
-.callsPerType .legend ul li:first-child::before {
-    background-color: rgb(var(--main-color-1));
+.callsPerType .legend ul li.active::before {
+    outline: solid .15rem rgba(var(--marker-color), .5);
 }
 
-.callsPerType .legend ul li:nth-child(2)::before {
-    background-color: rgb(var(--main-color-2));
+.callsPerType .legend ul li:first-child {
+    --marker-color: var(--main-color-1);
 }
 
-.callsPerType .legend ul li:nth-child(3)::before {
-    background-color: rgb(var(--main-color-3));
+.callsPerType .legend ul li:nth-child(2) {
+    --marker-color: var(--main-color-2);
 }
 
-.callsPerType .legend ul li:last-child::before {
-    background-color: rgb(var(--main-color-4));
+.callsPerType .legend ul li:nth-child(3) {
+    --marker-color: var(--main-color-3);
+}
+
+.callsPerType .legend ul li:last-child {
+    --marker-color: var(--main-color-4);
 }
 
 .callsPerType .legend ul li span {

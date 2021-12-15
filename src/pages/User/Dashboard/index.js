@@ -14,7 +14,7 @@ import {
     PieChart,
     Pie,
     Cell,
-    Legend,
+    Label,
 } from 'recharts';
 
 import api from "../../../services/api";
@@ -64,6 +64,13 @@ export default function Dashboard({ history }) {
 
     const [callsPerHour, setCallsPerHour] = useState(callsPerHourInitialState.reverse());
 
+    const [callsPerType, setCallsPerType] = useState([
+        {name: 'Fixo', value: 0},
+        {name: 'Móvel', value: 0},
+        {name: '0800', value: 0},
+        {name: 'Internacional', value: 0},
+    ]);
+
     useEffect(() => {
         const fetchData = async () => {
             const access_token = localStorage.getItem("access_token");
@@ -78,6 +85,7 @@ export default function Dashboard({ history }) {
                         const {
                             call_dispositions: callDisposition,
                             call_chart: callsPerHour,
+                            call_types_percentage: callTypesPercentage,
                         } = response.data;
 
                         const {
@@ -97,6 +105,15 @@ export default function Dashboard({ history }) {
                         });
 
                         setCallsPerHour(callsPerHour.reverse());
+
+                        const callsPerType = [
+                            {name: 'Fixo', value: callTypesPercentage["fixed_telephone_tariff"]},
+                            {name: 'Móvel', value: callTypesPercentage["mobile_telephone_tariff"]},
+                            {name: '0800', value: callTypesPercentage["0800_telephone_tariff"]},
+                            {name: 'Internacional', value: callTypesPercentage["international_telephone_tariff"]},
+                        ];
+
+                        setCallsPerType(callsPerType);
 
                         // remover futuramente
                         console.log(response.data);
@@ -314,37 +331,35 @@ export default function Dashboard({ history }) {
         );
     }
 
+    
+
     const CallsPerType = () => {
-        const data = [
-            {name: 'Fixo', value: 18},
-            {name: 'Móvel', value: 77},
-            {name: '0800', value: 2},
-            {name: 'Internacional', value: 3},
-        ];
+        const data = callsPerType;
 
-        const CustomTooltip = ({ active, payload, label }) => {
-            if (active) {
-                const value = payload?.at(0)?.value || 0;
-                const name = payload?.at(0)?.name || "";
-
-                return (
-                    <aside className={`${styles.customTooltip} glass`}>
-                        <h3>{`${name}: ${value}%`}</h3>
-                    </aside>
-                );
-            }
-
-            return null;
-        };
+        const [active, setActive] = useState({
+            value: '',
+            name: '',
+            fill: 'transparent',
+        });
 
         return (
             <article className={`${styles.callsPerType} glass`}>
-                <h2>Ligações por tipo</h2>
+                <h2>Tipos das ligações</h2>
                 <div className={styles.legend}>
                     <ul>
                         {
                             data.map((item, index) => (
-                                <li key={index}>
+                                <li
+                                    key={index}
+                                    onClick={() => {
+                                        setActive({
+                                            value: item.value,
+                                            name: item.name,
+                                            fill: `rgb(var(--main-color-${index + 1}))`,
+                                        });
+                                    }}
+                                    className={item.name === active.name ? styles.active : ''}
+                                >
                                     <span>{item.name}</span>
                                 </li>
                             ))
@@ -362,23 +377,25 @@ export default function Dashboard({ history }) {
                                 startAngle={450}
                                 endAngle={90}
                                 innerRadius="50%"
+                                onClick={(event) => {
+                                    setActive(event);
+                                }}
+                                labelLine
                             >
                                 {
                                     data.map((item, index) => (
                                         <Cell
                                             key={`cell-${index}`}
                                             fill={`rgb(var(--main-color-${index + 1}))`}
-                                            strokeWidth={0}
-                                            strokeOpacity={0}
+                                            stroke={`rgb(var(--main-color-${index + 1}))`}
+                                            strokeWidth={item.name === active.name ? 5 : 0}
+                                            strokeOpacity={1}
                                         />
                                     ))
                                 }
+
+                                <Label value={`${active.value}%`} position="center" fill={active.fill} fontWeight="bold" />
                             </Pie>
-                            <Tooltip
-                                content={<CustomTooltip />}
-                                animationEasing="ease-in-out"
-                                animationDuration={300}
-                            />
                         </PieChart>
                     </ResponsiveContainer>
                 </div>
@@ -386,7 +403,6 @@ export default function Dashboard({ history }) {
         );
     }
 
-    
     return (
         <main className={styles.main}>
             <CallDisposition />
