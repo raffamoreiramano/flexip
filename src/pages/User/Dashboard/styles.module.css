@@ -2,6 +2,7 @@
     display: grid;
     gap: 1.5rem;
     grid-template-columns: repeat(12, 1fr);
+    padding-bottom: 1.5rem !important;
 }
 
 .callDisposition, 
@@ -225,4 +226,203 @@
     font-weight: bold;
 }
 
+
 /* CallsPerQueue */
+
+.callsPerQueue {
+    grid-column: span 7;
+    display: grid;
+    grid-template-rows: 4rem 12rem;
+    grid-template-columns: auto 20rem;
+}
+
+.callsPerQueue h2 {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+.callsPerQueue .legend {
+    grid-column: span 1;
+    grid-row: 2 / span 1;
+
+    display: flex;
+    align-items: center;
+}
+
+.callsPerQueue .chart {
+    grid-column: 2 / -1;
+    grid-row: 1 / -1;
+    min-height: 16rem;
+    min-width: 16rem;
+    display: grid;
+    max-width: 200px;
+    justify-self: end;
+}
+
+.callsPerQueue .chart svg {
+    transform: scale(1.25);
+}
+
+.callsPerQueue .chart * {
+    min-width: 0;
+}
+
+.callsPerQueue .legend ul li {
+    position: relative;
+    margin-block: .25rem;
+
+    cursor: pointer;
+}
+
+.callsPerQueue .legend ul li::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 2rem;
+    height: .5rem;
+    transform: translateY(-50%);
+    background-color: rgb(var(--marker-color));
+}
+
+.callsPerQueue .legend ul li.active::before {
+    outline: solid .15rem rgba(var(--marker-color), .5);
+}
+
+.callsPerQueue .legend ul li:first-child {
+    --marker-color: var(--main-color-1);
+}
+
+.callsPerQueue .legend ul li:nth-child(2) {
+    --marker-color: var(--main-color-2);
+}
+
+.callsPerQueue .legend ul li:nth-child(3) {
+    --marker-color: var(--main-color-3);
+}
+
+.callsPerQueue .legend ul li:nth-child(4) {
+    --marker-color: var(--main-color-4);
+}
+
+.callsPerQueue .legend ul li:last-child {
+    --marker-color: var(--main-color-5);
+}
+
+.callsPerQueue .legend ul li span {
+    color: rgb(var(--text-color));
+    margin-left: 2.5rem;
+}
+
+.callsPerQueue .customTooltip {
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: none;
+}
+
+.callsPerQueue .customTooltip h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+
+/* Balance */
+
+.balance {
+    grid-column: 8 / span 5;
+    grid-row:  3 / span 2;
+
+    display: grid;
+    grid-template-rows: repeat(4, 10rem);
+    row-gap: 1.5rem;
+}
+
+.balance * {
+    min-width: 0;
+}
+
+.balance section {
+    --status-color: var(--main-color-2);
+
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    grid-template-columns: max-content auto;
+
+    padding: 2rem;
+    border-radius: 1rem;
+
+    background: 
+        linear-gradient(to bottom, rgba(var(--bg-color-0), .25), rgba(var(--bg-color-1), .5)),
+        rgb(var(--status-color));
+    background-blend-mode: luminosity;
+    outline-color: rgba(var(--status-color), .5);
+}
+
+.balance section[data-value="0"] {
+    --status-color: var(--main-color-3);
+}
+
+.balance section h3 {
+    grid-row: 1;
+    grid-column: span 1;
+}
+
+.balance section p {
+    grid-row: 2;
+    grid-column: span 1;
+
+    margin: 0;
+
+    font-size: 2.5rem;
+}
+
+.balance section * {
+    color: white;
+}
+
+.balance section i {
+    grid-column: 2;
+    grid-row: span 2;
+
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+
+    padding-block: .5rem;
+}
+
+.balance section i svg {
+    margin-left: auto;
+    height: 100%;
+    width: auto;
+}
+
+.balance table {
+    display: contents;
+}
+
+.balance tbody {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: max-content auto;
+    align-items: center;
+    row-gap: 1rem;
+    padding: 1rem 2rem;
+}
+
+.balance tbody[class="glass"] {
+    border-radius: 1rem;
+}
+
+.balance tr {
+    display: contents;
+}
+
+.balance td:last-child {
+    text-align: end;
+}
+
+.balance td {
+    font-size: 1.5rem;
+}

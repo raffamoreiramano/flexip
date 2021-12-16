@@ -1,3 +1,15 @@
+export function BRLMask(value) {
+	let digits = 0;
+
+	if (typeof value === 'number') {
+		digits = value / 10000;
+	} else {
+		digits = parseInt(value.replace(/\D/g, "")) / 10000;
+	}
+
+	return digits.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 4 });
+}
+
 export function phoneMask(value) {
 	if (value) {
 		const digits = value.replace(/\D/g, "");

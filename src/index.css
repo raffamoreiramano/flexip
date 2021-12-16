@@ -28,6 +28,7 @@
 html {
 	width: 100vw;
 	min-height: 100vh !important;
+	height: 100%;
 
 	background: linear-gradient(to left top, rgb(var(--bg-color-0)), rgb(var(--bg-color-1)));
 	background-size: cover;
@@ -40,6 +41,7 @@ html {
 body, #root {
 	width: 100vw;
 	min-height: 100vh !important;
+	height: 100%;
 }
 
 #root {

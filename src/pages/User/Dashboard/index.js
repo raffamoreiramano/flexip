@@ -16,11 +16,13 @@ import {
     Cell,
     Label,
 } from 'recharts';
+import { BsCurrencyDollar } from "react-icons/bs";
 
 import api from "../../../services/api";
 import { API_GUARD } from "../../../services/env";
 
 import styles from './styles.module.css';
+import { BRLMask } from "../../../services/helpers";
 
 export default function Dashboard({ history }) {
     const dispatch = useDispatch();
@@ -65,11 +67,21 @@ export default function Dashboard({ history }) {
     const [callsPerHour, setCallsPerHour] = useState(callsPerHourInitialState.reverse());
 
     const [callsPerType, setCallsPerType] = useState([
-        {name: 'Fixo', value: 0},
-        {name: 'Móvel', value: 0},
-        {name: '0800', value: 0},
-        {name: 'Internacional', value: 0},
+        { name: 'Fixo', value: 0 },
+        { name: 'Móvel', value: 0 },
+        { name: '0800', value: 0 },
+        { name: 'Internacional', value: 0 },
     ]);
+
+    const [balance, setBalance] = useState({
+        credits: 0,
+        activeCalls: 0,
+        chargedCalls: 0,
+        spokenMinutes: 0,
+        chargedMinutes: 0,
+        callValue: 0,
+        chargedValue: 0,
+    });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -86,6 +98,13 @@ export default function Dashboard({ history }) {
                             call_dispositions: callDisposition,
                             call_chart: callsPerHour,
                             call_types_percentage: callTypesPercentage,
+                            available_balance: credits,
+                            active_calls: activeCalls,
+                            number_of_calls_charged: chargedCalls,
+                            total_minutes: spokenMinutes,
+                            time_charged: chargedMinutes,
+                            medium_value_per_call: callValue,
+                            total_value: chargedValue,
                         } = response.data;
 
                         const {
@@ -107,13 +126,25 @@ export default function Dashboard({ history }) {
                         setCallsPerHour(callsPerHour.reverse());
 
                         const callsPerType = [
-                            {name: 'Fixo', value: callTypesPercentage["fixed_telephone_tariff"]},
-                            {name: 'Móvel', value: callTypesPercentage["mobile_telephone_tariff"]},
-                            {name: '0800', value: callTypesPercentage["0800_telephone_tariff"]},
-                            {name: 'Internacional', value: callTypesPercentage["international_telephone_tariff"]},
+                            { name: 'Fixo', value: callTypesPercentage["fixed_telephone_tariff"] },
+                            { name: 'Móvel', value: callTypesPercentage["mobile_telephone_tariff"] },
+                            { name: '0800', value: callTypesPercentage["0800_telephone_tariff"] },
+                            { name: 'Internacional', value: callTypesPercentage["international_telephone_tariff"] },
                         ];
 
                         setCallsPerType(callsPerType);
+
+                        const balance = {
+                            credits,
+                            activeCalls,
+                            chargedCalls,
+                            spokenMinutes,
+                            chargedMinutes,
+                            callValue,
+                            chargedValue,
+                        }
+
+                        setBalance(balance);
 
                         // remover futuramente
                         console.log(response.data);
@@ -285,7 +316,7 @@ export default function Dashboard({ history }) {
                                 strokeWidth={2}
                                 strokeLinejoin="round"
                                 strokeLinecap="round"
-                                dot={{r: 2}}
+                                dot={{ r: 2 }}
                                 animationDuration={2500}
                             />
 
@@ -330,8 +361,6 @@ export default function Dashboard({ history }) {
             </article>
         );
     }
-
-    
 
     const CallsPerType = () => {
         const data = callsPerType;
@@ -403,11 +432,133 @@ export default function Dashboard({ history }) {
         );
     }
 
+    const CallsPerQueue = () => {
+        const data = [
+            { name: 'Fila 1', value: 0 },
+            { name: 'Fila 2', value: 0 },
+            { name: 'Fila 3', value: 0 },
+            { name: 'Fila 4', value: 0 },
+            { name: 'Fila 5', value: 0 },
+        ];
+
+        const [active, setActive] = useState({
+            value: '',
+            name: '',
+            fill: 'transparent',
+        });
+
+        return (
+            <article className={`${styles.callsPerQueue} glass`}>
+                <h2>Ligações por fila</h2>
+                <div className={styles.legend}>
+                    <ul>
+                        {
+                            data.map((item, index) => (
+                                <li
+                                    key={index}
+                                    onClick={() => {
+                                        setActive({
+                                            value: item.value,
+                                            name: item.name,
+                                            fill: `rgb(var(--main-color-${index + 1}))`,
+                                        });
+                                    }}
+                                    className={item.name === active.name ? styles.active : ''}
+                                >
+                                    <span>{item.name}</span>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </div>
+                <div className={styles.chart}>
+                    <ResponsiveContainer>
+                        <PieChart>
+                            <Pie
+                                data={data}
+                                dataKey="value"
+                                strokeWidth={0}
+                                strokeOpacity={0}
+                                startAngle={450}
+                                endAngle={90}
+                                innerRadius="50%"
+                                onClick={(event) => {
+                                    setActive(event);
+                                }}
+                                labelLine
+                            >
+                                {
+                                    data.map((item, index) => (
+                                        <Cell
+                                            key={`cell-${index}`}
+                                            fill={`rgb(var(--main-color-${index + 1}))`}
+                                            stroke={`rgb(var(--main-color-${index + 1}))`}
+                                            strokeWidth={item.name === active.name ? 5 : 0}
+                                            strokeOpacity={1}
+                                        />
+                                    ))
+                                }
+
+                                <Label value={active.value} position="center" fill={active.fill} fontWeight="bold" />
+                            </Pie>
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+            </article>
+        );
+    }
+
+    const Balance = () => {
+        return (
+            <article className={styles.balance}>
+                <section className="glass" data-value={initialRender.current ? 1 : balance.credits}>
+                    <h3>Créditos</h3>
+                    <p>{BRLMask(balance.credits)}</p>
+                    <i><BsCurrencyDollar /></i>
+                </section>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Ligações ativas</td>
+                            <td>{balance.activeCalls}</td>
+                        </tr>
+                        <tr>
+                            <td>Ligações cobradas</td>
+                            <td>{balance.chargedCalls}</td>
+                        </tr>
+                    </tbody>
+                    <tbody className="glass">
+                        <tr>
+                            <td>Minutos falados</td>
+                            <td>{balance.spokenMinutes}</td>
+                        </tr>
+                        <tr>
+                            <td>Minutos cobrados</td>
+                            <td>{balance.chargedMinutes}</td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+                        <tr>
+                            <td>Valor médio por ligação</td>
+                            <td>{BRLMask(balance.callValue)}</td>
+                        </tr>
+                        <tr>
+                            <td>Valor gasto</td>
+                            <td>{BRLMask(balance.chargedValue)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </article>
+        );
+    }
+
     return (
         <main className={styles.main}>
             <CallDisposition />
             <CallsPerHour />
             <CallsPerType />
+            <CallsPerQueue />
+            <Balance />
         </main>
     );
 }
