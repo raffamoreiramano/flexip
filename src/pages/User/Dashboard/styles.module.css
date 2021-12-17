@@ -426,3 +426,84 @@
 .balance td {
     font-size: 1.5rem;
 }
+
+@media screen and (max-width: 768px) {
+    .callDisposition,
+    .callsPerHour,
+    .callsPerType,
+    .callsPerQueue,
+    .balance {
+        grid-column: span 12;
+        grid-row: span 1;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .callsPerType,
+    .callsPerQueue {
+        display: grid;
+        grid-template-rows: 4rem 16rem auto;
+        grid-template-columns: minmax(16rem, 1fr);
+        grid-template-areas: 
+            "title"
+            "chart"
+            "legend";
+    }
+
+    .callsPerType h2,
+    .callsPerQueue h2 {
+        grid-area: title;
+    }
+
+    .callsPerType .chart,
+    .callsPerQueue .chart {
+        grid-area: chart;
+        margin: auto;
+    }
+
+    .callsPerType .chart svg,
+    .callsPerQueue .chart svg {
+        transform: none;
+    }
+    
+    .callsPerType .legend,
+    .callsPerQueue .legend {
+        grid-area: legend;
+    }
+
+    .callsPerType .legend ul,
+    .callsPerQueue .legend ul {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .callsPerType .legend ul li span,
+    .callsPerQueue .legend ul li span {
+        margin: 0 1rem;
+    }
+
+    .callsPerType .legend ul li::before,
+    .callsPerQueue .legend ul li::before {
+        width: .5rem;
+    }
+    
+    .balance tbody {
+        padding: 0 1rem;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .balance tbody tr td {
+        overflow-wrap: break-word;
+    }
+
+    .balance tbody[class="glass"] {
+        background: none;
+        outline: none;
+        box-shadow: none;
+    }
+
+    .balance section i {
+        display: none;
+    }
+}
