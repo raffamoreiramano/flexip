@@ -416,3 +416,9 @@ button.transparent:hover {
 	background-color: rgba(var(--btn-color), 0.05);
 	box-shadow: 0 10px 25px -10px rgba(var(--bg-color-0));
 }
+
+@media screen and (max-width: 1600px) {
+	:root {
+		font-size: .75em;
+	}
+}
