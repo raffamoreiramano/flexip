@@ -24,10 +24,8 @@ import { API_GUARD } from "../../../services/env";
 import styles from './styles.module.css';
 import { BRLMask } from "../../../services/helpers";
 
-export default function Dashboard({ history }) {
+export default function Dashboard() {
     const dispatch = useDispatch();
-
-    const initialRender = useRef(true);
 
     const [callDisposition, setCallDisposition] = useState({
         total: {
@@ -82,6 +80,8 @@ export default function Dashboard({ history }) {
         callValue: 0,
         chargedValue: 0,
     });
+
+    const initialRender = useRef(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -519,31 +519,31 @@ export default function Dashboard({ history }) {
                 <table>
                     <tbody>
                         <tr>
-                            <td>Ligações ativas</td>
+                            <th>Ligações ativas</th>
                             <td>{balance.activeCalls}</td>
                         </tr>
                         <tr>
-                            <td>Ligações cobradas</td>
+                            <th>Ligações cobradas</th>
                             <td>{balance.chargedCalls}</td>
                         </tr>
                     </tbody>
                     <tbody className="glass">
                         <tr>
-                            <td>Minutos falados</td>
+                            <th>Minutos falados</th>
                             <td>{balance.spokenMinutes}</td>
                         </tr>
                         <tr>
-                            <td>Minutos cobrados</td>
+                            <th>Minutos cobrados</th>
                             <td>{balance.chargedMinutes}</td>
                         </tr>
                     </tbody>
                     <tbody>
                         <tr>
-                            <td>Valor médio por ligação</td>
+                            <th>Valor médio por ligação</th>
                             <td>{BRLMask(balance.callValue)}</td>
                         </tr>
                         <tr>
-                            <td>Valor gasto</td>
+                            <th>Valor gasto</th>
                             <td>{BRLMask(balance.chargedValue)}</td>
                         </tr>
                     </tbody>
