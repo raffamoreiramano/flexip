@@ -1,0 +1,88 @@
+.list {
+    all: unset;
+    appearance: none;
+    list-style: none;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(calc(calc(100vw - 20rem) / 3), auto));
+    gap: 1.5rem;
+}
+
+.pabx {
+    padding: 2rem;
+    padding-top: 1.5rem;
+    border-radius: 1rem;
+}
+
+.pabx h3 {
+    margin: 0;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+
+    font-weight: 500;
+}
+
+.pabx h3::after {
+    content: ': : :';
+    color: rgba(var(--text-color), .1);
+    font-size: 2rem;
+}
+
+.pabx table {
+    width: 100%;
+
+    display: grid;
+    gap: 1rem;
+
+    font-size: 1.25rem;
+}
+
+.pabx tbody {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: auto minmax(min-content, auto);
+    gap: .25rem .5rem;
+}
+
+.pabx tbody:last-of-type {
+    grid-template-rows: repeat(3, 1fr);
+    align-items: center;
+}
+
+.pabx tr {
+    display: contents;
+}
+
+.pabx th {
+    text-align: start;
+    font-weight: normal;
+}
+
+.pabx td {
+    text-align: end;
+    font-weight: 500;
+}
+
+@media screen and (max-width: 1024px) {
+    .list {
+        grid-template-columns: repeat(auto-fit, minmax(calc(calc(100vw - 20rem) / 2), auto));
+    }
+
+    .pabx table {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    .list {
+        grid-template-columns: repeat(auto-fill, minmax(28rem, auto));
+    }
+}

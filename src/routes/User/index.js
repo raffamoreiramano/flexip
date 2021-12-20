@@ -10,9 +10,11 @@ import NotFound from "../Errors/NotFound";
 
 import validateToken from "../../services/token";
 
-import Dashboard from "../../pages/User/Dashboard";
 import Navbar from "../../components/Navbar";
 import Header from "../../components/Header";
+
+import Dashboard from "../../pages/User/Dashboard";
+import PABX from "../../pages/User/PABX";
 
 
 export default function User({ location, history }) {
@@ -22,6 +24,11 @@ export default function User({ location, history }) {
 		{
 			path: "/admin/dashboard",
 			component: Dashboard,
+			exact: true
+		},
+		{
+			path: "/admin/PABX",
+			component: PABX,
 			exact: true
 		},
 		{
