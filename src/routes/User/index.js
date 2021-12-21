@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
-import { setIsLoading, setLocation, updateUser, updatePABX } from "../../store/actions";
+import { setLocation, updateUser, updatePABX } from "../../store/actions";
 import LOCATIONS from "../../store/locations";
 
 import NotFound from "../Errors/NotFound";
@@ -66,13 +66,10 @@ export default function User({ location, history }) {
 			dispatch(setLocation(location));
 		}
 
-		dispatch(setIsLoading(true));
 			
-		validateToken().catch(error => {				
+		validateToken().catch(() => {				
 			dispatch(updateUser());
 			dispatch(updatePABX());
-		}).finally(() => {
-			dispatch(setIsLoading(false));
 		});
 
 		if (path?.length > 1) {
