@@ -47,7 +47,7 @@ export default function PABX() {
         }
     });
 
-    const Render = () => {
+    const PABXList = () => {
         const [filteredList, setFilteredList] = useState(list);
 
         if (initialRender.current) {
@@ -162,7 +162,7 @@ export default function PABX() {
 
     return (
         <main className={styles.main}>
-            <Render />
+            <PABXList />
         </main>
     );
 }
