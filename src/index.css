@@ -11,6 +11,7 @@
 	--main-color-5: 140, 70, 140;
 	--text-color: 75, 85, 90;
 	--input-color: 205, 210, 220;
+	--input-shadow-color: 75, 85, 90;
 	--placeholder-color: 115, 115, 115;
 
 	font-size: 1em;
@@ -22,7 +23,8 @@
 	--bg-color-0: 10, 20, 25;
 	--bg-color-1: 30, 40, 45;
 	--text-color: 170, 180, 190;
-	--input-color: 100, 110, 120;
+	--input-color: 50, 60, 70;
+	--input-shadow-color: 5, 10, 20;
 }
 
 html {
@@ -228,7 +230,7 @@ input:-webkit-autofill {
 	color: rgb(var(--text-color));
     background: rgba(var(--input-color), 1);
 	box-shadow:
-		inset 0 10px 15px -10px rgba(var(--text-color), 0.25),
+		inset 0 10px 15px -10px rgba(var(--input-shadow-color), 0.25),
 		inset 0 0 0 2em rgba(var(--input-color), 0.75),
 		0 0 0 0.125em rgba(var(--border-color), var(--border-visibility));
 
@@ -307,7 +309,7 @@ select:focus {
 	border-bottom-left-radius: 0;
 
 	box-shadow:
-		inset 0 10px 15px -10px rgba(var(--text-color), 0.25),
+		inset 0 10px 15px -10px rgba(var(--input-shadow-color), 0.25),
 		inset 0 0 0 2em rgba(var(--input-color), 0.75),
 		inset 0 0.1vmin 0 0.1vmin rgba(var(--border-color), var(--border-visibility));
 }
@@ -381,21 +383,6 @@ button:hover {
 
 button:active {
 	filter: brightness(1.1);
-}
-
-@keyframes bounce {
-	0% {
-		transform: initial;
-	}
-	25% {
-		transform: scale(0.99) translateY(0.25vh);
-	}
-	50% {
-		transform: scale(0.99) translateY(-0.25vh);
-	}
-	100% {
-		transform: scale(1) translateY(0);
-	}
 }
 
 button:disabled {
