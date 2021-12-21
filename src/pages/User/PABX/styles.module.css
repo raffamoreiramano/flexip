@@ -1,3 +1,26 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.search label {
+    font-size: 1.5rem;
+}
+
+.search input {
+    border-radius: 5rem;
+    flex-grow: .25;
+    max-width: 24rem;
+}
+
 .list {
     all: unset;
     appearance: none;
@@ -15,9 +38,9 @@
 }
 
 .pabx h3 {
-    margin: 0;
+    margin-bottom: 1rem;
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     justify-content: space-between;
 
     font-weight: 500;
@@ -46,7 +69,7 @@
     gap: .25rem .5rem;
 }
 
-.pabx tbody:last-of-type {
+.pabx tbody.mainData {
     grid-template-rows: repeat(3, 1fr);
     align-items: center;
 }
@@ -65,7 +88,18 @@
     font-weight: 500;
 }
 
+.nopabx {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 100;
+}
+
 @media screen and (max-width: 1024px) {
+    .search input {
+        max-width: 100%;
+        flex-grow: .5;
+    }
+
     .list {
         grid-template-columns: repeat(auto-fit, minmax(calc(calc(100vw - 20rem) / 2), auto));
     }
@@ -78,6 +112,21 @@
 @media screen and (max-width: 768px) {
     .list {
         grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .search label {
+        display: none;
+    }
+
+    .search input {
+        width: calc(100vw - 8rem);
+        margin: auto;
+    }
+
+    .pabx table td {
+        font-size: 1.25rem;
     }
 }
 

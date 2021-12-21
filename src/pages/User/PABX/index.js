@@ -5,10 +5,14 @@ import { setIsLoading } from "../../../store/actions";
 import api from "../../../services/api";
 import { API_GUARD } from "../../../services/env";
 
+import { phoneMask } from '../../../services/helpers';
+
 import styles from './styles.module.css';
 
 export default function PABX() {
     const dispatch = useDispatch();
+
+    const [list, setList] = useState([]);
 
     const initialRender = useRef(true);
 
@@ -23,9 +27,9 @@ export default function PABX() {
                     });
 
                     if (response.status === 200) {
+                        const { pabxList } = response.data;
 
-                        // remover futuramente
-                        console.log(response.data);
+                        setList(pabxList);
                     }
                 } catch (error) {
                     console.log(error);
@@ -43,98 +47,122 @@ export default function PABX() {
         }
     });
 
+    const Render = () => {
+        const [filteredList, setFilteredList] = useState(list);
+
+        if (initialRender.current) {
+            return <p className={styles.nopabx}>Carregando. . .</p>
+        }
+        
+        if (list.length === 0) {
+            return <p className={styles.nopabx}>Nenhum PABX encontrado!</p>
+        }
+
+        const onSearch = (event) => {
+            const search = event.target.value.toLocaleLowerCase();
+            const digits = search.replace(/\D/g, "");
+    
+            if (search.length > 0) {
+                const filtered = list.filter(pabx => {
+                    if (pabx.name.match(search)) {
+                        return pabx;
+                    }
+                    
+                    if (pabx.code.toString().match(search)) {
+                        return pabx;
+                    }
+                    
+                    if (pabx.company.name.match(search)) {
+                        return pabx;
+                    }
+                    
+                    if (pabx.company.code.toString().match(search)) {
+                        return pabx;
+                    }
+                    
+                    if (digits.length > 0 && (pabx.telephone.ddd + pabx.telephone.number).match(digits)) {
+                        return pabx;
+                    }
+        
+                    if (search === "bloqueado" && !!pabx.blocked) {
+                        return pabx;
+                    }
+        
+                    if (search === "desbloqueado" && !!!pabx.blocked) {
+                        return pabx;
+                    }
+        
+                    return false;
+                });
+        
+                setFilteredList(filtered);
+            } else if (filteredList !== list) {
+                setFilteredList(list);
+            }
+        }
+
+        return (
+            <>
+                <div className={styles.search}>
+                    <label htmlFor="search">Pesquisar</label>
+                    <input
+                        id="search"
+                        type="text"
+                        placeholder="Nome, empresa, código, telefone ou status..."
+                        title="Pesquisa por nome, código, telefone ou status do PABX ou por nome ou código da empresa..."
+                        onChange={onSearch}
+                    />
+                </div>
+                {
+                    filteredList.length > 0
+                    ? <ul className={styles.list}>
+                        {
+                            filteredList.map((pabx, index) => (
+                                <li key={index}>
+                                    <article className={`${styles.pabx} glass`}>
+                                        <h3>{pabx.name}</h3>
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <th>Empresa:</th>
+                                                    <td>{pabx.company.name} ({pabx.company.code})</td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody className={styles.mainData}>
+                                                <tr>
+                                                    <th>Número padrão:</th>
+                                                    <td>{phoneMask(pabx.telephone.ddd + pabx.telephone.number)}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Ramais contratados:</th>
+                                                    <td>{pabx.max_branches}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Ramais em uso:</th>
+                                                    <td>{pabx.branches_in_use}</td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody>
+                                                <tr>
+                                                    <th>Status:</th>
+                                                    <td>{!!pabx.blocked ? "Bloqueado" : "Desbloqueado"}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </article>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                    : <p className={styles.nopabx}>. . .</p>
+                }
+            </>
+        );
+    }
+
     return (
         <main className={styles.main}>
-            <ul className={styles.list}>
-                <li>
-                    <article className={`${styles.pabx} glass`}>
-                        <h3>
-                            PABX-1
-                        </h3>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th>Empresa:</th>
-                                    <td>WFG Soluctions (1001)</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <th>Número padrão:</th>
-                                    <td>(15) 98765-4321</td>
-                                </tr>
-                                <tr>
-                                    <th>Ramais contratados:</th>
-                                    <td>6</td>
-                                </tr>
-                                <tr>
-                                    <th>Ramais em uso:</th>
-                                    <td>5</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </article>
-                </li>
-                <li>
-                    <article className={`${styles.pabx} glass`}>
-                        <h3>
-                            PABX-1
-                        </h3>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th>Empresa:</th>
-                                    <td>WFG Soluctions (1001)</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <th>Número padrão:</th>
-                                    <td>(15) 98765-4321</td>
-                                </tr>
-                                <tr>
-                                    <th>Ramais contratados:</th>
-                                    <td>6</td>
-                                </tr>
-                                <tr>
-                                    <th>Ramais em uso:</th>
-                                    <td>5</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </article>
-                </li>
-                <li>
-                    <article className={`${styles.pabx} glass`}>
-                        <h3>
-                            PABX-1
-                        </h3>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th>Empresa:</th>
-                                    <td>WFG Soluctions (1001)</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <th>Número padrão:</th>
-                                    <td>(15) 98765-4321</td>
-                                </tr>
-                                <tr>
-                                    <th>Ramais contratados:</th>
-                                    <td>6</td>
-                                </tr>
-                                <tr>
-                                    <th>Ramais em uso:</th>
-                                    <td>5</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </article>
-                </li>
-            </ul>
-
+            <Render />
         </main>
     );
 }
