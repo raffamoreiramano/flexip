@@ -14,7 +14,8 @@ import Navbar from "../../components/Navbar";
 import Header from "../../components/Header";
 
 import Dashboard from "../../pages/User/Dashboard";
-import PABX from "../../pages/User/PABX";
+import PABXList from "../../pages/User/PABX";
+import PABX from "../../pages/User/PABX/PABX";
 
 
 export default function User({ location, history }) {
@@ -28,6 +29,11 @@ export default function User({ location, history }) {
 		},
 		{
 			path: "/admin/PABX",
+			component: PABXList,
+			exact: true
+		},
+		{
+			path: "/admin/PABX/:PABX",
 			component: PABX,
 			exact: true
 		},

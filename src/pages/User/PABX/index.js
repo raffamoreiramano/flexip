@@ -9,7 +9,7 @@ import { phoneMask } from '../../../services/helpers';
 
 import styles from './styles.module.css';
 
-export default function PABX() {
+export default function PABXList({ history }) {
     const dispatch = useDispatch();
 
     const [list, setList] = useState([]);
@@ -47,15 +47,15 @@ export default function PABX() {
         }
     });
 
-    const PABXList = () => {
+    const List = () => {
         const [filteredList, setFilteredList] = useState(list);
 
         if (initialRender.current) {
-            return <p className={styles.nopabx}>Carregando. . .</p>
+            return <p className={styles.nodata}>Carregando. . .</p>
         }
         
         if (list.length === 0) {
-            return <p className={styles.nopabx}>Nenhum PABX encontrado!</p>
+            return <p className={styles.nodata}>Nenhum PABX encontrado!</p>
         }
 
         const onSearch = (event) => {
@@ -119,7 +119,12 @@ export default function PABX() {
                         {
                             filteredList.map((pabx, index) => (
                                 <li key={index}>
-                                    <article className={`${styles.pabx} glass`}>
+                                    <article
+                                        className={`${styles.pabx} glass`}
+                                        onClick={() => {
+                                            history.push(`/admin/PABX/${pabx.id}`);
+                                        }}
+                                    >
                                         <h3>{pabx.name}</h3>
                                         <table>
                                             <tbody>
@@ -154,7 +159,7 @@ export default function PABX() {
                             ))
                         }
                     </ul>
-                    : <p className={styles.nopabx}>. . .</p>
+                    : <p className={styles.nodata}>. . .</p>
                 }
             </>
         );
@@ -162,7 +167,7 @@ export default function PABX() {
 
     return (
         <main className={styles.main}>
-            <PABXList />
+            <List />
         </main>
     );
 }
