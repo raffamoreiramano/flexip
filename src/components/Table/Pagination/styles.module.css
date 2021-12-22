@@ -1,0 +1,26 @@
+.pagination {
+    width: max-content;
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    gap: 1rem;
+}
+
+.pagination label {
+    margin-bottom: .25rem;
+}
+
+.pagination .buttons {
+    display: inline-flex;
+    gap: .25rem;
+}
+
+.buttons button {
+    all: unset;
+    display: inline-flex;
+    font-size: 2rem;
+}
+
+.buttons button:disabled {
+    opacity: .5;
+}
