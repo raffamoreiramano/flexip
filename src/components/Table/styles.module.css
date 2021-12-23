@@ -5,6 +5,10 @@
     table-layout: auto;
 }
 
+.table tbody tr:nth-child(2n) {
+    background: linear-gradient(to left, rgb(var(--bg-color-0)), transparent);
+}
+
 .table tbody tr:nth-child(2n+1) {
     background: linear-gradient(to right, rgb(var(--bg-color-1)), transparent);
 }
@@ -24,12 +28,14 @@
 }
 
 .table tbody tr td:first-of-type {
-    border-radius: 1rem 0 0 1rem;
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
     padding-left: 2rem;
 }
 
 .table tbody tr td:last-of-type {
-    border-radius: 0 1rem 1rem 0;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
     padding-right: 2rem;
 }
 
