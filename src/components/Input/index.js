@@ -271,7 +271,7 @@ export function Radio({
                             type="radio"
                             name={name}
                             value={option.props.value}
-                            checked={option.props.value === value ? true : false}
+                            checked={option.props.value.toString() === value.toString() ? true : false}
                             disabled={option.props.disabled || false}
                             onChange={onChange}
                         />

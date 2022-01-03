@@ -25,13 +25,13 @@ export default function Table({
                     <>
                         <colgroup>
                             {
-                                thead.map(col => (<col width={col.width} />))
+                                thead.map((col, index)=> (<col key={index} width={col.width} />))
                             }
                         </colgroup>
                         <thead>
                             <tr>
                                 {
-                                    thead.map(th => (<th align={th.align}>{th.heading}</th>))
+                                    thead.map((th, index) => (<th key={index} align={th.align}>{th.heading}</th>))
                                 }
                             </tr>
                         </thead>

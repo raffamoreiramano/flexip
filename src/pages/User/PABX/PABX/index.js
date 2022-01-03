@@ -6,7 +6,7 @@ import api from "../../../../services/api";
 import { API_GUARD } from "../../../../services/env";
 
 import styles from './styles.module.css';
-import Branches from "../../../../components/PABX/Branches";
+import Branches from "../Components/Branches";
 
 export default function PABX(props) {
     const { match } = props;
@@ -37,6 +37,8 @@ export default function PABX(props) {
                         console.log(response.data);
                     }
                 } catch (error) {
+                    setPABX('');
+
                     console.log(error);
                 }
             }
@@ -57,20 +59,19 @@ export default function PABX(props) {
             return <p className={styles.nodata}>Carregando. . .</p>
         }
         
-        if (!PABX) {
-            return <p className={styles.nodata}>PABX não encontrado!</p>
+        if (PABX) {
+            const properties = {
+                ...props,
+                PABX
+            };
+            return (
+                <>
+                    <Branches props={properties}/>
+                </>
+            );
         }
 
-        const properties = {
-            ...props,
-            PABX
-        };
-
-        return (
-            <>
-                <Branches props={properties}/>
-            </>
-        );
+        return <p className={styles.nodata}>PABX não encontrado!</p>        
     }
 
     return (

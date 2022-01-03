@@ -1,26 +1,31 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from 'react-redux';
-import { setIsLoading } from "../../../store/actions";
+import { setIsLoading } from "../../../../../store/actions";
 
-import api from "../../../services/api";
-import { API_GUARD } from "../../../services/env";
+import api from "../../../../../services/api";
+import { API_GUARD } from "../../../../../services/env";
 
-import { phoneMask } from '../../../services/helpers';
+import { phoneMask } from '../../../../../services/helpers';
 
 import { IoMdArrowBack, IoMdRefresh, IoIosArrowUp, IoIosGitBranch } from 'react-icons/io';
 import { MdOutlineQrCode, MdMoreVert } from 'react-icons/md';
 
 import styles from '../styles.module.css';
-import Table from "../../../components/Table";
-import Pagination from "../../../components/Table/Pagination";
+import Table from "../../../../../components/Table";
+import Pagination from "../../../../../components/Table/Pagination";
+import AddBranch from "./Add";
 
-export default function Branches({props}) {
+export default function Branches({ props }) {
     const { history, PABX } = props
     const ID = parseInt(PABX.id);
 
     const dispatch = useDispatch();
 
     const [open, setOpen] = useState(false);
+    const [action, setAction] = useState({
+        type: 'list',
+        payload: {}
+    });
 
     const List = () => {
         const [branches, setBranches] = useState(null);
@@ -139,7 +144,10 @@ export default function Branches({props}) {
                                                                 onClick={(event) => {
                                                                     event.preventDefault();
 
-                                                                    console.log('Editar');
+                                                                    setAction({
+                                                                        type: 'edit',
+                                                                        payload: branch
+                                                                    });
                                                                 }}
                                                             >
                                                                 Editar
@@ -172,13 +180,36 @@ export default function Branches({props}) {
                                 total={pages.length}
                                 onChange={page => setCurrent(page)}
                             />
-                            <button>Adicionar</button>
+                            <button onClick={() => setAction({ type: 'add' })}>Adicionar</button>
                         </div>
                     </>
                     : <p className={styles.nodata}>. . .</p>
                 }
             </section>
         );
+    }
+    
+    const Edit = ({ branch }) => {
+        return <div>{branch.number}</div>
+    }
+
+    const refresh = () => {
+        setAction({
+            type: 'list',
+            payload: {}
+        })
+    }
+
+    const Main = () => {
+        const properties = {
+            ...props,
+            refresh,
+        }
+        switch (action.type) {
+            case 'add': return <AddBranch props={properties}/>
+            case 'edit': return <Edit branch={action.payload}/>
+            default: return <List/>
+        }
     }
 
     return (
@@ -224,18 +255,14 @@ export default function Branches({props}) {
                 </section>
                 <section className={styles.actions}>
                     <button
-                        onClick={() => history.push('/admin/pabx')}
+                        onClick={() => history.push('/admin/PABX')}
                     >
                         <IoMdArrowBack/>
                     </button>
                     <button
                         onClick={() => {
                             if (open) {
-                                setOpen(false);
-
-                                setTimeout(() => {
-                                    setOpen(true);
-                                });
+                                refresh();
                             }
                         }}
                     >
@@ -249,7 +276,7 @@ export default function Branches({props}) {
                 </section>
             </header>
             {
-                open && <List />
+                open && <Main/>
             }
         </article>
     );
