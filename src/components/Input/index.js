@@ -63,7 +63,28 @@ export default function Input({
                 }
 
                 break;
-            case "number": break;
+            case "number":
+                const onFocus = (event) => {
+                    const root = document.getElementById('root');
+                    const input = event.currentTarget;
+
+                    const onWheel = event => event.stopPropagation();
+
+                    root.addEventListener('wheel', onWheel, true);
+
+                    const onBlur = () => {    
+                        root.removeEventListener('wheel', onWheel);
+                    }
+
+                    input.removeEventListener('blur', onBlur);
+                    input.addEventListener('blur', onBlur);
+                }
+
+                inputProps = {
+                    ...inputProps,
+                    onFocus,
+                }
+                break;
             default:
                 inputProps = {
                     ...inputProps,
@@ -72,7 +93,7 @@ export default function Input({
                 }
         }
 
-        let inputElement = <input id={id} className={styles.input} {...inputProps} />
+        let inputElement = <input id={id} className={styles.input} {...inputProps}/>
 
         if (type === "password") {
             inputElement = (
