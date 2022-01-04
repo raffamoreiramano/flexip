@@ -1,5 +1,5 @@
 .formControl {
-	width: 350px;
+	min-width: 350px;
 
 	display: grid;
 	grid-template-rows: repeat(3, auto);
@@ -383,4 +383,19 @@
 	opacity: 1;
 	pointer-events: all;
 	user-select: all;
+}
+
+@media screen and (max-width: 768px) {
+	.formControl {
+		min-width: unset;
+		width: 100%;
+		max-width: min(calc(100vw - 10rem), 350px);
+	}
+}
+
+@media screen and (max-width: 425px) {
+	.formControl {
+		width: 100%;
+		max-width: calc(100vw - 10rem);
+	}
 }

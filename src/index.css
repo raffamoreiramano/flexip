@@ -98,7 +98,7 @@ p {
 	overflow-wrap: break-word;
 }
 
-p, a, h1, h2, h3, h4, h5, h6, ul {
+p, a, h1, h2, h3, h4, h5, h6, ul, legend {
 	margin-bottom: 1em;
 	font-weight: normal;
 }

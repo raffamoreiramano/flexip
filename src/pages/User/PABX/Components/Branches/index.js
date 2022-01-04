@@ -213,7 +213,7 @@ export default function Branches({ props }) {
     }
 
     return (
-        <article className={`${styles.component} ${open ? styles.open : styles.closed}`}>
+        <article className={`${styles.component} ${styles.pabx} ${open ? styles.open : styles.closed}`}>
             <header className="glass">
                 <section className={styles.info}>
                     <h2>{PABX.name}</h2>

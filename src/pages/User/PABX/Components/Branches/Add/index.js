@@ -9,6 +9,7 @@ import { phoneMask, validateEmail, validateName, validatePassword, validatePhone
 
 import styles from '../../styles.module.css';
 import Input, { Radio, Select } from "../../../../../../components/Input";
+import { IoIosArrowUp } from "react-icons/io";
 
 export default function AddBranch({ props }) {
     const { refresh, PABX } = props
@@ -264,245 +265,266 @@ export default function AddBranch({ props }) {
     }
 
     return (
-        <form className={styles.form} onSubmit={(event) => {
-            event.preventDefault();
-        }}>
-            <fieldset>
-                <legend>Adicionar</legend>
-                <Input
-                    id="name"
-                    name="name"
-                    label="Nome"
-                    placeholder="Nome do responsável"
-                    value={name}
-                    onChange={(event) => handleChange(() => {
-                        setName(event.target.value);
-                    })}
-                    validation={validation.name}
-                />
+        <section className={styles.form}>
+            <form onSubmit={(event) => {
+                event.preventDefault();
+            }}>
+                <fieldset>
+                    <legend>Adicionar</legend>
+                    <div>
+                        <Input
+                            id="name"
+                            name="name"
+                            label="Nome"
+                            placeholder="Nome do responsável"
+                            value={name}
+                            onChange={(event) => handleChange(() => {
+                                setName(event.target.value);
+                            })}
+                            validation={validation.name}
+                        />
 
-                <Input
-                    id="number"
-                    type="tel"
-                    name="number"
-                    label="Número"
-                    placeholder="Número do ramal"
-                    value={number}
-                    onChange={(event) => handleChange(() => {
-                        setNumber(event.target.value);
-                    })}
-                    validation={validation.number}
-                />
+                        <Input
+                            id="number"
+                            type="tel"
+                            name="number"
+                            label="Número"
+                            placeholder="Número do ramal"
+                            value={number}
+                            onChange={(event) => handleChange(() => {
+                                setNumber(event.target.value);
+                            })}
+                            validation={validation.number}
+                        />
+                    </div>
 
-                <Input
-                    id="email"
-                    type="email"
-                    name="email"
-                    label="E-mail"
-                    value={email}
-                    onChange={(event) => handleChange(() => {
-                        setEmail(event.target.value);
-                    })}
-                    validation={validation.email}
-                />
+                    <div>    
+                        <Input
+                            id="email"
+                            type="email"
+                            name="email"
+                            label="E-mail"
+                            value={email}
+                            onChange={(event) => handleChange(() => {
+                                setEmail(event.target.value);
+                            })}
+                            validation={validation.email}
+                        />
 
-                <Input
-                    id="password"
-                    type="password"
-                    name="password"
-                    label="Senha"
-                    value={password}
-                    onChange={(event) => handleChange(() => {
-                        setPassword(event.target.value);
-                    })}
-                    validation={validation.password}
-                />
+                        <Input
+                            id="password"
+                            type="password"
+                            name="password"
+                            label="Senha"
+                            value={password}
+                            onChange={(event) => handleChange(() => {
+                                setPassword(event.target.value);
+                            })}
+                            validation={validation.password}
+                        />
+                    </div>
 
-                <Input
-                    id="webPassword"
-                    type="password"
-                    name="webPassword"
-                    label="Senha web"
-                    value={webPassword}
-                    onChange={(event) => handleChange(() => {
-                        setWebPassword(event.target.value);
-                    })}
-                    validation={validation.webPassword}
-                />
+                    <div>    
+                        <Input
+                            id="webPassword"
+                            type="password"
+                            name="webPassword"
+                            label="Senha web"
+                            value={webPassword}
+                            onChange={(event) => handleChange(() => {
+                                setWebPassword(event.target.value);
+                            })}
+                            validation={validation.webPassword}
+                        />
 
-                <Radio 
-                    id="blockedPassword"
-                    name="blockedPassword"
-                    label="Senha bloqueada"
-                    value={blockedPassword}
-                    onChange={(event) => handleChange(() => {
-                        setBlockedPassword(event.target.value);
-                        console.log(event)
-                    })}
-                    validation={validation.blockedPassword}
-                >
-                    <option value={true}>Sim</option>
-                    <option value={false}>Não</option>
-                </Radio>
-            </fieldset>
+                        <Radio 
+                            id="blockedPassword"
+                            name="blockedPassword"
+                            label="Senha bloqueada"
+                            value={blockedPassword}
+                            onChange={(event) => handleChange(() => {
+                                setBlockedPassword(event.target.value);
+                                console.log(event)
+                            })}
+                            validation={validation.blockedPassword}
+                        >
+                            <option value={true}>Sim</option>
+                            <option value={false}>Não</option>
+                        </Radio>
+                    </div>
+                </fieldset>
 
-            <fieldset>
-                <legend>Avançado</legend>
+                <fieldset>
+                    <input className={styles.fieldsetToggle} type="checkbox" id="add-branch-advanced-toggle"/>
+                    <label className={styles.fieldsetButton} htmlFor="add-branch-advanced-toggle">
+                        <legend><span>Avançado</span><i><IoIosArrowUp/></i></legend>
+                    </label>
 
-                <Select
-                    id="externalNumber"
-                    type="tel"
-                    name="externalNumber"
-                    label="Número externo"
-                    placeholder="Números disponíveis..."
-                    value={externalNumber}
-                    onChange={(event) => handleChange(() => {
-                        setExternalNumber(event.target.value);
-                    })}
-                    validation={validation.externalNumber}
-                >
-                    {
-                        fetchedData.phoneList.map((item, index) => {
-                            return (
-                                <option key={index} value={item.id}>{phoneMask(item.ddd + item.number)}</option>
-                            );
-                        })
-                    }
-                </Select>
-                
-                <Select
-                    id="NAT"
-                    name="NAT"
-                    label="NAT"
-                    value={NAT}
-                    onChange={(event) => handleChange(() => {
-                        setNAT(event.target.value);
-                    })}
-                    validation={validation.NAT}
-                >
-                    {
-                        fetchedData.NATList.map((item, index) => {
-                            return (
-                                <option key={index} value={item.id}>{item.name}</option>
-                            );
-                        })
-                    }
-                </Select>
+                    <div className={styles.fieldsetContent}>
+                        <div>
+                            <Select
+                                id="externalNumber"
+                                type="tel"
+                                name="externalNumber"
+                                label="Número externo"
+                                placeholder="Números disponíveis..."
+                                value={externalNumber}
+                                onChange={(event) => handleChange(() => {
+                                    setExternalNumber(event.target.value);
+                                })}
+                                validation={validation.externalNumber}
+                            >
+                                {
+                                    fetchedData.phoneList.map((item, index) => {
+                                        return (
+                                            <option key={index} value={item.id}>{phoneMask(item.ddd + item.number)}</option>
+                                        );
+                                    })
+                                }
+                            </Select>
+                            
+                            <Input
+                                id="port"
+                                type="number"
+                                name="port"
+                                label="Porta"
+                                placeholder="Número de porta"
+                                value={port}
+                                onChange={(event) => handleChange(() => {
+                                    setPort(event.target.value);
+                                })}
+                                validation={validation.port}
+                            />
+                        </div>
 
-                <Input
-                    id="port"
-                    type="number"
-                    name="port"
-                    label="Porta"
-                    placeholder="Número de porta"
-                    value={port}
-                    onChange={(event) => handleChange(() => {
-                        setPort(event.target.value);
-                    })}
-                    validation={validation.port}
-                />
+                        <div>
+                            <Select
+                                id="NAT"
+                                name="NAT"
+                                label="NAT"
+                                value={NAT}
+                                onChange={(event) => handleChange(() => {
+                                    setNAT(event.target.value);
+                                })}
+                                validation={validation.NAT}
+                            >
+                                {
+                                    fetchedData.NATList.map((item, index) => {
+                                        return (
+                                            <option key={index} value={item.id}>{item.name}</option>
+                                        );
+                                    })
+                                }
+                            </Select>
 
-                <Input
-                    id="callLimit"
-                    type="number"
-                    name="callLimit"
-                    label="Limite de chamadas"
-                    placeholder="0 para ilimitado"
-                    value={callLimit}
-                    onChange={(event) => handleChange(() => {
-                        setCallLimit(event.target.value);
-                    })}
-                    validation={validation.callLimit}
-                />
+                            <Select
+                                id="DTMF"
+                                name="DTMF"
+                                label="DTMF"
+                                value={DTMF}
+                                onChange={(event) => handleChange(() => {
+                                    setDTMF(event.target.value);
+                                })}
+                                validation={validation.DTMF}
+                            >
+                                {
+                                    fetchedData.DTMFList.map((item, index) => {
+                                        return (
+                                            <option key={index} value={item.id}>{item.name}</option>
+                                        );
+                                    })
+                                }
+                            </Select>
+                        </div>
+                        
+                        <div>
+                            <Select
+                                id="department"
+                                name="department"
+                                label="Departamento"
+                                value={department}
+                                onChange={(event) => handleChange(() => {
+                                    setDepartment(event.target.value);
+                                })}
+                                validation={validation.department}
+                            >
+                                {
+                                    fetchedData.departmentList.map((item, index) => {
+                                        return (
+                                            <option key={index} value={item.id}>{item.name}</option>
+                                        );
+                                    })
+                                }
+                            </Select>
 
-                <Select
-                    id="DTMF"
-                    name="DTMF"
-                    label="DTMF"
-                    value={DTMF}
-                    onChange={(event) => handleChange(() => {
-                        setDTMF(event.target.value);
-                    })}
-                    validation={validation.DTMF}
-                >
-                    {
-                        fetchedData.DTMFList.map((item, index) => {
-                            return (
-                                <option key={index} value={item.id}>{item.name}</option>
-                            );
-                        })
-                    }
-                </Select>
+                            <Select
+                                id="pickUpGroup"
+                                name="pickUpGroup"
+                                label="Grupo de captura"
+                                value={pickUpGroup}
+                                onChange={(event) => handleChange(() => {
+                                    setPickUpGroup(event.target.value);
+                                })}
+                                validation={validation.pickUpGroup}
+                            >
+                                {
+                                    fetchedData.pickUpGroupList.map((item, index) => {
+                                        return (
+                                            <option key={index} value={item.id}>{item.name}</option>
+                                        );
+                                    })
+                                }
+                            </Select>
+                        </div>
+                       
+                        <div>
+                            <Input
+                                id="callLimit"
+                                type="number"
+                                name="callLimit"
+                                label="Limite de chamadas"
+                                placeholder="0 para ilimitado"
+                                value={callLimit}
+                                onChange={(event) => handleChange(() => {
+                                    setCallLimit(event.target.value);
+                                })}
+                                validation={validation.callLimit}
+                            />
 
-                <Select
-                    id="department"
-                    name="department"
-                    label="Departamento"
-                    value={department}
-                    onChange={(event) => handleChange(() => {
-                        setDepartment(event.target.value);
-                    })}
-                    validation={validation.department}
-                >
-                    {
-                        fetchedData.departmentList.map((item, index) => {
-                            return (
-                                <option key={index} value={item.id}>{item.name}</option>
-                            );
-                        })
-                    }
-                </Select>
+                            <Radio 
+                                id="latency"
+                                name="latency"
+                                label="Latência"
+                                value={latency}
+                                onChange={(event) => handleChange(() => {
+                                    setLatency(event.target.value);
+                                    console.log(event)
+                                })}
+                                validation={validation.latency}
+                            >
+                                <option value={true}>Sim</option>
+                                <option value={false}>Não</option>
+                            </Radio>
+                        </div>
+                    </div>
+                </fieldset>
 
-                <Select
-                    id="pickUpGroup"
-                    name="pickUpGroup"
-                    label="Grupo de captura"
-                    value={pickUpGroup}
-                    onChange={(event) => handleChange(() => {
-                        setPickUpGroup(event.target.value);
-                    })}
-                    validation={validation.pickUpGroup}
-                >
-                    {
-                        fetchedData.pickUpGroupList.map((item, index) => {
-                            return (
-                                <option key={index} value={item.id}>{item.name}</option>
-                            );
-                        })
-                    }
-                </Select>
-
-                <Radio 
-                    id="latency"
-                    name="latency"
-                    label="Latência"
-                    value={latency}
-                    onChange={(event) => handleChange(() => {
-                        setLatency(event.target.value);
-                        console.log(event)
-                    })}
-                    validation={validation.latency}
-                >
-                    <option value={true}>Sim</option>
-                    <option value={false}>Não</option>
-                </Radio>
-            </fieldset>
-
-            <div className={styles.formActions}>
-                <button
-                    className="main-color-4"
-                    type="button"
-                    onClick={refresh}
-                >
-                    Cancelar
-                </button>
-                <button
-                    className="main-color-2"
-                    type="submit"
-                >
-                    Adicionar
-                </button>
-            </div>
-        </form>
+                <div className={styles.formActions}>
+                    <button
+                        className="main-color-4"
+                        type="button"
+                        onClick={refresh}
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        className="main-color-1"
+                        type="submit"
+                    >
+                        Adicionar
+                    </button>
+                </div>
+            </form>
+        </section>
     );
 }
