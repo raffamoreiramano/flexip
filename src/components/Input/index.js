@@ -150,7 +150,7 @@ export function Select({
     const [searchValue, setSearchValue] = useState("");
     const [selected, setSelected] = useState({
         target: {
-            value: '', 
+            value: options.find(option => option.props.value === value)?.props?.children || '', 
             children: options.find(option => option.props.value === value)?.props?.children || placeholder || "Selecione..."
         }
     });
@@ -190,7 +190,6 @@ export function Select({
         className += ` ${styles.invalid}`;
     }
 
-
     return (
         <div className={className}>
             <label htmlFor={id}>{label}</label>
@@ -216,7 +215,7 @@ export function Select({
                 <label 
                     htmlFor={id}
                     className={styles.input}
-                    title={"Tipo de pessoa: " + selected.target.children}
+                    title={label + ": " + selected.target.children}
                     children={selected.target.children || '⠀'}
                 />
                 <div className={`${styles.options} glass`}>
@@ -292,7 +291,7 @@ export function Radio({
                             type="radio"
                             name={name}
                             value={option.props.value}
-                            checked={option.props.value.toString() === value.toString() ? true : false}
+                            checked={option.props.value.toString() === value.toString()}
                             disabled={option.props.disabled || false}
                             onChange={onChange}
                         />
@@ -302,6 +301,78 @@ export function Radio({
                             children={option.props.children}
                         />
                     </li>)
+                }
+            />
+            <strong className="error-message">{validation.message}</strong>
+        </div>
+    );
+}
+
+export function Checkboxes({
+    id,
+    label,
+    name,
+    value = [],
+    children,
+    options = children || [],
+    onChange,
+    validation = {
+        isInvalid: false,
+        message: "",
+    },
+}) {
+    let className = styles.formControl;
+
+    if (validation.isInvalid) {
+        className += ` ${styles.invalid}`;
+    }
+
+    return (
+        <div className={className}>
+            <label htmlFor={id}>{label}</label>
+            <ul 
+                id={id}
+                className={styles.checkboxes}
+                children={
+                    options.map((option, index) => <li key={index}>
+                        <input
+                            id={`option-${index}-${id}`}
+                            className={styles.input}
+                            type="checkbox"
+                            name={name}
+                            value={option.props.value}
+                            checked={value.includes(option.props.value)}
+                            disabled={option.props.disabled || false}
+                            onChange={(event) => {
+                                let list = [...value];
+
+                                const { checked } = event.target;
+
+                                if (checked) {
+                                    if (isNaN(event.target.value)) {
+                                        list.push(event.target.value);
+                                    } else {
+                                        list.push(parseInt(event.target.value));
+                                    }
+
+                                } else {
+                                    const index = list.findIndex((item) => item.toString() === event.target.value.toString());
+
+                                    if (index > -1) {
+                                        list.splice(index, 1);
+                                    }
+                                }
+
+                                onChange({...event, value: list});
+                            }}
+                        />
+                        <label
+                            className={styles.label}
+                            htmlFor={`option-${index}-${id}`}
+                            children={option.props.children}
+                        />
+                    </li>
+                    )
                 }
             />
             <strong className="error-message">{validation.message}</strong>

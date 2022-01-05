@@ -143,6 +143,10 @@ export function validatePhone(value) {
 	const digits = value.replace(/\D/g, "");
 	const regex = /(\([0-9]{2}\))/g;
 
+	if (digits.length > 3 && digits.length < 6) {
+		return true;
+	}
+
 	if (digits.length < 10 || digits.length > 11) {
 		return false;
 	}

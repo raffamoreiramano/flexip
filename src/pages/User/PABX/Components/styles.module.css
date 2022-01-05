@@ -116,7 +116,7 @@
 
 .component .form form fieldset legend {
     padding-inline: 1rem;
-    font-weight: 500;
+    font-weight: bold;
     text-transform: uppercase;
 }
 
@@ -133,6 +133,7 @@
     display: inline-flex;
     width: 100%;
     justify-content: space-between;
+    margin: 0;
 }
 
 .component .form .fieldsetButton legend span {
@@ -148,7 +149,7 @@
     position: relative;
     content: '';
 
-    width: fill-available;
+    width: stretch;
     height: .15rem;
 
     top: 0;
@@ -191,8 +192,6 @@
 }
 
 .component .form .fieldsetContent > div {
-    display: grid;
-
     max-height: 0;
     opacity: 0;
 
@@ -211,7 +210,7 @@
 }
 
 .component .form .formActions {
-    padding-right: 2rem;
+    padding-inline: 2rem;
 
     display: flex;
     justify-content: space-between;

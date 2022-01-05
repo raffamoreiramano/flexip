@@ -242,6 +242,7 @@ input:-webkit-autofill {
 	transition: 150ms ease-in-out;
 }
 
+input[type="checkbox"], 
 input[type="radio"] {
 	appearance: none;
 
@@ -260,6 +261,7 @@ input[type="radio"] {
 	cursor: pointer;
 }
 
+input[type="checkbox"]:checked,
 input[type="radio"]:checked {
 	cursor: default;
 	background-color: rgb(var(--main-color-1));
@@ -269,19 +271,26 @@ input[type="radio"]:checked {
 	border: none;
 }
 
+input[type="checkbox"]:disabled,
 input[type="radio"]:disabled {
 	pointer-events: none;
 	border-color: transparent;
 	opacity: 0.75;
 }
 
+input[type="checkbox"] + label,
 input[type="radio"] + label {
 	cursor: pointer;
 }
 
+input[type="checkbox"]:disabled + label,
 input[type="radio"]:disabled + label,
 input[type="radio"]:checked + label {
 	cursor: default;
+}
+
+input[type="checkbox"] {
+	border-radius: 0.25rem;
 }
 
 input:-webkit-autofill {

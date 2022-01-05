@@ -11,7 +11,7 @@
 }
 
 .formControl label {
-	margin-left: 1em;
+	padding-left: 1em;
 	text-transform: uppercase;
 	font-weight: bold;
 }
@@ -242,9 +242,11 @@
 	margin: 0;
 }
 
+.formControl .checkboxes li .label,
 .formControl .radio li .label {
 	position: relative;
-	margin: 0 0.5em;
+	margin-right: 0.5em;
+	padding-left: 0.5em;
 
 	text-transform: none;
 	font-weight: 500;
@@ -264,6 +266,16 @@
 
 .formControl .radio li input:disabled ~ .label::after {
 	all: unset;
+}
+
+.formControl .checkboxes {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(100px, auto));
+	gap: .5rem;
+}
+
+.formControl .checkboxes li {
+	display: block;
 }
 
 .formControl .password {
