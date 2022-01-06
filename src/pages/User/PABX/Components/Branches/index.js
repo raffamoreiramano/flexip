@@ -340,7 +340,7 @@ export default function Branches({ props }) {
                 onClose={() => setQRCode("")}
             >
                 <div className={styles.QRCode}>
-                    
+                    <h3>QR Code</h3>
                     <figure>
                         <img src={QRCode.image} alt="QR Code" title="QR Code"/>
                     </figure>
