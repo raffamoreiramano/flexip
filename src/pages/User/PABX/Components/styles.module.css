@@ -328,6 +328,60 @@
     color: white;
 }
 
+.QRCode {
+    display: grid;
+    gap: .75rem;
+}
+
+.QRCode > table {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    gap: 1rem;
+}
+
+.QRCode > table tbody,
+.QRCode > table tr {
+    display: contents;
+}
+
+.QRCode > table tr th {
+    text-align: start;
+    display: inline-flex;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.QRCode > table tr th i {
+    all: unset;
+}
+
+.QRCode > figure {
+    padding: 10px;
+
+    --thickness: .15rem;
+    --color: rgb(var(--text-color));
+    --width: 2rem;
+    --gradient: #0000 90deg, var(--color) 0;
+  
+    border: var(--thickness) solid transparent;
+    background:
+        conic-gradient(from 90deg  at top    var(--thickness) left  var(--thickness),var(--gradient)) 0    0,
+        conic-gradient(from 180deg at top    var(--thickness) right var(--thickness),var(--gradient)) 100% 0,
+        conic-gradient(from 0deg   at bottom var(--thickness) left  var(--thickness),var(--gradient)) 0    100%,
+        conic-gradient(from -90deg at bottom var(--thickness) right var(--thickness),var(--gradient)) 100% 100%;
+    background-size: var(--width) var(--width);
+    background-origin: border-box;
+    background-repeat: no-repeat;
+}
+
+.QRCode > figure img {
+    width: 300px;
+    aspect-ratio: 1 / 1;
+    border-radius: .25rem;
+    background: rgba(var(--bg-color-1), .5);
+}
+
 .nodata {
     margin: 0;
     padding: 0 2rem;

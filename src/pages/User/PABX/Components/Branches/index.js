@@ -27,6 +27,9 @@ export default function Branches({ props }) {
     });
     const success = useRef(false);
 
+    const [QRCode, setQRCode] = useState({});
+    const [isQRCodeModalActive, setIsQRCodeModalActive] = useState(false);
+
     const [open, setOpen] = useState(false);
     const [action, setAction] = useState({
         type: 'list',
@@ -62,6 +65,12 @@ export default function Branches({ props }) {
         }
         
     }, [branches]);
+
+    useEffect(() => {
+        if (!initialRender.current && QRCode) {
+            setIsQRCodeModalActive(true);
+        }
+    }, [QRCode]);
 
     const initialRender = useRef(true);
 
@@ -109,8 +118,60 @@ export default function Branches({ props }) {
         })
     }
 
+    const showAlert = (content, response = false) => {
+        success.current = response;
+
+        setAlertContent(content);
+        setIsAlertActive(true);
+    }
+
     const navigate = (page) => {
         setCurrent(page);
+    }
+
+    const select = async (branch) => {
+        dispatch(setIsLoading(true));
+
+        try {
+            const access_token = localStorage.getItem("access_token");
+            const response = await api.get(`/v1/${API_GUARD}/pabx/${ID}/branch/${branch.id}/qr_code`, {
+                headers: { Authorization: "Bearer " + access_token }
+            });
+
+            if (response.status && response.status === 200) {
+                const { domain, user, image } = response.data;
+                const { number } = branch;
+                const { name } = branch.branch_users;
+                
+                setQRCode({
+                    number,
+                    name,
+                    user,
+                    domain,
+                    image,
+                });
+            }
+        } catch (error) {
+            let content = {
+                title: "Ops!",
+                message: "Parece que houve um erro... Por favor, tente mais tarde!",
+            }            
+            
+            if (error.response) {
+                const { title, message } = error.response.data;
+
+                content = {
+                    title: title || content.title,
+                    message: message || content.message,
+                }
+
+                console.log(error.response.data);
+            }
+
+            showAlert(content);
+        } finally {
+            dispatch(setIsLoading(false));
+        }
     }
 
     const add = () => {
@@ -127,14 +188,9 @@ export default function Branches({ props }) {
         });
     }
 
-    const showAlert = (content, response = false) => {
-        success.current = response;
-
-        setAlertContent(content);
-        setIsAlertActive(true);
-    }
-
     const remove = async (branch) => {
+        dispatch(setIsLoading(true));
+
         try {
             const access_token = localStorage.getItem("access_token");
             const response = await api.delete(`/v1/${API_GUARD}/pabx/${ID}/branch/${branch.id}`, {
@@ -187,6 +243,7 @@ export default function Branches({ props }) {
             pages,
             current,
             navigate,
+            select,
             add,
             edit,
             remove,
@@ -277,6 +334,38 @@ export default function Branches({ props }) {
                     }
                 }}
             />
+
+            <Alert
+                state={[isQRCodeModalActive, setIsQRCodeModalActive]}
+                onClose={() => setQRCode("")}
+            >
+                <div className={styles.QRCode}>
+                    
+                    <figure>
+                        <img src={QRCode.image} alt="QR Code" title="QR Code"/>
+                    </figure>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Ramal <i>: :</i></th>
+                                <td>{QRCode.name}</td>
+                            </tr>
+                            <tr>
+                                <th>Número <i>: :</i></th>
+                                <td>{QRCode.number}</td>
+                            </tr>
+                            <tr>
+                                <th>Domínio <i>: :</i></th>
+                                <td>{QRCode.domain}</td>
+                            </tr>
+                            <tr>
+                                <th>Usuário <i>: :</i></th>
+                                <td>{QRCode.user}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+           </Alert>
         </article>
     );
 }

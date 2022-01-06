@@ -45,7 +45,7 @@ export default function BranchList({ props }) {
                                     width: "29%",
                                 },
                                 { 
-                                    heading: "QR code",
+                                    heading: "QR Code",
                                     align: "center",
                                     width: "50%",
                                 },
@@ -63,7 +63,7 @@ export default function BranchList({ props }) {
                                         <tr key={index}>
                                             <td>{branch.number}</td>
                                             <td>{branch.branch_users.name}</td>
-                                            <td><button><MdOutlineQrCode/></button></td>
+                                            <td><button onClick={() => select(branch)}><MdOutlineQrCode/></button></td>
                                             <td>
                                                 <div className={styles.listItemMenu}>
                                                     <input
