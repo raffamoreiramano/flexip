@@ -8,10 +8,14 @@
 	display: contents;
 
 	isolation: isolate;
+
+	z-index: 999;
 }
 
 .dialog .card {
 	position: absolute;
+	z-index: 9999;
+	
 	top: 50%;
 	left: 50%;
 	transform: translateY(-50%) translateX(-50%);
@@ -29,9 +33,11 @@
 
 .dialog[open=""]::before {
 	content: '';
+	position: fixed;
+	z-index: 9999;
+
 	top: 0;
 	left: 0;
-	position: fixed;
 	width: 100vw;
 	height: 100vh;
 

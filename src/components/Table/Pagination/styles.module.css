@@ -19,8 +19,10 @@
     all: unset;
     display: inline-flex;
     font-size: 2rem;
+    cursor: pointer;
 }
 
 .buttons button:disabled {
     opacity: .5;
+    cursor: default;
 }

@@ -8,12 +8,11 @@ import { API_GUARD } from "../../../../../services/env";
 import { phoneMask } from '../../../../../services/helpers';
 
 import { IoMdArrowBack, IoMdRefresh, IoIosArrowUp, IoIosGitBranch } from 'react-icons/io';
-import { MdOutlineQrCode, MdMoreVert } from 'react-icons/md';
 
 import styles from '../styles.module.css';
-import Table from "../../../../../components/Table";
-import Pagination from "../../../../../components/Table/Pagination";
-import AddBranch from "./Add";
+import BranchForm from "./Form";
+import BranchList from "./List";
+import Alert from "../../../../../components/Modals/Alert";
 
 export default function Branches({ props }) {
     const { history, PABX } = props
@@ -21,194 +20,182 @@ export default function Branches({ props }) {
 
     const dispatch = useDispatch();
 
+    const [isAlertActive, setIsAlertActive] = useState(false);
+    const [alertContent, setAlertContent] = useState({
+        title: "Ops!",
+        message: "Parece que houve um erro... Por favor, tente mais tarde!"
+    });
+    const success = useRef(false);
+
     const [open, setOpen] = useState(false);
     const [action, setAction] = useState({
         type: 'list',
         payload: {}
     });
 
-    const List = () => {
-        const [branches, setBranches] = useState(null);
-        const [pages, setPages] = useState([]);
-        const [current, setCurrent] = useState(0);
+    const [branches, setBranches] = useState(null);
+    const [branchesInUse, setBranchesInUse] = useState(PABX.branches_in_use);
+    const [pages, setPages] = useState([]);
+    const [current, setCurrent] = useState(0);
 
-        useEffect(() => {
-            const branchesToPages = () => {
-                const rows = 10;
-                const total = Math.max(Math.floor(branches.length / rows), 1);
-                let pages = [];
-                
-                for (let i = total; i >= 0; i--) {
-                    const slice = branches.splice(0, rows);
-
-                    if (slice.length > 0) {
-                        pages.push(slice);
-                    }
-                }
-
-                setPages(pages);
-                setCurrent(0);
-            }
-
-            if (!initialRender.current) {
-                branchesToPages();
-            }
+    useEffect(() => {
+        const branchesToPages = () => {
+            const BRANCHES = [...branches];
+            const rows = 10;
+            const total = Math.max(Math.floor(branches.length / rows), 1);
+            let pages = [];
             
-        }, [branches]);
+            for (let i = total; i >= 0; i--) {
+                const slice = BRANCHES.splice(0, rows);
 
-        const initialRender = useRef(true);
-
-        useEffect(() => {
-            const fetchData = async () => {
-                const access_token = localStorage.getItem("access_token");
-
-                if (access_token) {
-                    try {
-                        const response = await api.get(`/v1/${API_GUARD}/pabx/${ID}/branches`, {
-                            headers: { Authorization: "Bearer " + access_token }
-                        });
-
-                        if (response.status === 200) {
-                            const { branches } = response.data;
-
-                            setBranches(branches);
-                            // remover futuramente
-                            console.log(response.data);
-                        }
-                    } catch (error) {
-                        console.log(error);
-                    }
+                if (slice.length > 0) {
+                    pages.push(slice);
                 }
             }
 
-            if (initialRender.current) {
-                initialRender.current = false;
-                dispatch(setIsLoading(true));
+            setPages(pages);
+            setCurrent(0);
+        }
 
-                fetchData().finally(() => {
-                    dispatch(setIsLoading(false));
+        if (!initialRender.current) {
+            branchesToPages();
+        }
+        
+    }, [branches]);
+
+    const initialRender = useRef(true);
+
+    const fetchData = async () => {
+        dispatch(setIsLoading(true));
+
+        const access_token = localStorage.getItem("access_token");
+
+        if (access_token) {
+            try {
+                const response = await api.get(`/v1/${API_GUARD}/pabx/${ID}/branches`, {
+                    headers: { Authorization: "Bearer " + access_token }
                 });
-            }
-        });
 
-        return (
-            <section className={styles.list}>
-                {
-                    branches
-                    ? <>
-                        <Table
-                            thead={[
-                                { 
-                                    heading: "Número",
-                                    align: "left",
-                                    width: "30%",
-                                },
-                                { 
-                                    heading: "Responsável",
-                                    align: "left",
-                                    width: "29%",
-                                },
-                                { 
-                                    heading: "QR code",
-                                    align: "center",
-                                    width: "50%",
-                                },
-                                { 
-                                    heading: "Opções",
-                                    align: "center",
-                                    width: "1%",
-                                },
-                            ]}
-                        >
-                            <tbody>
-                                {
-                                    pages.length > 0
-                                    ? pages[current].map((branch, index) => (
-                                        <tr key={index}>
-                                            <td>{branch.number}</td>
-                                            <td>{branch.branch_users.name}</td>
-                                            <td><button><MdOutlineQrCode/></button></td>
-                                            <td>
-                                                <div className={styles.listItemMenu}>
-                                                    <input
-                                                        id={`branch-${branch.id}`}
-                                                        type="checkbox"
-                                                    />
-                                                    <label htmlFor={`branch-${branch.id}`}>
-                                                        <MdMoreVert/>
-                                                    </label>
-                                                    <ul className="glass">
-                                                        <li>
-                                                            <a
-                                                                href={`#branch-${branch.id}`}
-                                                                onClick={(event) => {
-                                                                    event.preventDefault();
+                if (response.status === 200) {
+                    const { branches } = response.data;
 
-                                                                    setAction({
-                                                                        type: 'edit',
-                                                                        payload: branch
-                                                                    });
-                                                                }}
-                                                            >
-                                                                Editar
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a
-                                                                href={`#branch-${branch.id}`}
-                                                                onClick={(event) => {
-                                                                    event.preventDefault();
-
-                                                                    console.log('Excluir');
-                                                                }}
-                                                            >
-                                                                Excluir
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))
-                                    : <tr><td colSpan="100%">Nenhum ramal encontrado!</td></tr>
-                                }
-                            </tbody>
-                        </Table>
-                        <div className={styles.listActions}>
-                            <Pagination
-                                current={current}
-                                total={pages.length}
-                                onChange={page => setCurrent(page)}
-                            />
-                            <button onClick={() => setAction({ type: 'add' })}>Adicionar</button>
-                        </div>
-                    </>
-                    : <p className={styles.nodata}>. . .</p>
+                    setBranches(branches);
+                    setBranchesInUse(branches.length);
+                    // remover futuramente
+                    console.log(response.data);
                 }
-            </section>
-        );
+            } catch (error) {
+                console.log(error);
+            } finally {
+                dispatch(setIsLoading(false));
+            }
+        }
     }
-    
-    const Edit = ({ branch }) => {
-        return <div>{branch.number}</div>
-    }
+
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false;
+
+            fetchData();
+        }
+    });
 
     const refresh = () => {
-        setAction({
-            type: 'list',
-            payload: {}
+        fetchData().finally(() => {
+            setAction({
+                type: 'list',
+                payload: {}
+            })
         })
     }
 
+    const navigate = (page) => {
+        setCurrent(page);
+    }
+
+    const add = () => {
+        setAction({
+            type: 'add',
+            payload: {},
+        });
+    }
+
+    const edit = (branch) => {
+        setAction({
+            type: 'edit',
+            payload: branch,
+        });
+    }
+
+    const showAlert = (content, response = false) => {
+        success.current = response;
+
+        setAlertContent(content);
+        setIsAlertActive(true);
+    }
+
+    const remove = async (branch) => {
+        try {
+            const access_token = localStorage.getItem("access_token");
+            const response = await api.delete(`/v1/${API_GUARD}/pabx/${ID}/branch/${branch.id}`, {
+                headers: { Authorization: "Bearer " + access_token }
+            });
+
+            if (response.status && response.status === 200) {
+                const { title, message } = response.data;
+                const content = { title, message };
+
+                showAlert(content, true);
+            }
+        } catch (error) {
+            let content = {
+                title: "Ops!",
+                message: "Parece que houve um erro... Por favor, tente mais tarde!",
+            }            
+            
+            if (error.response) {
+                const { title, message } = error.response.data;
+
+                content = {
+                    title: title || content.title,
+                    message: message || content.message,
+                }
+
+                console.log(error.response.data);
+            }
+
+            showAlert(content);
+        } finally {
+            dispatch(setIsLoading(false));
+        }
+    }
+
     const Main = () => {
-        const properties = {
+        const addProps = {
             ...props,
             refresh,
         }
+
+        const editProps = {
+            ...addProps,
+            branch: action.payload,
+        }
+
+        const listProps = {
+            ...addProps,
+            branches,
+            pages,
+            current,
+            navigate,
+            add,
+            edit,
+            remove,
+        }
+
         switch (action.type) {
-            case 'add': return <AddBranch props={properties}/>
-            case 'edit': return <Edit branch={action.payload}/>
-            default: return <List/>
+            case 'add': return <BranchForm props={addProps}/>
+            case 'edit': return <BranchForm props={editProps}/>
+            default: return <BranchList props={listProps}/>
         }
     }
 
@@ -248,7 +235,7 @@ export default function Branches({ props }) {
                                 <td>{PABX.max_branches}</td>
                             </tr>
                             <tr>
-                                <td>{PABX.branches_in_use}</td>
+                                <td>{branchesInUse}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -275,9 +262,21 @@ export default function Branches({ props }) {
                     </button>
                 </section>
             </header>
+
             {
                 open && <Main/>
             }
+
+            <Alert
+                title={alertContent.title}
+                message={alertContent.message}
+                state={[isAlertActive, setIsAlertActive]}
+                onClose={() => {
+                    if (success.current) {
+                        refresh();
+                    }
+                }}
+            />
         </article>
     );
 }

@@ -5,6 +5,7 @@ import styles from '../styles.module.css'
 export default function Confirm({
     title,
     message,
+    payload,
     children,
     state,
     onCancel = () => {},
@@ -15,7 +16,7 @@ export default function Confirm({
     const confirm = () => {
         setOpen(false);
 
-        onConfirm();
+        onConfirm(payload);
     }
 
     const cancel = () => {
@@ -32,7 +33,7 @@ export default function Confirm({
             <div className={`${styles.card} glass`}>
                 {
                     children || (<>
-                        <h3>{title || "Alerta!"}</h3>
+                        <h3>{title || "Confirme:"}</h3>
                         <p>{message || ". . ."}</p>
                     </>)
                 }

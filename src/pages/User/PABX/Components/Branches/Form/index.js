@@ -12,8 +12,8 @@ import Input, { Checkboxes, Radio, Select } from "../../../../../../components/I
 import { IoIosArrowUp } from "react-icons/io";
 import Alert from "../../../../../../components/Modals/Alert";
 
-export default function AddBranch({ props }) {
-    const { refresh, PABX } = props
+export default function BranchForm({ props }) {
+    const { refresh, PABX, branch } = props;
     const ID = parseInt(PABX.id);
 
     const dispatch = useDispatch();
@@ -23,7 +23,7 @@ export default function AddBranch({ props }) {
         title: "Ops!",
         message: "Parece que houve um erro... Por favor, tente mais tarde!"
     });
-    const alertRef = useRef(false);
+    const success = useRef(false);
 
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
@@ -130,14 +130,14 @@ export default function AddBranch({ props }) {
             }
         }
 
-        if (!validatePassword(password)) {
+        if ((!branch && !validatePassword(password)) || (branch && password && !validatePassword(password))) {
             newValidation.password = {
                 isInvalid: true,
                 message: "Senha inválida!",
             }
         }
-
-        if (!validatePassword(webPassword)) {
+        
+        if ((!branch && !validatePassword(webPassword)) || (branch && webPassword && !validatePassword(webPassword))) {
             newValidation.webPassword = {
                 isInvalid: true,
                 message: "Senha inválida!",
@@ -165,6 +165,13 @@ export default function AddBranch({ props }) {
         callback.call();
     }
 
+    const showAlert = (content, response = false) => {
+        success.current = response;
+
+        setAlertContent(content);
+        setIsAlertActive(true);
+    }
+
     const submit = async () => {
         dispatch(setIsLoading(true));
 
@@ -177,7 +184,7 @@ export default function AddBranch({ props }) {
             email: email.trim(),
             secret: password.trim(),
             password: webPassword.trim(),
-            password_blocked: blockedPassword,
+            password_blocked: !!blockedPassword,
             externalNumber: externalNumberDigits,
             port,
             callLimit,
@@ -190,25 +197,21 @@ export default function AddBranch({ props }) {
             routeGroupId: "", // medida provisória
         }
 
-        console.log(body)
-
         try {
             const access_token = localStorage.getItem("access_token");
-            const response = await api.post(`/v1/${API_GUARD}/pabx/${ID}/branch`, body, {
+            const response = branch 
+            ? await api.put(`/v1/${API_GUARD}/pabx/${ID}/branch/${branch.id}`, body, {
+                headers: { Authorization: "Bearer " + access_token }
+            })
+            : await api.post(`/v1/${API_GUARD}/pabx/${ID}/branch`, body, {
                 headers: { Authorization: "Bearer " + access_token }
             });
 
             if (response.status && response.status === 200) {
                 const { title, message } = response.data;
+                const content = { title, message };
 
-                setAlertContent({
-                    title,
-                    message,
-                });
-
-                alertRef.current = true;
-
-                setIsAlertActive(true);
+                showAlert(content, true);
             }
         } catch (error) {
             let content = {
@@ -257,10 +260,7 @@ export default function AddBranch({ props }) {
                 console.log(error.response.data);
             }
 
-            alertRef.current = false;
-
-            setAlertContent(content);
-            setIsAlertActive(true);
+            showAlert(content);
         } finally {
             dispatch(setIsLoading(false));
         }
@@ -273,8 +273,10 @@ export default function AddBranch({ props }) {
             const access_token = localStorage.getItem("access_token");
 
             if (access_token) {
+                const action = branch ? `${branch.id}/edit` : 'create';
+
                 try {
-                    const response = await api.get(`/v1/${API_GUARD}/pabx/${ID}/branch/create`, {
+                    const response = await api.get(`/v1/${API_GUARD}/pabx/${ID}/branch/${action}`, {
                         headers: { Authorization: "Bearer " + access_token }
                     });
 
@@ -293,15 +295,54 @@ export default function AddBranch({ props }) {
                         if (mainPhone) {
                             setExternalNumber(mainPhone.id);
                         }
-                        
-                        setFetchedData({
+
+                        let data = {
                             phoneList,
                             NATList,
                             DTMFList,
                             departmentList,
                             pickUpGroupList,
                             CODECList
-                        });
+                        }
+                        
+                        if (branch) {
+                            const {
+                                branch_users,
+                                number,
+                                external_number,
+                                port,
+                                call_limit,
+                                nat,
+                                dtmf,
+                                codecs,
+                                call_group_id,
+                                pickup_groups,
+                                qualify,
+                            } = response.data.branch;
+
+                            const CODEC = codecs.map(item => item.id);
+                            const pickUpGroup = pickup_groups.map(item => item.id);
+
+                            const { id: externalNumber } = phoneList.find(item => item.ddd + item.number === external_number);
+
+                            setName(branch_users.name);
+                            setNumber(number);
+                            setEmail(branch_users.email);
+                            setPassword("");
+                            setWebPassword("");
+                            setBlockedPassword(!!branch_users.password_blocked);
+                            setExternalNumber(externalNumber || mainPhone?.id);
+                            setPort(port);
+                            setCallLimit(call_limit);
+                            setNAT(nat.id);
+                            setDTMF(dtmf.id);
+                            setCODEC(CODEC);
+                            setDepartment(call_group_id);
+                            setPickUpGroup(pickUpGroup);
+                            setLatency(!!qualify);
+                        }
+
+                        setFetchedData(data);
 
                         // remover futuramente
                         console.log(response.data);
@@ -337,7 +378,7 @@ export default function AddBranch({ props }) {
                     }
                 }}>
                     <fieldset>
-                        <legend>Adicionar</legend>
+                        <legend>{branch ? "Editar" : "Adicionar"}</legend>
                         <div>
                             <Input
                                 id="name"
@@ -599,22 +640,30 @@ export default function AddBranch({ props }) {
                         >
                             Cancelar
                         </button>
-                        <button
-                            className="main-color-1"
-                            type="submit"
-                        >
-                            Adicionar
-                        </button>
+                        {
+                            branch 
+                            ? <button
+                                className="main-color-2"
+                                type="submit"
+                            >
+                                Editar
+                            </button>
+                            : <button
+                                className="main-color-1"
+                                type="submit"
+                            >
+                                Adicionar
+                            </button>
+                        }
                     </div>
                 </form>
             </section>
             <Alert
-                ref={alertRef}
                 title={alertContent.title}
                 message={alertContent.message}
                 state={[isAlertActive, setIsAlertActive]}
                 onClose={() => {
-                    if (alertRef.current) {
+                    if (success.current) {
                         refresh();
                     }
                 }}
