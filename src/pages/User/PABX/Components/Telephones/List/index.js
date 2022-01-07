@@ -72,7 +72,7 @@ export default function TelephoneList({ props }) {
                             total={pages.length}
                             onChange={page => navigate(page)}
                         />
-                        <button onClick={add}>Adicionar</button>
+                        <button onClick={add}>Vincular novo telefone</button>
                     </div>
                 </>
                 : <p className={styles.nodata}>. . .</p>
