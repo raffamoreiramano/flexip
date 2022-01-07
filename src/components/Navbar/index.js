@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { updateUser, updatePABX } from '../../store/actions';
+import { setDarkMode, updateUser, updatePABX } from '../../store/actions';
 
 import LightLogo from '../../assets/images/logo/flexip.svg';
 import DarkLogo  from '../../assets/images/logo/flexip-white.svg';
@@ -56,6 +56,7 @@ export default function Navbar(props) {
 
         dispatch(updateUser());
         dispatch(updatePABX());
+        dispatch(setDarkMode(false));
 
         props.history.push("/");
     }

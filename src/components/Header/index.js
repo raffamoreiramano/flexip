@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { setDarkMode } from '../../store/actions';
@@ -10,7 +10,10 @@ import styles from './styles.module.css';
 export default function Header() {
     const location = useSelector(state => state.navigation);
 	const theme = useSelector(state => state.theme);
+
 	const dispatch = useDispatch();
+
+	const initialRender = useRef(true);
 
 	useEffect(() => {
 		const html = document.documentElement;
@@ -19,6 +22,16 @@ export default function Header() {
 			html.classList.add("dark-theme");
 		} else {
 			html.classList.remove("dark-theme");
+		}
+
+		if (initialRender.current) {
+			initialRender.current = false;
+			
+			const darkmode = !!parseInt(localStorage.getItem('darkmode'));
+
+			dispatch(setDarkMode(darkmode));
+		} else {
+			localStorage.setItem('darkmode', + theme.dark);
 		}
 	}, [theme]);
 
