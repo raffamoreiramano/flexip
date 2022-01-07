@@ -1,3 +1,4 @@
+/* branches */
 .component {
     display: flex;
     flex-direction: column;
@@ -5,31 +6,63 @@
 }
 
 .component header {
-    padding: 2rem;
+    padding: 3rem 2rem;
     border-radius: 1rem;
 
     display: grid;
-    grid-template-columns: 1fr .5fr max-content;
+    grid-template-columns: auto max-content;
     gap: 4rem;
 }
 
-.component header h2,
-.component header h3 {
+.component.pabx header {
+    padding: 2rem;
+
+    grid-template-columns: 1fr .5fr max-content;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+}
+
+.pabx .info {
+    display: block;
+}
+
+.info > h2 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.info > h2 i {
+    display: contents;
+}
+
+.info > h2 i svg {
+    font-size: inherit;
+}
+
+.component.pabx header h2,
+.component.pabx header h3 {
     font-size: 2rem;
     margin-bottom: 2rem;
 }
 
-.info h2 {
+.pabx .info h2 {
+    display: block;
     font-weight: 500;
 }
 
-.branches h3 {
+.branches > h3 {
     display: flex;
     align-items: center;
+    font-weight: normal;
     gap: .5rem;
 }
 
-.branches h3 i {
+.branches > h3 i {
     font-size: 1.5rem;
     margin-top: auto;
 }
@@ -71,7 +104,6 @@
     width: min-content;
 
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
     gap: .5rem;
 
@@ -98,6 +130,10 @@
 
 .component.open .actions button:last-of-type {
     transform: rotateZ(180deg);
+}
+
+.pabx .actions {
+    flex-direction: column;
 }
 
 .component .form form {
@@ -358,6 +394,7 @@
 
 .QRCode > figure {
     padding: 10px;
+    padding-bottom: 8px;
 
     --thickness: .15rem;
     --color: rgb(var(--text-color));
@@ -392,13 +429,13 @@
 }
 
 @media screen and (max-width: 768px) {
-    .component header {
+    .component.pabx header {
         padding: 2rem;
         border-radius: 1rem;
     
         display: grid;
-        grid-template-columns: 1fr .5fr max-content;
-        grid-template-rows: repeat(2, auto);
+        grid-template-columns: 1fr max-content;
+        grid-template-rows: auto;
         gap: 3rem 0;
     }
 
@@ -410,12 +447,12 @@
         width: min(calc(100vw - 10rem), 350px);
     }
 
-    .info {
+    .pabx .info {
         grid-column: span 3;
     }
 
-    .component header th,
-    .component header td {
+    .component.pabx header th,
+    .component.pabx header td {
         font-size: 1.25rem;
     }
 }
@@ -424,7 +461,24 @@
     .component header {
         gap: 0;
     }
-    .info {
+    .pabx .info {
         display: none;
     }
+}
+
+/* telephones */
+
+.telephones .list .check {
+    display: flex;
+}
+
+.telephones .list .check input {
+    margin: auto;
+    transform: none;
+    font-size: 1.5em;
+}
+
+.telephones .list .check input:checked {
+    cursor: default;
+    pointer-events: none;
 }

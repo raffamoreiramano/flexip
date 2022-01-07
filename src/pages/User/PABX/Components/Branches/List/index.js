@@ -56,7 +56,7 @@ export default function BranchList({ props }) {
                                 },
                             ]}
                         >
-                            <tbody data-teste={branches.length}>
+                            <tbody>
                                 {
                                     pages.length > 0
                                     ? pages[current].map((branch, index) => (
