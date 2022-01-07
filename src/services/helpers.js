@@ -18,19 +18,19 @@ export function phoneMask(value) {
 			return digits;
 		}
 
+		if (digits.match(/^0[1-9]00/)) {
+			return digits
+				.replace(/(\d{4})(\d)/, "$1 $2")
+				.replace(/(\s\d{3})(\d)/, "$1 $2")
+				.replace(/(\s\d{4})(\d+?)$/, "$1")
+		}
+
 		if (digits.length <= 9) {
 			return digits
 				.replace(/(\d{4})(\d)/, "$1-$2")
 				.replace(/(\d{4})(-)(\d{5})/, "$1$3")
 				.replace(/(\d{5})(\d)/, "$1-$2")
 				.replace(/(-\d{4})(\d+?)$/, "$1");
-		}
-
-		if (digits.match(/0[1-9]00/)) {
-			return digits
-				.replace(/(\d{4})(\d)/, "$1 $2")
-				.replace(/(\s\d{3})(\d)/, "$1 $2")
-				.replace(/(\s\d{4})(\d+?)$/, "$1")
 		}
 
 		return digits
