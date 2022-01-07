@@ -293,7 +293,15 @@ export function Radio({
                             value={option.props.value}
                             checked={option.props.value.toString() === value.toString()}
                             disabled={option.props.disabled || false}
-                            onChange={onChange}
+                            onChange={(event) => {
+                                let { value } = event.target;
+
+                                value = isNaN(value) ? value : parseInt(value);
+
+                                value = (value === "false") ? false : (value === "true") ? true : value;
+
+                                onChange({...event, value});
+                            }}
                         />
                         <label
                             className={styles.label}

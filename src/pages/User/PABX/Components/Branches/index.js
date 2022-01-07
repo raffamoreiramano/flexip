@@ -198,8 +198,10 @@ export default function Branches({ props }) {
             });
 
             if (response.status && response.status === 200) {
-                const { title, message } = response.data;
-                const content = { title, message };
+                const content = { 
+                    title: "Pronto...", 
+                    message: `O ramal ${branch.number} foi excluído com sucesso!`
+                };
 
                 showAlert(content, true);
             }

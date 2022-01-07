@@ -222,7 +222,7 @@ export default function BranchForm({ props }) {
             email: email.trim(),
             secret: password.trim(),
             password: webPassword.trim(),
-            password_blocked: !!blockedPassword,
+            password_blocked: blockedPassword,
             externalNumber: externalNumberDigits,
             port,
             callLimit,
@@ -477,7 +477,7 @@ export default function BranchForm({ props }) {
                                 label="Senha bloqueada"
                                 value={blockedPassword}
                                 onChange={(event) => handleChange(() => {
-                                    setBlockedPassword(event.target.value);
+                                    setBlockedPassword(event.value);
                                 })}
                                 validation={validation.blockedPassword}
                             >
@@ -647,7 +647,8 @@ export default function BranchForm({ props }) {
                                     label="Latência"
                                     value={latency}
                                     onChange={(event) => handleChange(() => {
-                                        setLatency(event.target.value);
+                                        setLatency(event.value);
+                                        console.log(event)
                                     })}
                                     validation={validation.latency}
                                 >
