@@ -33,9 +33,6 @@ export default function PABX(props) {
                         const { pabx } = response.data;
 
                         setPABX(pabx);
-
-                        // remover futuramente
-                        console.log(response.data);
                     }
                 } catch (error) {
                     setPABX('');

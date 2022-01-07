@@ -145,9 +145,6 @@ export default function Dashboard() {
                         }
 
                         setBalance(balance);
-
-                        // remover futuramente
-                        console.log(response.data);
                     }
                 } catch (error) {
                     console.log(error);

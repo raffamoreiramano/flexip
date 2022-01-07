@@ -77,9 +77,6 @@ export default function Telephones({ props }) {
                     const { telephones } = response.data.pabx;
 
                     setTelephones(telephones);
-
-                    // remover futuramente
-                    console.log(response.data);
                 }
             } catch (error) {
                 console.log(error);

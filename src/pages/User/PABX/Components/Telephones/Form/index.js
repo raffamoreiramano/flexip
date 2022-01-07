@@ -177,9 +177,6 @@ export default function TelephoneForm({ props }) {
                         const { cities } = response.data;
 
                         setCities(cities);
-
-                        // remover futuramente
-                        console.log(response.data);
                     }
                 } catch (error) {
                     console.log(error);
@@ -204,8 +201,6 @@ export default function TelephoneForm({ props }) {
 
                 if (response.status && response.status === 200) {
                     const { telephones } = response.data;
-
-                    console.log(telephones)
 
                     setTelephones(null);
                     setTelephones(telephones);
@@ -280,7 +275,6 @@ export default function TelephoneForm({ props }) {
                                 >
                                     {
                                         telephones.map((item, index) => {
-                                            console.log(item.ddd + item.number)
                                             return (
                                                 <option key={index} value={item.id}>{phoneMask(item.ddd + item.number)}</option>
                                             );

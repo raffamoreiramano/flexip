@@ -90,8 +90,6 @@ export default function Branches({ props }) {
 
                     setBranches(branches);
                     setBranchesInUse(branches.length);
-                    // remover futuramente
-                    console.log(response.data);
                 }
             } catch (error) {
                 console.log(error);

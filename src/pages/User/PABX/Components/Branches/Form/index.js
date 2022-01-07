@@ -369,9 +369,6 @@ export default function BranchForm({ props }) {
                         }
 
                         setFetchedData(data);
-
-                        // remover futuramente
-                        console.log(response.data);
                     }
                 } catch (error) {
                     console.log(error);
@@ -648,7 +645,6 @@ export default function BranchForm({ props }) {
                                     value={latency}
                                     onChange={(event) => handleChange(() => {
                                         setLatency(event.value);
-                                        console.log(event)
                                     })}
                                     validation={validation.latency}
                                 >
