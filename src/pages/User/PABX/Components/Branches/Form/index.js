@@ -156,6 +156,44 @@ export default function BranchForm({ props }) {
 
     const cleanValidation = () => setValidation(initialValidation);
 
+    const validateByResponse = (errors) => {
+        const APIFields = {
+            'name': 'name',
+            'number': 'number',
+            'email': 'email',
+            'secret': 'password',
+            'password': 'webPassword',
+            'password_blocked': 'blockedPassword',
+            'externalNumber': 'externalNumber',
+            'port': 'port',
+            'callLimit': 'callLimit',
+            'nat': 'NAT',
+            'dtmf': 'DTMF',
+            'codecId': 'CODEC',
+            'callGroupId': 'department',
+            'pickupGroupId': 'pickUpGroup',
+            'qualify': 'latency',
+        }
+
+        const fields = Object.keys(errors);
+
+        const invalidFields = fields.map(field => APIFields[field]);
+
+        let newValidation = initialValidation;
+
+        invalidFields.forEach((key, index) => {
+            const message = errors[fields[index]];
+
+            newValidation[key] = {
+                isInvalid: true,
+                message,
+            }
+        });
+
+        setValidation(newValidation);
+        setIsValidated(true);
+    }
+
     const handleChange = (callback) => {
         if (isValidated) {
             setIsValidated(false);
@@ -241,20 +279,8 @@ export default function BranchForm({ props }) {
                     }
 
                     const { errors } = error.response.data;
-                    const fields = Object.keys(errors);
 
-                    let newValidation = initialValidation;
-
-                    fields.forEach((item) => {
-                        const message = errors[item];
-
-                        newValidation[item] = {
-                            isInvalid: true,
-                            message,
-                        }
-                    });
-
-                    setValidation(newValidation);
+                    validateByResponse(errors);
                 }
 
                 console.log(error.response.data);

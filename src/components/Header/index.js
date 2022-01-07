@@ -33,6 +33,7 @@ export default function Header() {
 		} else {
 			localStorage.setItem('darkmode', + theme.dark);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [theme]);
 
 	return (
