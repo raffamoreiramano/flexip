@@ -6,14 +6,14 @@ import api from "../../../../../services/api";
 import { API_GUARD } from "../../../../../services/env";
 
 import { IoMdRefresh, IoIosArrowUp } from 'react-icons/io';
-import { BsTelephoneFill } from 'react-icons/bs';
+import { BiBuildings } from 'react-icons/bi';
 
 import styles from '../styles.module.css';
-import TelephoneForm from "./Form";
-import TelephoneList from "./List";
+import DepartmentForm from "./Form";
+import DepartmentList from "./List";
 import Alert from "../../../../../components/Modals/Alert";
 
-export default function Telephones({ props }) {
+export default function Departments({ props }) {
     const { PABX } = props
     const ID = parseInt(PABX.id);
 
@@ -24,6 +24,7 @@ export default function Telephones({ props }) {
         title: "Ops!",
         message: "Parece que houve um erro... Por favor, tente mais tarde!"
     });
+    const success = useRef(false);
 
     const [open, setOpen] = useState(false);
     const [action, setAction] = useState({
@@ -31,19 +32,19 @@ export default function Telephones({ props }) {
         payload: {}
     });
 
-    const [telephones, setTelephones] = useState(null);
+    const [departments, setDepartments] = useState(null);
     const [pages, setPages] = useState([]);
     const [current, setCurrent] = useState(0);
 
     useEffect(() => {
-        const telephonesToPages = () => {
-            const TELEPHONES = [...telephones];
+        const departmentsToPages = () => {
+            const DEPARTMENTS = [...departments];
             const rows = 10;
-            const total = Math.max(Math.floor(TELEPHONES.length / rows), 1);
+            const total = Math.max(Math.floor(DEPARTMENTS.length / rows), 1);
             let pages = [];
             
             for (let i = total; i >= 0; i--) {
-                const slice = TELEPHONES.splice(0, rows);
+                const slice = DEPARTMENTS.splice(0, rows);
 
                 if (slice.length > 0) {
                     pages.push(slice);
@@ -55,10 +56,10 @@ export default function Telephones({ props }) {
         }
 
         if (!initialRender.current) {
-            telephonesToPages();
+            departmentsToPages();
         }
         
-    }, [telephones]);
+    }, [departments]);
 
     const initialRender = useRef(true);
 
@@ -69,14 +70,14 @@ export default function Telephones({ props }) {
 
         if (access_token) {
             try {
-                const response = await api.get(`/v1/${API_GUARD}/pabx/${ID}/telephones`, {
+                const response = await api.get(`/v1/${API_GUARD}/pabx/${ID}/classifications`, {
                     headers: { Authorization: "Bearer " + access_token }
                 });
 
                 if (response.status === 200) {
-                    const { telephones } = response.data.pabx;
+                    const { classifications: departments } = response.data;
 
-                    setTelephones(telephones);
+                    setDepartments(departments);
                 }
             } catch (error) {
                 console.log(error);
@@ -103,7 +104,9 @@ export default function Telephones({ props }) {
         })
     }
 
-    const showAlert = (content) => {
+    const showAlert = (content, response = false) => {
+        success.current = response;
+
         setAlertContent(content);
         setIsAlertActive(true);
     }
@@ -119,17 +122,29 @@ export default function Telephones({ props }) {
         });
     }
 
-    const check = async (telephone) => {
+    const edit = (department) => {
+        setAction({
+            type: 'edit',
+            payload: department,
+        });
+    }
+
+    const remove = async (department) => {
         dispatch(setIsLoading(true));
 
         try {
             const access_token = localStorage.getItem("access_token");
-            const response = await api.post(`/v1/${API_GUARD}/pabx/${ID}/telephone/${telephone.id}/main`, {}, {
+            const response = await api.delete(`/v1/${API_GUARD}/pabx/${ID}/classification/${department.id}`, {
                 headers: { Authorization: "Bearer " + access_token }
             });
 
             if (response.status && response.status === 200) {
-                refresh();
+                const content = { 
+                    title: "Pronto...", 
+                    message: `O departamento "${department.name}" foi excluído com sucesso!`
+                };
+
+                showAlert(content, true);
             }
         } catch (error) {
             let content = {
@@ -160,27 +175,34 @@ export default function Telephones({ props }) {
             refresh,
         }
 
+        const editProps = {
+            ...addProps,
+            department: action.payload,
+        }
+
         const listProps = {
             ...addProps,
-            telephones,
+            departments,
             pages,
             current,
             navigate,
             add,
-            check,
+            edit,
+            remove,
         }
 
         switch (action.type) {
-            case 'add': return <TelephoneForm props={addProps}/>
-            default: return <TelephoneList props={listProps}/>
+            case 'add': return <DepartmentForm props={addProps}/>
+            case 'edit': return <DepartmentForm props={editProps}/>
+            default: return <DepartmentList props={listProps}/>
         }
     }
 
     return (
-        <article className={`${styles.component} ${styles.telephones} ${open ? styles.open : styles.closed}`}>
+        <article className={`${styles.component} ${styles.departments} ${open ? styles.open : styles.closed}`}>
             <header className="glass">
                 <section className={styles.info}>
-                    <h2><i><BsTelephoneFill/></i>Telefones</h2>
+                    <h2><i><BiBuildings/></i>Departamentos</h2>
                 </section>
                 <section className={styles.actions}>
                     <button
@@ -211,6 +233,11 @@ export default function Telephones({ props }) {
                 title={alertContent.title}
                 message={alertContent.message}
                 state={[isAlertActive, setIsAlertActive]}
+                onClose={() => {
+                    if (success.current) {
+                        refresh();
+                    }
+                }}
             />
         </article>
     );

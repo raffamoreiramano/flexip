@@ -401,13 +401,13 @@
 	.formControl {
 		min-width: unset;
 		width: 100%;
-		max-width: min(calc(100vw - 10rem), 350px);
+		max-width: min(calc(100vw - 12rem), 350px);
 	}
 }
 
 @media screen and (max-width: 425px) {
 	.formControl {
 		width: 100%;
-		max-width: calc(100vw - 10rem);
+		max-width: max(calc(100vw - 12rem), 250px);
 	}
 }

@@ -8,6 +8,7 @@ import { API_GUARD } from "../../../../services/env";
 import styles from './styles.module.css';
 import Branches from "../Components/Branches";
 import Telephones from "../Components/Telephones";
+import Departments from "../Components/Departments";
 
 export default function PABX(props) {
     const { match } = props;
@@ -66,6 +67,7 @@ export default function PABX(props) {
                 <>
                     <Branches props={properties}/>
                     <Telephones props={properties}/>
+                    <Departments props={properties}/>
                 </>
             );
         }

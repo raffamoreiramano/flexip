@@ -128,8 +128,14 @@
     cursor: pointer;
 }
 
-.component.open .actions button:last-of-type {
+.component.open .actions toggle {
     transform: rotateZ(180deg);
+}
+
+.actions .refresh:disabled {
+    cursor: default;
+    pointer-events: none;
+    opacity: .5;
 }
 
 .pabx .actions {
@@ -445,6 +451,21 @@
 
     .component .form .fieldsetButton legend {
         width: min(calc(100vw - 10rem), 350px);
+    }
+
+    .info {
+        overflow: hidden;
+    }
+
+    .info h2 {
+        display: inline;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .info h2 i {
+        display: none;
     }
 
     .pabx .info {

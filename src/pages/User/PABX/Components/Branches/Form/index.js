@@ -401,7 +401,7 @@ export default function BranchForm({ props }) {
                     }
                 }}>
                     <fieldset>
-                        <legend>{branch ? "Atualizar" : "Adicionar"}</legend>
+                        <legend>{branch ? "Editar" : "Adicionar"}</legend>
                         <div>
                             <Input
                                 id="name"

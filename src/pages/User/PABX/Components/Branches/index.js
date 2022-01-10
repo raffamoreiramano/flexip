@@ -45,7 +45,7 @@ export default function Branches({ props }) {
         const branchesToPages = () => {
             const BRANCHES = [...branches];
             const rows = 10;
-            const total = Math.max(Math.floor(branches.length / rows), 1);
+            const total = Math.max(Math.floor(BRANCHES.length / rows), 1);
             let pages = [];
             
             for (let i = total; i >= 0; i--) {
@@ -304,6 +304,8 @@ export default function Branches({ props }) {
                         <IoMdArrowBack/>
                     </button>
                     <button
+                        className={styles.refresh}
+                        disabled={open ? false : true}
                         onClick={() => {
                             if (open) {
                                 refresh();
@@ -313,6 +315,7 @@ export default function Branches({ props }) {
                         <IoMdRefresh/>
                     </button>
                     <button
+                        className={styles.toggle}
                         onClick={() => setOpen(!open)}
                     >
                         <IoIosArrowUp/>
