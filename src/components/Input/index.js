@@ -148,10 +148,16 @@ export function Select({
 }) {
     const [options, setOptions] = useState(children || []);
     const [searchValue, setSearchValue] = useState("");
+
+    const initial = {
+        value: options.find(option => option.props.value === value)?.props?.value || '', 
+        children: options.find(option => option.props.value === value)?.props?.children || placeholder || "Selecione..."
+    }
+
     const [selected, setSelected] = useState({
         target: {
-            value: options.find(option => option.props.value === value)?.props?.children || '', 
-            children: options.find(option => option.props.value === value)?.props?.children || placeholder || "Selecione..."
+            value: initial.value,
+            children: Array.isArray(initial.children) ? initial.children.join('') : initial.children,
         }
     });
     const [active, setActive] = useState(false);

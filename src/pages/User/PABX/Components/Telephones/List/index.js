@@ -62,7 +62,7 @@ export default function TelephoneList({ props }) {
                                         </td>
                                     </tr>
                                 ))
-                                : <tr><td colSpan="100%">Nenhum ramal encontrado!</td></tr>
+                                : <tr><td colSpan="100%">Nenhum telefone encontrado!</td></tr>
                             }
                         </tbody>
                     </Table>

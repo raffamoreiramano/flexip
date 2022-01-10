@@ -6,9 +6,9 @@ import Pagination from "../../../../../../components/Table/Pagination";
 import Confirm from "../../../../../../components/Modals/Confirm";
 import { MdMoreVert } from 'react-icons/md';
 
-export default function DepartmentList({ props }) {
+export default function InputRouteList({ props }) {
     const {
-        departments,
+        routes,
         pages,
         current,
         navigate,
@@ -20,7 +20,7 @@ export default function DepartmentList({ props }) {
     const [isConfirmActive, setIsConfirmActive] = useState(false);
     const [confirmContent, setConfirmContent] = useState({
         title: "Confirme:",
-        message: "Deseja mesmo excluir esse departamento?",
+        message: "Deseja mesmo excluir essa rota?",
         payload: {}
     });
     
@@ -28,7 +28,7 @@ export default function DepartmentList({ props }) {
         <>
             <section className={styles.list}>
                 {
-                    departments
+                    routes
                     ? <>
                         <Table
                             thead={[
@@ -47,26 +47,26 @@ export default function DepartmentList({ props }) {
                             <tbody>
                                 {
                                     pages.length > 0
-                                    ? pages[current].map((department, index) => (
+                                    ? pages[current].map((route, index) => (
                                         <tr key={index}>
-                                            <td>{department.name}</td>
+                                            <td>{route.name}</td>
                                             <td>
                                                 <div className={styles.listItemMenu}>
                                                     <input
-                                                        id={`department-${department.id}`}
+                                                        id={`route-${route.id}`}
                                                         type="checkbox"
                                                     />
-                                                    <label htmlFor={`department-${department.id}`}>
+                                                    <label htmlFor={`route-${route.id}`}>
                                                         <MdMoreVert/>
                                                     </label>
                                                     <ul className="glass">
                                                         <li>
                                                             <a
-                                                                href={`#department-${department.id}`}
+                                                                href={`#route-${route.id}`}
                                                                 onClick={(event) => {
                                                                     event.preventDefault();
 
-                                                                    edit(department);
+                                                                    edit(route);
                                                                 }}
                                                             >
                                                                 Editar
@@ -74,18 +74,18 @@ export default function DepartmentList({ props }) {
                                                         </li>
                                                         <li>
                                                             <a
-                                                                href={`#department-${department.id}`}
+                                                                href={`#route-${route.id}`}
                                                                 onClick={(event) => {
                                                                     event.preventDefault();
 
-                                                                    const menu = document.getElementById(`department-${department.id}`);
+                                                                    const menu = document.getElementById(`route-${route.id}`);
 
                                                                     menu.checked = false;
 
                                                                     setConfirmContent({
                                                                         title: "Confirme:",
-                                                                        message: `Deseja mesmo excluir o departamento "${department.name}"?`,
-                                                                        payload: department,
+                                                                        message: `Deseja mesmo excluir a rota "${route.name}"?`,
+                                                                        payload: route,
                                                                     });
 
                                                                     setIsConfirmActive(true);
@@ -99,7 +99,7 @@ export default function DepartmentList({ props }) {
                                             </td>
                                         </tr>
                                     ))
-                                    : <tr><td colSpan="100%">Nenhum departamento encontrado!</td></tr>
+                                    : <tr><td colSpan="100%">Nenhuma rota encontrado!</td></tr>
                                 }
                             </tbody>
                         </Table>

@@ -9,6 +9,7 @@ import styles from './styles.module.css';
 import Branches from "../Components/Branches";
 import Telephones from "../Components/Telephones";
 import Departments from "../Components/Departments";
+import InputRoutes from "../Components/InputRoutes";
 
 export default function PABX(props) {
     const { match } = props;
@@ -68,6 +69,7 @@ export default function PABX(props) {
                     <Branches props={properties}/>
                     <Telephones props={properties}/>
                     <Departments props={properties}/>
+                    <InputRoutes props={properties}/>
                 </>
             );
         }

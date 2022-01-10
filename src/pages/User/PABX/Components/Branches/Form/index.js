@@ -494,7 +494,6 @@ export default function BranchForm({ props }) {
                             <div>
                                 <Select
                                     id="externalNumber"
-                                    type="tel"
                                     name="externalNumber"
                                     label="Número externo"
                                     placeholder="Números disponíveis..."
