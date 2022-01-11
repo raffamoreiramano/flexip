@@ -38,7 +38,7 @@ export default function DepartmentList({ props }) {
                                     width: "99%",
                                 },
                                 { 
-                                    heading: "Principal",
+                                    heading: "Opções",
                                     align: "center",
                                     width: "1%",
                                 },
