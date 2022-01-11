@@ -1,5 +1,4 @@
-import React, { useState, useRef } from "react";
-import _uniqueId from 'lodash/uniqueId';
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setIsLoading, updatePABX, updateUser } from "../../../store/actions";
 
@@ -30,9 +29,6 @@ export default function Login(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordRecovery, setPasswordRecovery] = useState("");
-
-    const emailId = useRef(_uniqueId(`email-id-`)).current;
-    const passwordId = useRef(_uniqueId(`password-id-`)).current;
 
     const [isValidated, setIsValidated] = useState(false);
     const initialValidation = {
@@ -251,7 +247,7 @@ export default function Login(props) {
                             <Input
                                 label="E-mail"
                                 placeholder="usuario@email.com"
-                                id={emailId}
+                                id="login-email"
                                 type="email"
                                 name="email"
                                 value={email}
@@ -262,7 +258,7 @@ export default function Login(props) {
                             />
                             <Input
                                 label="Senha"
-                                id={passwordId}
+                                id="login-password"
                                 type="password"
                                 name="password"
                                 value={password}

@@ -243,7 +243,7 @@ export default function TelephoneForm({ props }) {
                         <legend>Vincular novo telefone</legend>
                         <div>
                             <Select
-                                id="city"
+                                id="telephone-city"
                                 label="Cidade"
                                 name="city"
                                 placeholder="Cidades disponíveis..."
@@ -264,7 +264,7 @@ export default function TelephoneForm({ props }) {
                             {
                                 telephones && 
                                 <Select
-                                    id="telephone"
+                                    id="telephone-telephone"
                                     label="Telefone"
                                     name="telephone"
                                     value={telephone}

@@ -293,7 +293,7 @@ export default function InputRouteForm({ props }) {
         if (destinationType === "ip") {
             return (
                 <Input
-                    id="destination"
+                    id="input-route-destination"
                     name="destination"
                     label="IP"
                     placeholder="IP de destino"
@@ -309,6 +309,17 @@ export default function InputRouteForm({ props }) {
         let key = `${destinationType}s`;
         let label;
 
+        let map = ((item, index) => {
+            return (
+                <option
+                    key={index}
+                    value={item.id}
+                >
+                    {item.name}
+                </option>
+            );
+        });
+
         switch (destinationType) {
             case "queue":
                 label = "Fila de atentimento";
@@ -319,11 +330,23 @@ export default function InputRouteForm({ props }) {
             default:
                 label = "Ramal";
                 key = "branches";
+                map = (item, index) => {
+                    return (
+                        <option
+                            key={index}
+                            value={item.id}
+                        >
+                            {item.name} {`(${item.number})`}
+                        </option>
+                    );
+                }
         }
+
+
 
         return (
             <Select
-                id="destination"
+                id="input-route-destination"
                 name="destination"
                 label={label}
                 value={destination}
@@ -333,16 +356,7 @@ export default function InputRouteForm({ props }) {
                 validation={validation.destination}
             >
                 {
-                    fetchedData[key].map((item, index) => {
-                        return (
-                            <option
-                                key={index}
-                                value={item.id}
-                            >
-                                {item.name} {(destinationType === "branch" && `(${item.number})`)}
-                            </option>
-                        );
-                    })
+                    fetchedData[key].map(map)
                 }
             </Select>
         );
@@ -365,7 +379,7 @@ export default function InputRouteForm({ props }) {
                     <fieldset>
                         <legend>{route ? "Editar" : "Adicionar"}</legend>
                         <Input
-                            id="name"
+                            id="input-route-name"
                             name="name"
                             label="Nome"
                             placeholder="Nome da rota"
@@ -377,7 +391,7 @@ export default function InputRouteForm({ props }) {
                         />
 
                         <Select
-                            id="DDR"
+                            id="input-route-DDR"
                             name="DDR"
                             label="DDR"
                             value={DDR}
@@ -396,7 +410,7 @@ export default function InputRouteForm({ props }) {
                         </Select>
 
                         <Radio 
-                            id="recordCalls"
+                            id="input-route-recordCalls"
                             name="recordCalls"
                             label="Gravar chamadas"
                             value={recordCalls}
@@ -413,7 +427,7 @@ export default function InputRouteForm({ props }) {
                     <fieldset>
                         <legend>Destino</legend>
                         <Select
-                            id="destinationType"
+                            id="input-route-destinationType"
                             name="destinationType"
                             label="Tipo"
                             value={destinationType}

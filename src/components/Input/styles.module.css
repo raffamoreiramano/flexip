@@ -22,6 +22,10 @@
 	max-width: 100%;
 }
 
+.formControl .select select {
+	display: none;
+}
+
 .formControl .select .input {
 	--border-color: var(--text-color);
 	--border-visibility: 0;

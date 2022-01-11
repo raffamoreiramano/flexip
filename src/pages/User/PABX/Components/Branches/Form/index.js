@@ -404,7 +404,7 @@ export default function BranchForm({ props }) {
                         <legend>{branch ? "Editar" : "Adicionar"}</legend>
                         <div>
                             <Input
-                                id="name"
+                                id="branch-name"
                                 name="name"
                                 label="Nome"
                                 placeholder="Nome do responsável"
@@ -416,7 +416,7 @@ export default function BranchForm({ props }) {
                             />
 
                             <Input
-                                id="number"
+                                id="branch-number"
                                 type="tel"
                                 name="number"
                                 label="Número"
@@ -431,7 +431,7 @@ export default function BranchForm({ props }) {
 
                         <div>    
                             <Input
-                                id="email"
+                                id="branch-email"
                                 type="email"
                                 name="email"
                                 label="E-mail"
@@ -443,7 +443,7 @@ export default function BranchForm({ props }) {
                             />
 
                             <Input
-                                id="password"
+                                id="branch-password"
                                 type="password"
                                 name="password"
                                 label="Senha"
@@ -457,7 +457,7 @@ export default function BranchForm({ props }) {
 
                         <div>    
                             <Input
-                                id="webPassword"
+                                id="branch-webPassword"
                                 type="password"
                                 name="webPassword"
                                 label="Senha web"
@@ -469,7 +469,7 @@ export default function BranchForm({ props }) {
                             />
 
                             <Radio 
-                                id="blockedPassword"
+                                id="branch-blockedPassword"
                                 name="blockedPassword"
                                 label="Senha bloqueada"
                                 value={blockedPassword}
@@ -485,7 +485,7 @@ export default function BranchForm({ props }) {
                     </fieldset>
 
                     <fieldset>
-                        <input className={styles.fieldsetToggle} type="checkbox" id="add-branch-advanced-toggle"/>
+                        <input className={styles.fieldsetToggle} type="checkbox" id="branch-add-branch-advanced-toggle"/>
                         <label className={styles.fieldsetButton} htmlFor="add-branch-advanced-toggle">
                             <legend><span>Avançado</span><i><IoIosArrowUp/></i></legend>
                         </label>
@@ -493,7 +493,7 @@ export default function BranchForm({ props }) {
                         <div className={styles.fieldsetContent}>
                             <div>
                                 <Select
-                                    id="externalNumber"
+                                    id="branch-externalNumber"
                                     name="externalNumber"
                                     label="Número externo"
                                     placeholder="Números disponíveis..."
@@ -513,7 +513,7 @@ export default function BranchForm({ props }) {
                                 </Select>
                                 
                                 <Input
-                                    id="port"
+                                    id="branch-port"
                                     type="number"
                                     name="port"
                                     label="Porta"
@@ -526,7 +526,7 @@ export default function BranchForm({ props }) {
                                 />
 
                                 <Input
-                                    id="callLimit"
+                                    id="branch-callLimit"
                                     type="number"
                                     name="callLimit"
                                     label="Limite de chamadas"
@@ -541,7 +541,7 @@ export default function BranchForm({ props }) {
 
                             <div>
                                 <Select
-                                    id="NAT"
+                                    id="branch-NAT"
                                     name="NAT"
                                     label="NAT"
                                     value={NAT}
@@ -560,7 +560,7 @@ export default function BranchForm({ props }) {
                                 </Select>
 
                                 <Select
-                                    id="DTMF"
+                                    id="branch-DTMF"
                                     name="DTMF"
                                     label="DTMF"
                                     value={DTMF}
@@ -579,7 +579,7 @@ export default function BranchForm({ props }) {
                                 </Select>
                                 
                                 <Checkboxes 
-                                    id="CODEC"
+                                    id="branch-CODEC"
                                     name="CODEC"
                                     label="CODEC"
                                     value={CODEC}
@@ -600,7 +600,7 @@ export default function BranchForm({ props }) {
                             
                             <div>
                                 <Select
-                                    id="department"
+                                    id="branch-department"
                                     name="department"
                                     label="Departamento"
                                     value={department}
@@ -619,7 +619,7 @@ export default function BranchForm({ props }) {
                                 </Select>
 
                                 <Select
-                                    id="pickUpGroup"
+                                    id="branch-pickUpGroup"
                                     name="pickUpGroup"
                                     label="Grupo de captura"
                                     value={pickUpGroup}
@@ -638,7 +638,7 @@ export default function BranchForm({ props }) {
                                 </Select>
 
                                 <Radio 
-                                    id="latency"
+                                    id="branch-latency"
                                     name="latency"
                                     label="Latência"
                                     value={latency}

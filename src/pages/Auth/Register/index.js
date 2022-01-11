@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import _uniqueId from 'lodash/uniqueId';
 import { useDispatch } from "react-redux";
 import { setIsLoading } from "../../../store/actions";
 
@@ -55,20 +54,12 @@ export default function Register(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     
-    const nameId = useRef(_uniqueId(`name-id-`)).current;
-    const emailId = useRef(_uniqueId(`email-id-`)).current;
-    const passwordId = useRef(_uniqueId(`password-id-`)).current;
-    
     
     // segundo passo
     const [phoneNumber, setPhoneNumber] = useState("");
     const [CP, setCP] = useState("");
     const [personType, setPersonType] = useState("");
     const [companyName, setCompanyName] = useState("");
-    
-    const phoneNumberId = useRef(_uniqueId(`phoneNumber-id-`)).current;
-    const CPId = useRef(_uniqueId(`CP-id-`)).current;
-    const companyNameId = useRef(_uniqueId(`companyName-id-`)).current;
 
 
     // terceiro passo
@@ -79,20 +70,11 @@ export default function Register(props) {
     const [PABXNumbers, setPABXNumbers] = useState([]);
     const [branchPassword, setBranchPassword] = useState("");
     
-    const PABXNameId = useRef(_uniqueId(`PABXName-id-`)).current;
-    const cityId = useRef(_uniqueId(`city-id-`)).current;
-    const PABXNumberId = useRef(_uniqueId(`PABXNumber-id-`)).current;
-    const branchPasswordId = useRef(_uniqueId(`branchPassword-id-`)).current;
-    
     
     // quarto passo
     const [branchesAmount, setBranchesAmount] = useState("");
     const [branchName, setBranchName] = useState("");
     const [branchNumber, setBranchNumber] = useState("");
-    
-    const branchesAmountId = useRef(_uniqueId(`branchesAmount-id-`)).current;
-    const branchNameId = useRef(_uniqueId(`branchName-id-`)).current;
-    const branchNumberId = useRef(_uniqueId(`branchNumber-id-`)).current;
 
     const [isValidated, setIsValidated] = useState(false);
     const initialValidation = {
@@ -493,7 +475,7 @@ export default function Register(props) {
                 // phoneNumber,
                 inputs = (<>
                     <Input
-                        id={nameId}
+                        id="register-name"
                         type="text"
                         label="Nome"
                         placeholder="Nome do responsável legal"
@@ -505,7 +487,7 @@ export default function Register(props) {
                         validation={validation.name}
                     />
                     <Input
-                        id={emailId}
+                        id="register-email"
                         type="email"
                         label="E-mail"
                         placeholder="Endereço de e-mail"
@@ -517,7 +499,7 @@ export default function Register(props) {
                         validation={validation.email}
                     />
                     <Input
-                        id={passwordId}
+                        id="register-password"
                         type="password"
                         label="Senha"
                         name="password"
@@ -535,7 +517,7 @@ export default function Register(props) {
                 // companyName,
                 inputs = (<>
                     <Input
-                        id={phoneNumberId}
+                        id="register-phoneNumber"
                         type="tel"
                         label="Telefone para contato"
                         placeholder="Telefone fixo ou móvel"
@@ -547,7 +529,7 @@ export default function Register(props) {
                         validation={validation.phoneNumber}
                     />
                     <Input
-                        id={CPId}
+                        id="register-CP"
                         type="text"
                         label="CPF/CNPJ"
                         placeholder="Cadastro de Pessoa Física ou Jurídica"
@@ -569,7 +551,7 @@ export default function Register(props) {
                     {
                         personType === 'juridica' &&
                         <Input
-                            id={companyNameId}
+                            id="register-companyName"
                             type="text"
                             label="Nome da empresa"
                             placeholder="Nome da empresa"
@@ -590,7 +572,7 @@ export default function Register(props) {
                 // PABXNumber,
                 inputs = (<>
                     <Input
-                        id={PABXNameId}
+                        id="register-PABXName"
                         type="text"
                         label="PABX"
                         placeholder="Nome do PABX"
@@ -602,7 +584,7 @@ export default function Register(props) {
                         validation={validation.PABXName}
                     />
                     <Select
-                        id={cityId}
+                        id="register-city"
                         label="Cidade"
                         name="city"
                         placeholder="Cidades disponíveis..."
@@ -623,7 +605,7 @@ export default function Register(props) {
                     {
                         city && (
                             <Select
-                                id={PABXNumberId}
+                                id="register-PABXNumber"
                                 label="Telefone"
                                 name="PABXNumber"
                                 placeholder="Telefones para contratar..."
@@ -653,7 +635,7 @@ export default function Register(props) {
                 // branchPassword,
                 inputs = (<>
                     <Input
-                        id={branchesAmountId}
+                        id="register-branchesAmount"
                         type="number"
                         label="Ramais"
                         placeholder="Quantos deseja contratar"
@@ -667,7 +649,7 @@ export default function Register(props) {
                     {
                         branchesAmount > 0 && (<>
                             <Input
-                                id={branchNameId}
+                                id="register-branchName"
                                 type="text"
                                 label="Primeiro Ramal"
                                 placeholder="Nome do Ramal"
@@ -679,7 +661,7 @@ export default function Register(props) {
                                 validation={validation.branchName}
                             />
                             <Input
-                                id={branchNumberId}
+                                id="register-branchNumber"
                                 type="tel"
                                 label="Número do Ramal"
                                 placeholder="Número do primeiro Ramal"
@@ -691,7 +673,7 @@ export default function Register(props) {
                                 validation={validation.branchNumber}
                             />
                             <Input
-                                id={branchPasswordId}
+                                id="register-branchPassword"
                                 type="password"
                                 label="Senha do Ramal"
                                 name="branchPassword"
@@ -708,7 +690,7 @@ export default function Register(props) {
             default:
                 inputs = (<>
                     <Input
-                        id={nameId}
+                        id="register-name"
                         type="text"
                         label="Nome"
                         placeholder="Nome do responsável legal"
@@ -720,7 +702,7 @@ export default function Register(props) {
                         validation={validation.name}
                     />
                     <Input
-                        id={emailId}
+                        id="register-email"
                         type="email"
                         label="E-mail"
                         placeholder="Endereço de e-mail"
@@ -732,7 +714,7 @@ export default function Register(props) {
                         validation={validation.email}
                     />
                     <Input
-                        id={passwordId}
+                        id="register-password"
                         type="password"
                         label="Senha"
                         name="password"

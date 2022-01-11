@@ -149,29 +149,14 @@ export function Select({
     const [options, setOptions] = useState(children || []);
     const [searchValue, setSearchValue] = useState("");
 
-    const initial = {
-        value: options.find(option => option.props.value === value)?.props?.value || '', 
-        children: options.find(option => option.props.value === value)?.props?.children || placeholder || "Selecione..."
-    }
+    const selectRef = useRef(null);
 
-    const [selected, setSelected] = useState({
-        target: {
-            value: initial.value,
-            children: Array.isArray(initial.children) ? initial.children.join('') : initial.children,
-        }
-    });
     const [active, setActive] = useState(false);
-    const initialRender = useRef(true);
     const searchboxRef = useRef(null);
 
     useEffect(() => {
-        if (initialRender.current) {
-            initialRender.current = false;
-        } else {
-            onChange(selected);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selected]);
+        setOptions(children);
+    }, [children]);
 
     useEffect(() => {
         // if (initialRender.current) {
@@ -181,7 +166,13 @@ export function Select({
 
             if (searchValue) {
                 filteredOptions = children.filter((option) => {
-                    return option?.props?.children?.toLowerCase().search(searchValue.toLowerCase()) > -1;
+                    let string = option?.props?.children;
+                    
+                    if (Array.isArray(string)) {
+                        string = string.join('');
+                    }
+
+                    return string.toLowerCase().search(searchValue.toLowerCase()) > -1;
                 });
             }
 
@@ -196,11 +187,78 @@ export function Select({
         className += ` ${styles.invalid}`;
     }
 
+    const Selected = () => {
+        let props ={
+            htmlFor: id,
+            className: styles.input,
+            title: `${label}: ...`,
+            children: placeholder || "Selecione...",
+        }
+
+        if (children) {
+            const option = children.find(option => option.props.value == value);
+            let string = option?.props?.children;
+
+            if (Array.isArray(string)) {
+                string = string.join('');
+            }
+
+            if (string) {
+                props.children = string;
+                props.title = `${label}: ${string}`;
+            }
+        }
+
+        return (
+            <label {...props}/>
+        );
+    }
+
+    const List = ({ options }) => {
+        return (
+            <ul className={styles.optionsList}>
+                {
+                    options.length > 0
+                    ? options.map((option, index) => <li
+                        key={index}
+                        children={option.props.children}
+                        title={option.props.children}
+                        onClick={() => {
+                            const event = document.createEvent('HTMLEvents');
+                            event.initEvent('change', true, false);
+
+                            selectRef.current.value = option.props.value;
+                            selectRef.current.dispatchEvent(event);
+                            setActive(false);
+                        }}
+                    />)
+                    : <li
+                        className={styles.disabledOption}
+                        onClick={() => {
+                            setActive(false);
+                        }}
+                    >
+                        Nenuma opção disponível...
+                    </li>
+                }
+            </ul>
+        );
+    }
+
     return (
         <div className={className}>
             <label htmlFor={id}>{label}</label>
             <div className={styles.select}>
-                <input className={styles.value} type="hidden" name={name} value={value} />
+                <select
+                    ref={selectRef}
+                    className={styles.value}
+                    name={name}
+                    value={value}
+                    children={children}
+                    onChange={(event) => {
+                        onChange(event);
+                    }}
+                />
                 <input
                     id={id}
                     className={styles.toggle}
@@ -218,12 +276,7 @@ export function Select({
                         }
                     }}
                 /> 
-                <label 
-                    htmlFor={id}
-                    className={styles.input}
-                    title={label + ": " + selected.target.children}
-                    children={selected.target.children || '⠀'}
-                />
+                <Selected/>
                 <div className={`${styles.options} glass`}>
                     {
                         search && <div className={styles.searchbox}>
@@ -235,28 +288,7 @@ export function Select({
                             />
                         </div>
                     }
-                    <ul className={styles.optionsList}>
-                        {
-                            options.length > 0
-                            ? options.map((option, index) => <li
-                                key={index}
-                                children={option.props.children}
-                                title={option.props.children}
-                                onClick={() => {
-                                    setSelected({ target: option.props });
-                                    setActive(false);
-                                }}
-                            />)
-                            : <li
-                                className={styles.disabledOption}
-                                onClick={() => {
-                                    setActive(false);
-                                }}
-                            >
-                                Nenuma opção disponível...
-                            </li>
-                        }
-                    </ul>
+                    <List options={search ? options : children}/>
                 </div>
             </div>
             <strong className="error-message">{validation.message}</strong>

@@ -195,7 +195,7 @@ export default function DepartmentForm({ props }) {
                     <fieldset>
                         <legend>{department ? "Editar" : "Adicionar"}</legend>
                         <Input
-                            id="name"
+                            id="department-name"
                             name="name"
                             label="Nome"
                             placeholder="Nome do departamento"
