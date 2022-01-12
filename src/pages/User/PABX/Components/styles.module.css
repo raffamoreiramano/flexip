@@ -503,3 +503,22 @@
     cursor: default;
     pointer-events: none;
 }
+
+/* audios */
+
+@media screen and (max-width: 768px) {
+    .component.audios .list table colgroup col:first-of-type {
+        width: 99%;
+    }
+
+    .component.audios .list table colgroup col:nth-last-of-type(2) {
+        width: 0;
+        display: none;
+    }
+
+    .component.audios .list table thead th:nth-last-of-type(2),
+    .component.audios .list table thead tr th:nth-last-of-type(2),
+    .component.audios .list table tbody tr td:nth-last-of-type(2) {
+        display: none;
+    }
+}

@@ -7,6 +7,7 @@ import { API_GUARD } from "../../../../../../services/env";
 
 import styles from '../../styles.module.css';
 import Input from "../../../../../../components/Input";
+import Audio from "../../../../../../components/Audio";
 import Alert from "../../../../../../components/Modals/Alert";
 import { fileToBase64 } from "../../../../../../services/helpers";
 
@@ -28,11 +29,7 @@ export default function AudioForm({ props }) {
 
     const [isValidated, setIsValidated] = useState(false);
     const initialValidation = {
-        name: {
-            isInvalid: false,
-            message: ''
-        },
-        file: {
+        audio: {
             isInvalid: false,
             message: ''
         },
@@ -59,21 +56,21 @@ export default function AudioForm({ props }) {
         let veredict = true;
 
         if (!name) {
-            newValidation.name = {
+            newValidation.audio = {
                 isInvalid: true,
                 message: "Nome inválido!",
             }
         }
 
         if (name.length < fileConstraints.nameLength.min) {
-            newValidation.name = {
+            newValidation.audio = {
                 isInvalid: true,
                 message: "Nome do áudio é curto demais!",
             }
         }
         
         if (name.length > fileConstraints.nameLength.max) {
-            newValidation.name = {
+            newValidation.audio = {
                 isInvalid: true,
                 message: "Nome do áudio é longo demais!",
             }
@@ -81,27 +78,27 @@ export default function AudioForm({ props }) {
 
         if (file) {
             if (file.size === 0) {
-                newValidation.file = {
+                newValidation.audio = {
                     isInvalid: true,
                     message: "Nenhum arquivo selecionado!",
                 }
             }
     
             if (!fileConstraints.types.includes(file.type)) {
-                newValidation.file = {
+                newValidation.audio = {
                     isInvalid: true,
                     message: "Tipo de arquivo de áudio inválido!",
                 }
             }
             
             if (file.size > fileConstraints.size) {
-                newValidation.file = {
+                newValidation.audio = {
                     isInvalid: true,
                     message: "Arquivo grande demais!",
                 }
             }
         } else {
-            newValidation.file = {
+            newValidation.audio = {
                 isInvalid: true,
                 message: "Nenhum arquivo selecionado!",
             }
@@ -120,7 +117,8 @@ export default function AudioForm({ props }) {
 
     const validateByResponse = (errors) => {
         const APIFields = {
-            'name': 'name',
+            'name': 'audio',
+            'file': 'audio',
         }
 
         const fields = Object.keys(errors);
@@ -147,19 +145,13 @@ export default function AudioForm({ props }) {
     const preview = useMemo(() => {
         cleanValidation();
 
-        if (file) {
-            const str = file.name;
-            const noExtName = str.substr(-str.length, str.lastIndexOf("."));
+        
+        if (fileConstraints.types.includes(file?.type)) {
+            const nameInput = document.getElementById('audio-file-filename');
 
-            setName(noExtName);
+            nameInput.focus();
 
-            if (fileConstraints.types.includes(file.type)) {
-                const nameInput = document.getElementById('audio-name');
-
-                nameInput.focus();
-
-                return URL.createObjectURL(file);
-            }
+            return URL.createObjectURL(file);
         }
 
         return null;
@@ -187,7 +179,7 @@ export default function AudioForm({ props }) {
 
         const body = {
             name: name.trim(),
-            file: fileToBase64(file),
+            file: await fileToBase64(file),
         }
 
         try {
@@ -262,7 +254,30 @@ export default function AudioForm({ props }) {
                     if (response.status === 200) {
                         const {
                             name,
+                            full_audio_link: url,
                         } = response.data.sound;
+
+                        const requestOptions = {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': "Bearer " + access_token
+                            },
+                        };
+                    
+                        const file = await fetch(url, requestOptions)
+                        .then(response => response.arrayBuffer())
+                        .then(arrayBuffer => {
+                            const blob = new Blob([arrayBuffer], { type: "audio/wav" });
+                        
+                            return blob;
+                        })
+                        .then(blob => {
+                            return URL.createObjectURL(blob);
+                        }); 
+
+                        if (file) {
+                            setFile(file);
+                        }
 
                         setName(name);
                     }
@@ -298,16 +313,25 @@ export default function AudioForm({ props }) {
                     <fieldset>
                         <legend>{audio ? "Editar" : "Adicionar"}</legend>
                         <Input
-                            id="input-audio-name"
-                            name="name"
-                            label="Nome"
-                            placeholder="Nome da rota"
-                            value={name}
+                            id="audio-file"
+                            type="file"
+                            accept="audio/*"
+                            name="file"
+                            label="Áudio"
                             onChange={(event) => handleChange(() => {
-                                setName(event.target.value);
+                                setFile(event.target.value);
                             })}
-                            validation={validation.name}
+                            validation={validation.audio}
+                            filename={{
+                                value: name,
+                                onChange: (event) => handleChange(() => {
+                                    setName(event.target.value)
+                                }),
+                                validation: validation.name,
+                            }}
                         />
+                        {preview && <Audio src={preview} title={`Reproduzir: ${file.name}`}/>}
+                        
                     </fieldset>
 
                     <div className={styles.formActions}>

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import { phoneMask } from '../../services/helpers';
 
+import { BiUpload } from "react-icons/bi";
+
 import styles from './styles.module.css';
 
 export default function Input({
@@ -10,6 +12,11 @@ export default function Input({
     placeholder,
     type,
     name,
+    filename = {
+        value: '',
+        onChange: () => {},
+    },
+    accept,
     value = "",
     autoComplete,
     onChange,
@@ -51,7 +58,7 @@ export default function Input({
 
                 break;
             case "tel":
-                const newOnChange = (event) => {
+                const telOnChange = (event) => {
                     const newValue = phoneMask(event.target.value);
 
                     onChange({...event, target: {...event.target, value: newValue}});
@@ -59,7 +66,7 @@ export default function Input({
 
                 inputProps = {
                     ...inputProps,
-                    onChange: newOnChange,
+                    onChange: telOnChange,
                 }
 
                 break;
@@ -85,6 +92,29 @@ export default function Input({
                     onFocus,
                 }
                 break;
+            case "file":
+                const fileOnChange = (event) => {
+                    const [newValue] = event.target.files;
+
+                    onChange({...event, target: {...event.target, value: newValue}});
+
+                    if (!filename.value) {
+                        const str = newValue?.name || '';
+                        const noExtName = str.substr(-str.length, str.lastIndexOf("."));
+
+                        filename.onChange({...event, target: {...event.target, value: noExtName}});
+                    }
+                };
+
+                inputProps = {
+                    ...inputProps,
+                    placeholder: placeholder || `Escolha um arquivo de ${label.toLowerCase()}...`,
+                    accept,
+                    title: `${label}: ${filename.value || '...'}`, 
+                    onChange: fileOnChange,
+                }
+
+                break;
             default:
                 inputProps = {
                     ...inputProps,
@@ -100,12 +130,32 @@ export default function Input({
                 <div className={styles.password}>
                     <input
                         className={styles.toggle}
-                        id={id + "-suffix"}
+                        id={`${id}-suffix`}
                         type="checkbox"
                         checked={showPassword}
                         onChange={() => setShowPassword(!showPassword)}
                     />
-                    <label className={styles.toggleIcon} htmlFor={id + "-suffix"} />
+                    <label className={styles.toggleIcon} htmlFor={`${id}-suffix`} />
+                    {inputElement}
+                </div>
+            );
+        }
+
+        if (type === "file") {
+            inputElement = (
+                <div className={styles.file}>
+                    <input
+                        className={styles.filename}
+                        type="text"
+                        id={`${id}-filename`}
+                        placeholder={inputProps.placeholder}
+                        title={inputProps.title}
+                        name={`${name}_filename`}
+                        {...filename}
+                    />
+                    <label className={styles.button} htmlFor={id}>
+                        <i><BiUpload/></i>
+                    </label>
                     {inputElement}
                 </div>
             );

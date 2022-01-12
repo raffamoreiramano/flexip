@@ -39,7 +39,7 @@ export default function AudioList({ props }) {
                                     width: "20%",
                                 },
                                 { 
-                                    heading: "Reproduzir",
+                                    heading: "Áudio",
                                     align: "center",
                                     width: "79%",
                                 },

@@ -122,26 +122,26 @@ export default function Audios({ props }) {
         });
     }
 
-    const edit = (route) => {
+    const edit = (audio) => {
         setAction({
             type: 'edit',
-            payload: route,
+            payload: audio,
         });
     }
 
-    const remove = async (route) => {
+    const remove = async (audio) => {
         dispatch(setIsLoading(true));
 
         try {
             const access_token = localStorage.getItem("access_token");
-            const response = await api.delete(`/v1/${API_GUARD}/pabx/${ID}/entry_route/${route.id}`, {
+            const response = await api.delete(`/v1/${API_GUARD}/pabx/${ID}/sound/${audio.id}`, {
                 headers: { Authorization: "Bearer " + access_token }
             });
 
             if (response.status && response.status === 200) {
                 const content = { 
                     title: "Pronto...", 
-                    message: `A rota "${route.name}" foi excluído com sucesso!`
+                    message: `O áudio "${audio.name}" foi excluído com sucesso!`
                 };
 
                 showAlert(content, true);
@@ -177,7 +177,7 @@ export default function Audios({ props }) {
 
         const editProps = {
             ...addProps,
-            route: action.payload,
+            audio: action.payload,
         }
 
         const listProps = {

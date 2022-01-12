@@ -367,6 +367,85 @@
 	transition: 50ms ease-in, border-radius 0ms 50ms;
 }
 
+.formControl .file {
+	position: relative;
+	border-radius: 1rem;
+	background-clip: border-box;
+}
+
+.formControl .file .input {
+	display: none;
+}
+
+.formControl .file .filename {
+	width: 100%;
+}
+
+.formControl .file .button {
+	--shadow-color: var(--input-shadow-color);
+	--light-color: var(--bg-color-1);
+
+	position: absolute;
+	top: 0;
+	right: 0;
+
+	height: 100%;
+	aspect-ratio: 1.5 / 1;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background: linear-gradient(to right, transparent, rgb(var(--input-color)));
+	box-shadow:
+		inset -.5rem -.25rem .25rem -.5rem rgba(var(--shadow-color), .3),
+		inset -.5rem 0 .25rem -.5rem rgba(var(--shadow-color), .3),
+		inset -.5rem .25rem .25rem -.5rem rgba(var(--shadow-color), .3),
+		inset -.5rem 0 .35rem -.5rem rgb(var(--input-color)),
+		inset -.5rem 0 .5rem -.5rem rgb(var(--light-color));
+
+	border-radius: inherit;
+	border-bottom-left-radius: 0;
+	border-top-left-radius: 0;
+	border-right: .0125rem solid rgba(var(--input-color), 1);	
+
+	z-index: 1;
+	cursor: pointer;
+
+	transition: 1000ms cubic-bezier(0.5, 3, 0, -0.5);
+}
+
+.formControl .file .button:hover {
+	--light-color: var(--main-color-1);
+	--shadow-color: var(--main-color-1);
+}
+
+.formControl .file .button svg {
+	transition: 1000ms cubic-bezier(0.5, 3, 0, -0.5);
+}
+
+.formControl .file .button:hover svg {
+	fill: rgb(var(--main-color-1));
+}
+
+.formControl.invalid .file .button:hover svg {
+	fill: rgb(var(--main-color-4));
+}
+
+.formControl.invalid .file .button:hover {
+	--light-color: var(--main-color-4);
+	--shadow-color: var(--main-color-4);
+}
+
+.formControl .file .button i {
+	font-size: 2rem;
+	padding-top: .25rem;
+}
+
+.formControl .file .filename:focus ~ .button {
+	box-shadow: none;
+}
+
 .formControl strong {
 	padding-left: 1em;
 
@@ -386,7 +465,9 @@
 }
 
 .formControl.invalid .input,
-.formControl.invalid .select .input {
+.formControl.invalid .select .input,
+.formControl.invalid .password .input,
+.formControl.invalid .file .filename {
 	--border-color: var(--main-color-4);
 	--border-visibility: 0.75;
 }
