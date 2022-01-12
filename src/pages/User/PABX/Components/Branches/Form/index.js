@@ -393,7 +393,7 @@ export default function BranchForm({ props }) {
     return (
         <>
             <section className={styles.form}>
-                <form onSubmit={(event) => {
+                <form autoComplete="off" onSubmit={(event) => {
                     event.preventDefault();
 
                     if (validate()) {

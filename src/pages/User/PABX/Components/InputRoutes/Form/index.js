@@ -369,7 +369,7 @@ export default function InputRouteForm({ props }) {
     return (
         <>
             <section className={styles.form}>
-                <form onSubmit={(event) => {
+                <form autoComplete="off" onSubmit={(event) => {
                     event.preventDefault();
 
                     if (validate()) {
