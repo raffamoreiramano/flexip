@@ -506,6 +506,18 @@
 
 /* audios */
 
+.audios .wrapper {
+    padding-top: 1rem;
+}
+
+.audios .wrapper > *:first-child {
+    padding-left: 1rem;
+}
+
+.audios .list table thead tr th {
+    padding-top: .25rem;
+}
+
 @media screen and (max-width: 768px) {
     .component.audios .list table colgroup col:first-of-type {
         width: 99%;

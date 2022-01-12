@@ -12,6 +12,7 @@ import styles from '../styles.module.css';
 import AudioForm from "./Form";
 import AudioList from "./List";
 import Alert from "../../../../../components/Modals/Alert";
+import { Radio } from "../../../../../components/Input";
 
 export default function Audios({ props }) {
     const { PABX } = props
@@ -31,6 +32,8 @@ export default function Audios({ props }) {
         type: 'list',
         payload: {}
     });
+
+    const [category, setCategory] = useState("sound");
 
     const [audios, setAudios] = useState(null);
     const [pages, setPages] = useState([]);
@@ -69,8 +72,10 @@ export default function Audios({ props }) {
         const access_token = localStorage.getItem("access_token");
 
         if (access_token) {
+            let endpoint = category === "sound" ? "sounds" : category;
+
             try {
-                const response = await api.get(`/v1/${API_GUARD}/pabx/${ID}/sounds`, {
+                const response = await api.get(`/v1/${API_GUARD}/pabx/${ID}/${endpoint}`, {
                     headers: { Authorization: "Bearer " + access_token }
                 });
 
@@ -94,6 +99,13 @@ export default function Audios({ props }) {
             fetchData();
         }
     });
+
+    useEffect(() => {
+        if (!initialRender.current && open) {
+            fetchData();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [category]);
 
     const refresh = () => {
         fetchData().finally(() => {
@@ -134,7 +146,7 @@ export default function Audios({ props }) {
 
         try {
             const access_token = localStorage.getItem("access_token");
-            const response = await api.delete(`/v1/${API_GUARD}/pabx/${ID}/sound/${audio.id}`, {
+            const response = await api.delete(`/v1/${API_GUARD}/pabx/${ID}/${category}/${audio.id}`, {
                 headers: { Authorization: "Bearer " + access_token }
             });
 
@@ -172,6 +184,7 @@ export default function Audios({ props }) {
     const Main = () => {
         const addProps = {
             ...props,
+            category,
             refresh,
         }
 
@@ -194,7 +207,21 @@ export default function Audios({ props }) {
         switch (action.type) {
             case 'add': return <AudioForm props={addProps}/>
             case 'edit': return <AudioForm props={editProps}/>
-            default: return <AudioList props={listProps}/>
+            default:
+                const switcher = (
+                    <Radio
+                        id="audio-category"
+                        label="Categoria"
+                        name="category"
+                        value={category}
+                        onChange={(event) => setCategory(event.target.value)}
+                    >
+                        <option value={"sound"}>Retorno</option>
+                        <option value={"moh"}>Espera</option>
+                    </Radio>
+                );
+
+                return (<div className={styles.wrapper}>{switcher} <AudioList props={listProps}/></div>);
         }
     }
 

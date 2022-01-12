@@ -12,7 +12,7 @@ import Alert from "../../../../../../components/Modals/Alert";
 import { fileToBase64 } from "../../../../../../services/helpers";
 
 export default function AudioForm({ props }) {
-    const { refresh, PABX, audio } = props;
+    const { refresh, PABX, audio, category = "sound" } = props;
     const ID = parseInt(PABX.id);
 
     const dispatch = useDispatch();
@@ -185,10 +185,10 @@ export default function AudioForm({ props }) {
         try {
             const access_token = localStorage.getItem("access_token");
             const response = audio 
-            ? await api.put(`/v1/${API_GUARD}/pabx/${ID}/sound/${audio.id}`, body, {
+            ? await api.put(`/v1/${API_GUARD}/pabx/${ID}/${category}/${audio.id}`, body, {
                 headers: { Authorization: "Bearer " + access_token }
             })
-            : await api.post(`/v1/${API_GUARD}/pabx/${ID}/sound`, body, {
+            : await api.post(`/v1/${API_GUARD}/pabx/${ID}/${category}`, body, {
                 headers: { Authorization: "Bearer " + access_token }
             });
 
@@ -247,7 +247,7 @@ export default function AudioForm({ props }) {
 
             if (access_token) {
                 try {
-                    const response = await api.get(`/v1/${API_GUARD}/pabx/${ID}/sound/${audio.id}/edit`, {
+                    const response = await api.get(`/v1/${API_GUARD}/pabx/${ID}/${category}/${audio.id}/edit`, {
                         headers: { Authorization: "Bearer " + access_token }
                     });
 
@@ -263,17 +263,24 @@ export default function AudioForm({ props }) {
                                 'Authorization': "Bearer " + access_token
                             },
                         };
+
+                        const fetchFile = async () => {
+                            return await fetch(url, requestOptions)
+                            .then(response => response.arrayBuffer())
+                            .then(arrayBuffer => {
+                                const blob = new Blob([arrayBuffer], { type: "audio/wav" });
+                            
+                                return blob;
+                            })
+                            .then(blob => {
+                                return URL.createObjectURL(blob);
+                            })
+                            .catch((error) => {
+                                return null;
+                            });
+                        }
                     
-                        const file = await fetch(url, requestOptions)
-                        .then(response => response.arrayBuffer())
-                        .then(arrayBuffer => {
-                            const blob = new Blob([arrayBuffer], { type: "audio/wav" });
-                        
-                            return blob;
-                        })
-                        .then(blob => {
-                            return URL.createObjectURL(blob);
-                        }); 
+                        const file = await fetchFile();
 
                         if (file) {
                             setFile(file);
@@ -317,7 +324,8 @@ export default function AudioForm({ props }) {
                             type="file"
                             accept="audio/*"
                             name="file"
-                            label="Áudio"
+                            label={category === "sound" ? "Áudio" : "Áudio de espera"}
+                            placeholder="Escolher arquivo de áudio..."
                             onChange={(event) => handleChange(() => {
                                 setFile(event.target.value);
                             })}
