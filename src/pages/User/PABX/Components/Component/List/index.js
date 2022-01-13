@@ -5,7 +5,6 @@ import Table from "../../../../../../components/Table";
 import Pagination from "../../../../../../components/Table/Pagination";
 import Confirm from "../../../../../../components/Modals/Confirm";
 import { MdMoreVert } from 'react-icons/md';
-import { phoneMask } from "../../../../../../services/helpers";
 
 export default function ComponentList({ props }) {
     const {

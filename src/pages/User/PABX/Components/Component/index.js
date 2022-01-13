@@ -202,7 +202,7 @@ export default function Component({ props }) {
         <article className={`${styles.component} ${styles.komponent} ${open ? styles.open : styles.closed}`}>
             <header className="glass">
                 <section className={styles.info}>
-                    <h2><i><BsApp/></i>Rotas de entrada</h2>
+                    <h2><i><BsApp/></i>Componente</h2>
                 </section>
                 <section className={styles.actions}>
                     <button
