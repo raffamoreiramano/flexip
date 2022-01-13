@@ -11,6 +11,7 @@ import Telephones from "../Components/Telephones";
 import Departments from "../Components/Departments";
 import InputRoutes from "../Components/InputRoutes";
 import Audios from "../Components/Audios";
+import URAs from "../Components/URAs";
 
 export default function PABX(props) {
     const { match } = props;
@@ -72,6 +73,7 @@ export default function PABX(props) {
                     <Departments props={properties}/>
                     <InputRoutes props={properties}/>
                     <Audios props={properties}/>
+                    <URAs props={properties}/>
                 </>
             );
         }
