@@ -485,7 +485,7 @@ export default function BranchForm({ props }) {
                     </fieldset>
 
                     <fieldset>
-                        <input className={styles.fieldsetToggle} type="checkbox" id="branch-add-branch-advanced-toggle"/>
+                        <input className={styles.fieldsetToggle} type="checkbox" id="add-branch-advanced-toggle"/>
                         <label className={styles.fieldsetButton} htmlFor="add-branch-advanced-toggle">
                             <legend><span>Avançado</span><i><IoIosArrowUp/></i></legend>
                         </label>
