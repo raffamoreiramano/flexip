@@ -512,7 +512,7 @@ Input.Group = ({
             return elements;
         }
 
-        elements = children.map(child => {
+        elements = children.map((child, index) => {
             let element;
 
             switch (child.type.name) {
@@ -526,7 +526,7 @@ Input.Group = ({
                     element = child;
             }
 
-            return element;
+            return {...element, key: index};
         });
 
         return elements;

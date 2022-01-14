@@ -29,12 +29,59 @@ export default function URAForm({ props }) {
     const [seconds, setSeconds] = useState(1);
     const [sound, setSound] = useState('');
 
-    const [pick, setPick] = useState(0);
-    const [type, setType] = useState('branch');
-    
-    const [branch, setBranch] = useState('');
-    const [queue, setQueue] = useState('');
-    const [URA, setURA] = useState('');
+    const [available, setAvailable] = useState({
+        0: { 
+            option: "0",
+            label: "Opção 0",
+        },
+        1: { 
+            option: "1",
+            label: "Opção 1",
+        },
+        2: { 
+            option: "2",
+            label: "Opção 2",
+        },
+        3: { 
+            option: "3",
+            label: "Opção 3",
+        },
+        4: { 
+            option: "4",
+            label: "Opção 4",
+        },
+        5: { 
+            option: "5",
+            label: "Opção 5",
+        },
+        6: { 
+            option: "6",
+            label: "Opção 6",
+        },
+        7: { 
+            option: "7",
+            label: "Opção 7",
+        },
+        8: { 
+            option: "8",
+            label: "Opção 8",
+        },
+        9: { 
+            option: "9",
+            label: "Opção 9",
+        },
+        10: {
+            option: "i",
+            label: "Inválida",
+        },
+        11: {
+            option: "t",
+            label: "Timeout",
+        },
+    });
+    const [pick, setPick] = useState(available[0]);
+    const [options, setOptions] = useState({});
+
 
     const [fetchedData, setFetchedData] = useState(null);
 
@@ -44,11 +91,67 @@ export default function URAForm({ props }) {
             isInvalid: false,
             message: ''
         },
+        description: {
+            isInvalid: false,
+            message: ''
+        },
+        seconds: {
+            isInvalid: false,
+            message: ''
+        },
+        sound: {
+            isInvalid: false,
+            message: ''
+        },
         options: {
-            0: {
+            '0': {
                 isInvalid: false,
                 message: ''
-            }
+            },
+            '1': {
+                isInvalid: false,
+                message: ''
+            },
+            '2': {
+                isInvalid: false,
+                message: ''
+            },
+            '3': {
+                isInvalid: false,
+                message: ''
+            },
+            '4': {
+                isInvalid: false,
+                message: ''
+            },
+            '5': {
+                isInvalid: false,
+                message: ''
+            },
+            '6': {
+                isInvalid: false,
+                message: ''
+            },
+            '7': {
+                isInvalid: false,
+                message: ''
+            },
+            '8': {
+                isInvalid: false,
+                message: ''
+            },
+            '9': {
+                isInvalid: false,
+                message: ''
+            },
+            'i': {
+                isInvalid: false,
+                message: '',
+            },
+            't': {
+                isInvalid: false,
+                message: ''
+            },
         }
     }
     const [validation, setValidation] = useState(initialValidation);
@@ -145,6 +248,37 @@ export default function URAForm({ props }) {
         }
 
         callback.call();
+    }
+
+    const handleDestinationChange = (props) => {
+        console.log(props)
+    }
+
+    const handleOptionChange = (props) => {
+        console.log(props)
+    }
+
+    const addOption = () => {
+        const newAvailable = Object.values(available).filter((option) => {
+            return option != pick;
+        });
+
+        if (newAvailable.length >= 1) {
+            const [branch] = fetchedData.branches;
+            const { id: value } = branch;
+
+            setOptions({
+                ...options,
+                [pick.option]: {
+                    ...pick,
+                    destination: "branch",
+                    value,
+                }
+            });
+            
+            setAvailable(newAvailable);
+            setPick(newAvailable[0] || available[0]);
+        }
     }
 
     const showAlert = (content, response = false) => {
@@ -363,68 +497,78 @@ export default function URAForm({ props }) {
                                 <Select
                                     id="ura-pick"
                                     label="Adicionar opção"
-                                    value={pick}
+                                    value={pick.option}
                                     onChange={(event) => handleChange(() => {
-                                        setPick(event.target.value);
+                                        const { value } = event.target;
+                                        const pick = Object.values(available).find(item => item.option === value);
+
+                                        setPick(pick);
                                     })}
                                 >
-                                    <option value={0}>Opção 0</option>
-                                    <option value={1}>Opção 1</option>
-                                    <option value={2}>Opção 2</option>
+                                    {
+                                        Object.values(available).map((item, index) => (
+                                            <option key={index} value={item.option}>{item.label}</option>
+                                        ))
+                                    }
                                 </Select>
 
                                 <button
                                     className="main-color-1"
                                     type="button"
-                                    onClick={refresh}
+                                    onClick={addOption}
                                 >
                                     <MdOutlineAdd fill="white"/>
                                 </button>
                             </Input.Group>
-
-                            <Input.Group
-                                id="ura-option-"
-                                label="Opção "
-                                validation={validation.options[0]}
-                            >
-                                <Select
-                                    id="ura-type"
-                                    label="Adicionar opção"
-                                    value={type}
-                                    onChange={(event) => handleChange(() => {
-                                        setType(event.target.value);
-                                    })}
-                                >
-                                    <option value="branch">Ramal</option>
-                                    <option value="queue">Fila de atendimento</option>
-                                    <option value="ura">URA</option>
-                                </Select>
-
-                                <Select
-                                    id="ura-option"
-                                    label="Adicionar opção"
-                                    value={branch}
-                                    onChange={(event) => handleChange(() => {
-                                        setBranch(event.target.value);
-                                    })}
-                                >
-                                    {
-                                        fetchedData[type === 'branch' ? 'branches' : type].map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.id}>{item.number}</option>
-                                            );
-                                        })
-                                    }
-                                </Select>
-
-                                <button
-                                    className="main-color-4"
-                                    type="button"
-                                >
-                                    <MdOutlineRemove fill="white"/>
-                                </button>
-                            </Input.Group>
                         </div>
+                        {
+                            Object.values(options).length > 0 &&
+                            <div>{
+                                Object.values(options).map((option, index) => (
+                                    <Input.Group
+                                        key={index}
+                                        id={`ura-option-${option.option}`}
+                                        label={option.label}
+                                        validation={validation.options[option.option]}
+                                    >
+                                        <Select
+                                            id="ura-destination"
+                                            onChange={(event) => handleDestinationChange(event)}
+                                        >
+                                            <option value="branch">Ramal</option>
+                                            <option value="queue">Fila de atendimento</option>
+                                            <option value="ura">URA</option>
+                                        </Select>
+
+                                        <Select
+                                            id="ura-option"
+                                            onChange={(event) => handleOptionChange(event)}
+                                        >
+                                            {
+                                                fetchedData[option.destination === 'branch' ? 'branches' : option.destination].map((item, index) => {
+                                                    return (
+                                                        <option key={index} value={item.id}>
+                                                            {
+                                                                option.destination === 'branch'
+                                                                ? `${item.branch_users.name} (${item.number})`
+                                                                : item.name
+                                                            }
+                                                        </option>
+                                                    );
+                                                })
+                                            }
+                                        </Select>
+
+                                        <button
+                                            className="main-color-4"
+                                            type="button"
+                                        >
+                                            <MdOutlineRemove fill="white"/>
+                                        </button>
+                                    </Input.Group>
+                                ))
+                            }</div>
+                        }
                     </fieldset>
 
                     <div className={styles.formActions}>
