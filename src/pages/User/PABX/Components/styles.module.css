@@ -534,3 +534,9 @@
         display: none;
     }
 }
+
+/* uras */
+
+.uras .form .options > div {
+    grid-column: 1;
+}

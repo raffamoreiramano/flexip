@@ -9,6 +9,8 @@ import styles from '../../styles.module.css';
 import Input, { Select } from "../../../../../../components/Input";
 import Alert from "../../../../../../components/Modals/Alert";
 
+import { MdOutlineAdd, MdOutlineRemove } from 'react-icons/md';
+
 export default function URAForm({ props }) {
     const { refresh, PABX, ura } = props;
     const ID = parseInt(PABX.id);
@@ -27,6 +29,13 @@ export default function URAForm({ props }) {
     const [seconds, setSeconds] = useState(1);
     const [sound, setSound] = useState('');
 
+    const [pick, setPick] = useState(0);
+    const [type, setType] = useState('branch');
+    
+    const [branch, setBranch] = useState('');
+    const [queue, setQueue] = useState('');
+    const [URA, setURA] = useState('');
+
     const [fetchedData, setFetchedData] = useState(null);
 
     const [isValidated, setIsValidated] = useState(false);
@@ -35,6 +44,12 @@ export default function URAForm({ props }) {
             isInvalid: false,
             message: ''
         },
+        options: {
+            0: {
+                isInvalid: false,
+                message: ''
+            }
+        }
     }
     const [validation, setValidation] = useState(initialValidation);
 
@@ -337,9 +352,79 @@ export default function URAForm({ props }) {
                         </div>
                     </fieldset>
 
-                    <fieldset>
+                    <fieldset className={styles.options}>
                         <legend>Opções</legend>
-                        
+                        <div>
+                            <Input.Group
+                                id="ura-option-"
+                                label="Adicionar"
+                                validation={validation.options[0]}
+                            >
+                                <Select
+                                    id="ura-pick"
+                                    label="Adicionar opção"
+                                    value={pick}
+                                    onChange={(event) => handleChange(() => {
+                                        setPick(event.target.value);
+                                    })}
+                                >
+                                    <option value={0}>Opção 0</option>
+                                    <option value={1}>Opção 1</option>
+                                    <option value={2}>Opção 2</option>
+                                </Select>
+
+                                <button
+                                    className="main-color-1"
+                                    type="button"
+                                    onClick={refresh}
+                                >
+                                    <MdOutlineAdd fill="white"/>
+                                </button>
+                            </Input.Group>
+
+                            <Input.Group
+                                id="ura-option-"
+                                label="Opção "
+                                validation={validation.options[0]}
+                            >
+                                <Select
+                                    id="ura-type"
+                                    label="Adicionar opção"
+                                    value={type}
+                                    onChange={(event) => handleChange(() => {
+                                        setType(event.target.value);
+                                    })}
+                                >
+                                    <option value="branch">Ramal</option>
+                                    <option value="queue">Fila de atendimento</option>
+                                    <option value="ura">URA</option>
+                                </Select>
+
+                                <Select
+                                    id="ura-option"
+                                    label="Adicionar opção"
+                                    value={branch}
+                                    onChange={(event) => handleChange(() => {
+                                        setBranch(event.target.value);
+                                    })}
+                                >
+                                    {
+                                        fetchedData[type === 'branch' ? 'branches' : type].map((item, index) => {
+                                            return (
+                                                <option key={index} value={item.id}>{item.number}</option>
+                                            );
+                                        })
+                                    }
+                                </Select>
+
+                                <button
+                                    className="main-color-4"
+                                    type="button"
+                                >
+                                    <MdOutlineRemove fill="white"/>
+                                </button>
+                            </Input.Group>
+                        </div>
                     </fieldset>
 
                     <div className={styles.formActions}>

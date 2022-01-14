@@ -25,9 +25,10 @@ export default function Input({
         isInvalid: false,
         message: "",
     },
-}) {
+
+}, group) {
     const [showPassword, setShowPassword] = useState(false);
-    const input = () => {
+    const element = () => {
         let inputProps = {
             type,
             placeholder: placeholder || label,
@@ -170,12 +171,15 @@ export default function Input({
         className += ` ${styles.invalid}`;
     }
 
+    if (group === true) {
+        return element();
+    }
 
     return (
         <div className={className}>
             <label htmlFor={id} className="input-label">{label}</label>
             {
-                input()
+                element()
             }
             <strong className="error-message">{validation.message}</strong>
         </div>
@@ -195,7 +199,7 @@ export function Select({
         isInvalid: false,
         message: "",
     },
-}) {
+}, group) {
     const [options, setOptions] = useState(children || []);
     const [searchValue, setSearchValue] = useState("");
 
@@ -295,52 +299,60 @@ export function Select({
         );
     }
 
+    const element = (
+        <div className={styles.select}>
+            <select
+                ref={selectRef}
+                className={styles.value}
+                name={name}
+                value={value}
+                children={children}
+                onChange={(event) => {
+                    onChange(event);
+                }}
+            />
+            <input
+                id={id}
+                className={styles.toggle}
+                type="checkbox"
+                checked={active}
+                onChange={(event) => {
+                    setActive(event.target.checked);
+                    
+                    if (active) {
+                        setTimeout(() => {
+                            setSearchValue("");
+                        }, 200);
+                    } else if (search) {
+                        searchboxRef.current.focus();
+                    }
+                }}
+            /> 
+            <Selected/>
+            <div className={`${styles.options} glass`}>
+                {
+                    search && <div className={styles.searchbox}>
+                        <input
+                            type="text"
+                            value={searchValue}
+                            ref={searchboxRef}                               
+                            onChange={(event) => setSearchValue(event.target.value)} 
+                        />
+                    </div>
+                }
+                <List options={search ? options : children}/>
+            </div>
+        </div>
+    );
+
+    if (group === true) {
+        return element;
+    }
+
     return (
         <div className={className}>
             <label htmlFor={id}>{label}</label>
-            <div className={styles.select}>
-                <select
-                    ref={selectRef}
-                    className={styles.value}
-                    name={name}
-                    value={value}
-                    children={children}
-                    onChange={(event) => {
-                        onChange(event);
-                    }}
-                />
-                <input
-                    id={id}
-                    className={styles.toggle}
-                    type="checkbox"
-                    checked={active}
-                    onChange={(event) => {
-                        setActive(event.target.checked);
-                        
-                        if (active) {
-                            setTimeout(() => {
-                                setSearchValue("");
-                            }, 200);
-                        } else if (search) {
-                            searchboxRef.current.focus();
-                        }
-                    }}
-                /> 
-                <Selected/>
-                <div className={`${styles.options} glass`}>
-                    {
-                        search && <div className={styles.searchbox}>
-                            <input
-                                type="text"
-                                value={searchValue}
-                                ref={searchboxRef}                               
-                                onChange={(event) => setSearchValue(event.target.value)} 
-                            />
-                        </div>
-                    }
-                    <List options={search ? options : children}/>
-                </div>
-            </div>
+                { element }
             <strong className="error-message">{validation.message}</strong>
         </div>
     );
@@ -471,6 +483,65 @@ export function Checkboxes({
                     )
                 }
             />
+            <strong className="error-message">{validation.message}</strong>
+        </div>
+    );
+}
+
+Input.Group = ({
+    id,
+    label,
+    children,
+    validation,
+}) => {
+    let group = () => {
+        let elements;
+
+        if (!Array.isArray(children)) {
+            switch (children.type.name) {
+                case "Select":
+                    elements = Select(children.props, true);
+                    break;
+                case "Input":
+                    elements = Input(children.props, true);
+                    break;
+                default:
+                    elements = children;
+            }
+
+            return elements;
+        }
+
+        elements = children.map(child => {
+            let element;
+
+            switch (child.type.name) {
+                case "Select":
+                    element = Select(child.props, true);
+                    break;
+                case "Input":
+                    element = Input(child.props, true);
+                    break;
+                default:
+                    element = child;
+            }
+
+            return element;
+        });
+
+        return elements;
+    };
+    
+    let className = styles.formControl;
+
+    if (validation.isInvalid) {
+        className += ` ${styles.invalid}`;
+    }
+
+    return (
+        <div className={className}>
+            <label htmlFor={id} className="input-label">{label}</label>
+                <div className={styles.group}>{ group() }</div>
             <strong className="error-message">{validation.message}</strong>
         </div>
     );

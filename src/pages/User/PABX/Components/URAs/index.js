@@ -199,7 +199,7 @@ export default function URAs({ props }) {
     }
 
     return (
-        <article className={`${styles.component} ${styles.ura} ${open ? styles.open : styles.closed}`}>
+        <article className={`${styles.component} ${styles.uras} ${open ? styles.open : styles.closed}`}>
             <header className="glass">
                 <section className={styles.info}>
                     <h2><i><MdDialpad/></i>URAs</h2>

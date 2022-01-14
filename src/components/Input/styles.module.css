@@ -20,6 +20,8 @@
 	position: relative;
 	display: grid;
 	max-width: 100%;
+
+	border-radius: 1em;
 }
 
 .formControl .select select {
@@ -36,7 +38,7 @@
 	padding: 1em;
 	padding-right: 2.5em;
 
-	border-radius: 1em;
+	border-radius: inherit;
 
 	text-transform: none;
 	font-weight: normal;
@@ -444,6 +446,36 @@
 
 .formControl .file .filename:focus ~ .button {
 	box-shadow: none;
+}
+
+.formControl .group {
+	display: flex;
+	flex-direction: row;
+	gap: .5rem;
+	width: 100%;
+}
+
+.formControl .group > * {
+	min-width: 0;
+	width: 100%;
+}
+
+.formControl .group > * {
+	border-radius: .25rem;
+}
+
+.formControl .group > *:first-child {
+	border-bottom-left-radius: 1rem;
+	border-top-left-radius: 1rem;
+}
+
+.formControl .group > *:last-child {
+	border-bottom-right-radius: 1rem;
+	border-top-right-radius: 1rem;
+}
+
+.formControl .group button {
+	margin: 0;
 }
 
 .formControl strong {
