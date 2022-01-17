@@ -104,6 +104,10 @@ export default function URAForm({ props }) {
             message: ''
         },
         options: {
+            isInvalid: false,
+            message: 'Adicione ao menos uma opção válida!',
+        },
+        option: {
             '0': {
                 isInvalid: false,
                 message: ''
@@ -202,7 +206,31 @@ export default function URAForm({ props }) {
             }
         }
 
+        const OPTIONS = Object.values(options);
+
+        if (OPTIONS.length < 1) {
+            newValidation.options = {
+                isInvalid: true,
+                message: "Adicione ao menos uma opção válida!",
+            }
+        }
+
+        OPTIONS.forEach(option => {
+            const destination = option.destination === 'branch' ? 'branches' : option.destination + 's';
+
+            if (!fetchedData[destination].some(item => item.id == option.value)) {
+                newValidation.option[option.option] = {
+                    isInvalid: true,
+                    message: 'Valor inválido!',
+                }
+            }
+        });
+
         if (Object.values(newValidation).some(item => item.isInvalid)) {
+            veredict = false;
+        }
+
+        if (Object.values(newValidation.option).some(item => item.isInvalid)) {
             veredict = false;
         }
 
@@ -218,20 +246,39 @@ export default function URAForm({ props }) {
             'description': 'description',
             'seconds': 'seconds',
             'sound_id': 'sound',
+            'options': 'options'
         }
 
         const fields = Object.keys(errors);
 
-        const invalidFields = fields.map(field => APIFields[field]);
+        const invalidFields = fields.map(field =>{
+            if (field.match(/^options\./)) {
+                return field.split('.');
+            }
+
+            return APIFields[field];
+        });
 
         let newValidation = initialValidation;
 
-        invalidFields.forEach((key, index) => {
-            const message = errors[fields[index]];
+        invalidFields.forEach((field, index) => {
+            if (Array.isArray(field)) {
+                const [, key] = field;
+                const [message] = errors[field.join('.')];
 
-            newValidation[key] = {
-                isInvalid: true,
-                message,
+                const option = Object.keys(options)[key];
+
+                newValidation.option[option] = {
+                    isInvalid: true,
+                    message,
+                }
+            } else {
+                const message = errors[fields[index]];
+    
+                newValidation[field] = {
+                    isInvalid: true,
+                    message,
+                }
             }
         });
 
@@ -625,7 +672,10 @@ export default function URAForm({ props }) {
                                 <Input.Group
                                     id={`ura-add-option-`}
                                     label="Adicionar opções"
-                                    validation={validation.options[0]}
+                                    validation={{
+                                        isInvalid: validation.options.isInvalid,
+                                        message: initialValidation.options.message,
+                                    }}
                                 >
                                     <Select
                                         id="pick"
@@ -648,7 +698,7 @@ export default function URAForm({ props }) {
                                     <button
                                         className="main-color-1"
                                         type="button"
-                                        onClick={addOption}
+                                        onClick={() => handleChange(() => addOption())}
                                     >
                                         <MdOutlineAdd fill="white"/>
                                     </button>
@@ -664,12 +714,12 @@ export default function URAForm({ props }) {
                                         key={index}
                                         id={`ura-option-${option.option}-`}
                                         label={option.label}
-                                        validation={validation.options[option.option]}
+                                        validation={validation.option[option.option]}
                                     >
                                         <Select
                                             id="destination"
                                             value={option.destination}
-                                            onChange={(event) => handleDestinationChange(event, option)}
+                                            onChange={(event) => handleChange(() => handleDestinationChange(event, option))}
                                         >
                                             <option value="branch">Ramal</option>
                                             <option value="queue">Fila de atendimento</option>
@@ -679,7 +729,7 @@ export default function URAForm({ props }) {
                                         <Select
                                             id="value"
                                             value={option.value}
-                                            onChange={(event) => handleOptionChange(event, option)}
+                                            onChange={(event) => handleChange(() => handleOptionChange(event, option))}
                                         >
                                             {
                                                 fetchedData[option.destination === 'branch' ? 'branches' : option.destination + "s"].map((item, index) => {
@@ -699,7 +749,7 @@ export default function URAForm({ props }) {
                                         <button
                                             className="main-color-4"
                                             type="button"
-                                            onClick={() => removeOption(option)}
+                                            onClick={() => handleChange(() => removeOption(option))}
                                             disabled={Object.keys(options).length === 1}
                                         >
                                             <MdOutlineRemove fill="white"/>

@@ -141,7 +141,7 @@ export default function URAs({ props }) {
             if (response.status && response.status === 200) {
                 const content = { 
                     title: "Pronto...", 
-                    message: `A URA "${ura.name}" foi excluído com sucesso!`
+                    message: `A URA "${ura.name}" foi excluída com sucesso!`
                 };
 
                 showAlert(content, true);
