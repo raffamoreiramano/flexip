@@ -496,17 +496,21 @@ Input.Group = ({
 }) => {
     let group = () => {
         let elements;
+        const { type, props } = children;
 
         if (!Array.isArray(children)) {
-            switch (children.type.name) {
+            switch (type.name) {
                 case "Select":
-                    elements = Select(children.props, true);
+                    elements = Select({...children.props, id: id + children.props.id}, true);
                     break;
                 case "Input":
-                    elements = Input(children.props, true);
+                    elements = Input({...children.props, id: id + children.props.id}, true);
                     break;
                 default:
-                    elements = children;
+                    let suffix = props.id;
+                    suffix ??= type.name || type;
+
+                    elements = {...children, props: {...props, id: id + suffix}};
             }
 
             return elements;
@@ -514,16 +518,20 @@ Input.Group = ({
 
         elements = children.map((child, index) => {
             let element;
+            const { type, props } = child;
 
-            switch (child.type.name) {
+            switch (type.name) {
                 case "Select":
-                    element = Select(child.props, true);
+                    element = Select({...props, id: id + props.id}, true);
                     break;
                 case "Input":
-                    element = Input(child.props, true);
+                    element = Input({...props, id: id + props.id}, true);
                     break;
                 default:
-                    element = child;
+                    let suffix = props.id;
+                    suffix ??= type.name || type;
+
+                    element = {...child, props: {...props, id: id + suffix}};
             }
 
             return {...element, key: index};

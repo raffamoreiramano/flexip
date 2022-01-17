@@ -250,20 +250,56 @@ export default function URAForm({ props }) {
         callback.call();
     }
 
-    const handleDestinationChange = (props) => {
-        console.log(props)
+    const handleDestinationChange = (event, item) => {
+        const newOptions = {...options};
+
+        const option = newOptions[item.option];
+
+        newOptions[item.option] = {
+            ...option,
+            destination: event.target.value,
+            value: '',
+        };
+
+        setOptions(newOptions);
     }
 
-    const handleOptionChange = (props) => {
-        console.log(props)
+    const handleOptionChange = (event, item) => {
+        const newOptions = {...options};
+
+        const option = newOptions[item.option];
+
+        newOptions[item.option] = {
+            ...option,
+            value: event.target.value,
+        };
+
+        setOptions(newOptions);
     }
 
     const addOption = () => {
-        const newAvailable = Object.values(available).filter((option) => {
-            return option != pick;
-        });
+        const add = () => {
+            let newAvailable = {};
 
-        if (newAvailable.length >= 1) {
+            Object.entries(available).forEach(([index, item]) => {
+                if (pick !== item) {
+                    index = isNaN(index) ? index : parseInt(index);
+
+                    if (index === 'i') {
+                        index = 10;
+                    }
+
+                    if (index === 't') {
+                        index = 11;
+                    }
+
+                    newAvailable[index] = {
+                        option: item.option,
+                        label: item.label,
+                    }
+                }
+            });
+
             const [branch] = fetchedData.branches;
             const { id: value } = branch;
 
@@ -275,9 +311,56 @@ export default function URAForm({ props }) {
                     value,
                 }
             });
-            
+
             setAvailable(newAvailable);
-            setPick(newAvailable[0] || available[0]);
+            
+            const [newPick] = Object.values(newAvailable);
+
+            setPick(newPick);
+        }
+
+        if (Object.keys(options).length < 12) {
+            add();
+        }
+    }
+
+    const removeOption = (option) => {
+        const remove = () => {
+            let newOptions = {};
+            let newAvailable = {...available};
+
+            Object.entries(options).forEach(([index, item]) => {
+                if (option === item) {
+                    index = isNaN(index) ? index : parseInt(index);
+
+                    if (index === 'i') {
+                        index = 10;
+                    }
+
+                    if (index === 't') {
+                        index = 11;
+                    }
+
+                    newAvailable[index] = {
+                        option: item.option,
+                        label: item.label,
+                    }
+                } else {
+                    newOptions[index] = item;
+                }
+            });
+
+            
+            setOptions(newOptions);
+            setAvailable(newAvailable);
+
+            const [newPick] = Object.values(newAvailable);
+
+            setPick(newPick);
+        }
+
+        if (Object.keys(options).length > 1) {
+            remove();
         }
     }
 
@@ -290,13 +373,22 @@ export default function URAForm({ props }) {
 
     const submit = async () => {
         dispatch(setIsLoading(true));
+        const OPTIONS = Object.values(options).map((item) => {
+            const { option, destination, value } = item;
+
+            return {
+                option,
+                destination,
+                value,
+            }
+        })
 
         const body = {
             name: name.trim(),
             description: description.trim(),
             seconds,
             sound_id: sound,
-            // options: optionsArray,
+            options: OPTIONS,
         }
 
         try {
@@ -380,10 +472,50 @@ export default function URAForm({ props }) {
 
                         if (ura) {
                             const {
-                                name
+                                name,
+                                description,
+                                sound_id: sound,
+                                seconds,
+                                options,
                             } = response.data.ura;
 
                             setName(name);
+                            setDescription(description);
+                            setSeconds(seconds);
+                            setSound(sound);
+
+                            let newAvailable = available, newOptions = {};
+
+                            options.forEach(item => {
+                                const { option, destination, value } = item;
+                                let index = option;
+
+                                if (index === 'i') {
+                                    index = '10';
+                                }
+
+                                if (index === 't') {
+                                    index = '11';
+                                }
+
+                                newOptions[index] = {
+                                    ...available[index],
+                                    option,
+                                    destination,
+                                    value,
+                                }
+
+                                index = parseInt(index);
+
+                                delete newAvailable[index];
+                            });
+
+                            setAvailable(newAvailable);
+                            setOptions(newOptions);
+
+                            const [newPick] = Object.values(newAvailable);
+
+                            setPick(newPick);
                         }
                         
                         setFetchedData({
@@ -487,53 +619,57 @@ export default function URAForm({ props }) {
                     </fieldset>
 
                     <fieldset className={styles.options}>
-                        <legend>Opções</legend>
-                        <div>
-                            <Input.Group
-                                id="ura-option-"
-                                label="Adicionar"
-                                validation={validation.options[0]}
-                            >
-                                <Select
-                                    id="ura-pick"
-                                    label="Adicionar opção"
-                                    value={pick.option}
-                                    onChange={(event) => handleChange(() => {
-                                        const { value } = event.target;
-                                        const pick = Object.values(available).find(item => item.option === value);
-
-                                        setPick(pick);
-                                    })}
+                        {
+                            Object.values(options).length < 12 &&
+                            <div>{
+                                <Input.Group
+                                    id={`ura-add-option-`}
+                                    label="Adicionar opções"
+                                    validation={validation.options[0]}
                                 >
-                                    {
-                                        Object.values(available).map((item, index) => (
-                                            <option key={index} value={item.option}>{item.label}</option>
-                                        ))
-                                    }
-                                </Select>
+                                    <Select
+                                        id="pick"
+                                        label="Adicionar opção"
+                                        value={pick.option}
+                                        onChange={(event) => handleChange(() => {
+                                            const { value } = event.target;
+                                            const pick = Object.values(available).find(item => item.option === value);
 
-                                <button
-                                    className="main-color-1"
-                                    type="button"
-                                    onClick={addOption}
-                                >
-                                    <MdOutlineAdd fill="white"/>
-                                </button>
-                            </Input.Group>
-                        </div>
+                                            setPick(pick);
+                                        })}
+                                    >
+                                        {
+                                            Object.values(available).map((item, index) => (
+                                                <option key={index} value={item.option}>{item.label}</option>
+                                            ))
+                                        }
+                                    </Select>
+
+                                    <button
+                                        className="main-color-1"
+                                        type="button"
+                                        onClick={addOption}
+                                    >
+                                        <MdOutlineAdd fill="white"/>
+                                    </button>
+                                </Input.Group>
+                            }</div>
+                        }
+
                         {
                             Object.values(options).length > 0 &&
                             <div>{
                                 Object.values(options).map((option, index) => (
                                     <Input.Group
                                         key={index}
-                                        id={`ura-option-${option.option}`}
+                                        id={`ura-option-${option.option}-`}
                                         label={option.label}
                                         validation={validation.options[option.option]}
                                     >
                                         <Select
-                                            id="ura-destination"
-                                            onChange={(event) => handleDestinationChange(event)}
+                                            id="destination"
+                                            value={option.destination}
+                                            onChange={(event) => handleDestinationChange(event, option)}
                                         >
                                             <option value="branch">Ramal</option>
                                             <option value="queue">Fila de atendimento</option>
@@ -541,11 +677,12 @@ export default function URAForm({ props }) {
                                         </Select>
 
                                         <Select
-                                            id="ura-option"
-                                            onChange={(event) => handleOptionChange(event)}
+                                            id="value"
+                                            value={option.value}
+                                            onChange={(event) => handleOptionChange(event, option)}
                                         >
                                             {
-                                                fetchedData[option.destination === 'branch' ? 'branches' : option.destination].map((item, index) => {
+                                                fetchedData[option.destination === 'branch' ? 'branches' : option.destination + "s"].map((item, index) => {
                                                     return (
                                                         <option key={index} value={item.id}>
                                                             {
@@ -562,6 +699,8 @@ export default function URAForm({ props }) {
                                         <button
                                             className="main-color-4"
                                             type="button"
+                                            onClick={() => removeOption(option)}
+                                            disabled={Object.keys(options).length === 1}
                                         >
                                             <MdOutlineRemove fill="white"/>
                                         </button>
