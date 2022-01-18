@@ -361,6 +361,7 @@
     border-radius: .75em;
 
     text-decoration: none;
+    color: rgb(var(--text-color));
 
     transition: 300ms ease-in-out;
 }
@@ -539,4 +540,12 @@
 
 .uras .form .options > div {
     grid-column: 1;
+}
+
+/* queues */
+
+.queues .form fieldset > div {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-rows: repeat(2, 1fr);
 }
