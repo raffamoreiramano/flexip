@@ -247,6 +247,7 @@ export default function TelephoneForm({ props }) {
                                 label="Cidade"
                                 name="city"
                                 placeholder="Cidades disponíveis..."
+                                search
                                 value={city}
                                 onChange={(event) => handleChange(() => {
                                     setCity(event.target.value);
@@ -267,6 +268,7 @@ export default function TelephoneForm({ props }) {
                                     id="telephone-telephone"
                                     label="Telefone"
                                     name="telephone"
+                                    search
                                     value={telephone}
                                     onChange={(event) => handleChange(() => {
                                         setTelephone(event.target.value);

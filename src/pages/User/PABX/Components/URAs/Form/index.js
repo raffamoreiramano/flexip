@@ -729,6 +729,7 @@ export default function URAForm({ props }) {
                                         <Select
                                             id="value"
                                             value={option.value}
+                                            search
                                             onChange={(event) => handleChange(() => handleOptionChange(event, option))}
                                         >
                                             {

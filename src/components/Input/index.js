@@ -226,7 +226,9 @@ export function Select({
                         string = string.join('');
                     }
 
-                    return string.toLowerCase().search(searchValue.toLowerCase()) > -1;
+                    string = string.normalize("NFD").replace(/\W/g, "");
+
+                    return string.toLowerCase().search(searchValue.toLowerCase().normalize("NFD").replace(/\W/g, "")) > -1;
                 });
             }
 

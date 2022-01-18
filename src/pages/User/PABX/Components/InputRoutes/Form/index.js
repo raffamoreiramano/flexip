@@ -349,6 +349,7 @@ export default function InputRouteForm({ props }) {
                 id="input-route-destination"
                 name="destination"
                 label={label}
+                search
                 value={destination}
                 onChange={(event) => handleChange(() => {
                     setDestination(event.target.value);
@@ -394,6 +395,7 @@ export default function InputRouteForm({ props }) {
                             id="input-route-DDR"
                             name="DDR"
                             label="DDR"
+                            search
                             value={DDR}
                             onChange={(event) => handleChange(() => {
                                 setDDR(event.target.value);

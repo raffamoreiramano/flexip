@@ -497,6 +497,7 @@ export default function BranchForm({ props }) {
                                     name="externalNumber"
                                     label="Número externo"
                                     placeholder="Números disponíveis..."
+                                    search
                                     value={externalNumber}
                                     onChange={(event) => handleChange(() => {
                                         setExternalNumber(event.target.value);
@@ -603,6 +604,7 @@ export default function BranchForm({ props }) {
                                     id="branch-department"
                                     name="department"
                                     label="Departamento"
+                                    search
                                     value={department}
                                     onChange={(event) => handleChange(() => {
                                         setDepartment(event.target.value);
@@ -622,6 +624,7 @@ export default function BranchForm({ props }) {
                                     id="branch-pickUpGroup"
                                     name="pickUpGroup"
                                     label="Grupo de captura"
+                                    search
                                     value={pickUpGroup}
                                     onChange={(event) => handleChange(() => {
                                         setPickUpGroup(event.target.value);
