@@ -256,14 +256,16 @@
 
 	text-transform: none;
 	font-weight: 500;
+
+	transition: 1000ms cubic-bezier(0.5, 3, 0, -0.5);
 }
 
-.formControl .radio .input:hover ~ .label {
+.formControl .checkboxes .input:not([disabled]):hover ~ .label,
+.formControl .radio .input:not([disabled]):not([checked]):hover ~ .label {
 	opacity: 1;
 	width: 100%;
 
-	color: rgb(var(--main-color-0));
-
+	color: rgb(var(--main-color-1));
 }
 
 .formControl .radio li input:disabled ~ .label {

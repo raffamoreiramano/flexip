@@ -3,8 +3,12 @@
     background: transparent;
 }
 
-audio::-webkit-media-controls-enclosure {
+.audio::-webkit-media-controls-enclosure {
     background: transparent;
+}
+
+.audio::-webkit-media-controls-panel {
+    filter: opacity(.75);
 }
 
 table .audio {
@@ -15,4 +19,10 @@ table .audio {
 form .audio {
     margin-bottom: 1rem;
     align-self: center;
+}
+
+/* dark theme */
+
+html[class="dark-theme"] .audio::-webkit-media-controls-panel {
+    filter: invert() opacity(.75);
 }

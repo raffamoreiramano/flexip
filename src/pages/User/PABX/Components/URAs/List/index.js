@@ -4,6 +4,7 @@ import styles from '../../styles.module.css';
 import Table from "../../../../../../components/Table";
 import Pagination from "../../../../../../components/Table/Pagination";
 import Confirm from "../../../../../../components/Modals/Confirm";
+import Audio from "../../../../../../components/Audio";
 import { MdMoreVert } from 'react-icons/md';
 
 export default function URAList({ props }) {
@@ -35,7 +36,17 @@ export default function URAList({ props }) {
                                 { 
                                     heading: "Nome",
                                     align: "left",
-                                    width: "99%",
+                                    width: "30%",
+                                },
+                                { 
+                                    heading: "Timeout",
+                                    align: "left",
+                                    width: "10%",
+                                },
+                                { 
+                                    heading: "Áudio",
+                                    align: "center",
+                                    width: "59%",
                                 },
                                 { 
                                     heading: "Opções",
@@ -48,9 +59,18 @@ export default function URAList({ props }) {
                                 {
                                     pages.length > 0
                                     ? pages[current].map((ura, index) => {
+                                        const { full_audio_link: src } = ura.sound;
+
+                                        let { seconds: timeout } = ura;
+                                        const seconds = timeout > 1 ? "segundos" : 'segundo';
+
                                         return (
                                             <tr key={index}>
                                                 <td>{ura.name}</td>
+                                                <td>{`${timeout} ${seconds}`}</td>
+                                                <td align="center">
+                                                    <Audio src={src}/>
+                                                </td>
                                                 <td>
                                                     <div className={styles.listItemMenu}>
                                                         <input
