@@ -178,6 +178,13 @@ export default function URAForm({ props }) {
             }
         }
 
+        if (description.length < 3) {
+            newValidation.description = {
+                isInvalid: true,
+                message: "Descrição curta demais!",
+            }
+        }
+
         if (description.length > 140) {
             newValidation.description = {
                 isInvalid: true,
@@ -192,10 +199,17 @@ export default function URAForm({ props }) {
             }
         }
 
-        if (seconds < 1) {
+        if (!seconds) {
             newValidation.seconds = {
                 isInvalid: true,
-                message: "Tempo curto demais!",
+                message: "Valor não inserido!",
+            }
+        }
+
+        if (seconds < 0) {
+            newValidation.seconds = {
+                isInvalid: true,
+                message: "Valor inválido!",
             }
         }
 
@@ -300,9 +314,9 @@ export default function URAForm({ props }) {
     const handleDestinationChange = (event, item) => {
         const newOptions = {...options};
 
-        const option = newOptions[item.option];
+        const [key, option] = Object.entries(newOptions).find(([index, option]) => option.option === item.option);
 
-        newOptions[item.option] = {
+        newOptions[key] = {
             ...option,
             destination: event.target.value,
             value: '',
@@ -314,9 +328,9 @@ export default function URAForm({ props }) {
     const handleOptionChange = (event, item) => {
         const newOptions = {...options};
 
-        const option = newOptions[item.option];
+        const [key, option] = Object.entries(newOptions).find(([index, option]) => option.option === item.option);
 
-        newOptions[item.option] = {
+        newOptions[key] = {
             ...option,
             value: event.target.value,
         };

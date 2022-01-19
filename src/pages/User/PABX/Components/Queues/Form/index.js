@@ -258,16 +258,14 @@ export default function QueueForm({ props }) {
     const addBranch = () => {
         const add = () => {
             let newAvailable = [];
+            
+            setBranches([...branches, pick]);
 
             available.forEach((item) => {
                 if (pick !== item) {
                     newAvailable.push(item);
                 }
             });
-
-            const [branch] = available;
-
-            setBranches([...branches, branch]);
 
             setAvailable(newAvailable);
             
@@ -682,7 +680,7 @@ export default function QueueForm({ props }) {
                             Object.values(available).length > 0 &&
                             <div>{
                                 <Input.Group
-                                    id={`queue-add-option-`}
+                                    id={`queue-add-branch-`}
                                     label="Adicionar"
                                 >
                                     <Select
