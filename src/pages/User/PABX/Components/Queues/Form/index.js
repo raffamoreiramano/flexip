@@ -8,6 +8,9 @@ import { API_GUARD } from "../../../../../../services/env";
 import styles from '../../styles.module.css';
 import Input, { Radio, Select } from "../../../../../../components/Input";
 import Alert from "../../../../../../components/Modals/Alert";
+import Reorderable from "../../../../../../components/Reorderable";
+
+import { MdOutlineAdd } from 'react-icons/md';
 
 export default function QueueForm({ props }) {
     const { refresh, PABX, queue } = props;
@@ -34,8 +37,12 @@ export default function QueueForm({ props }) {
     const [record, setRecord] = useState(true);
     const [seconds, setSeconds] = useState('');
     const [strategy, setStrategy] = useState('');
+    const [branches, setBranches] = useState([]);
 
     const [fetchedData, setFetchedData] = useState(null);
+    const [available, setAvailable] = useState([]);
+    const [pick, setPick] = useState({});
+
 
     const [isValidated, setIsValidated] = useState(false);
     const initialValidation = {
@@ -220,6 +227,51 @@ export default function QueueForm({ props }) {
         callback.call();
     }
 
+    const addBranch = () => {
+        const add = () => {
+            let newAvailable = [];
+
+            available.forEach((item) => {
+                if (pick !== item) {
+                    newAvailable.push(item);
+                }
+            });
+
+            const [branch] = available;
+
+            setBranches([...branches, branch]);
+
+            setAvailable(newAvailable);
+            
+            const [newPick] = newAvailable;
+
+            setPick(newPick);
+        }
+
+        if (available.length > 0) {
+            add();
+        }
+    }
+
+    useEffect(() => {
+        if (fetchedData) {
+            let newAvailable = [];
+            
+            fetchedData.branches.forEach(branch => {
+                if (!branches.some(item => item.id === branch.id)) {
+                    newAvailable.push(branch);
+                }
+            });
+
+
+            setAvailable(newAvailable);
+
+            const [newPick] = newAvailable;
+            setPick(newPick);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [branches.length]);
+
     const showAlert = (content, response = false) => {
         success.current = response;
 
@@ -243,6 +295,7 @@ export default function QueueForm({ props }) {
             record_call: record,
             seconds,
             strategy_id: strategy,
+            branches: branches.map(branch => branch.id),
         }
 
         try {
@@ -317,11 +370,13 @@ export default function QueueForm({ props }) {
                     });
 
                     if (response.status === 200) {
-                        const { 
-                            branches,
+                        const {
                             music_on_holds: sounds,
                             strategies,
                         } = response.data;
+
+                        const { branches: available } = response.data;
+                        let newAvailable = available;
 
                         if (queue) {
                             const {
@@ -337,7 +392,12 @@ export default function QueueForm({ props }) {
                                 record_call: record,
                                 seconds,
                                 strategy_id: strategy,
+                                branches,
                             } = response.data.queue;
+
+                            newAvailable = available.filter(item => {
+                                return !branches.some(branch => branch.id === item.id);
+                            });
 
                             setName(name);
                             setDescription(description);
@@ -351,12 +411,22 @@ export default function QueueForm({ props }) {
                             setRecord(!!record);
                             setSeconds(seconds);
                             setStrategy(strategy);
+                            setBranches(branches.map(branch => {
+                                const { id, number, pabx_id } = branch;
+
+                                return { id, number, pabx_id };
+                            }));
                         }
 
+                        setAvailable(newAvailable);
+
+                        const [pick] = newAvailable;
+                        setPick(pick);
+
                         setFetchedData({
-                            branches,
                             sounds,
                             strategies,
+                            branches: available,
                         });
                     }
                 } catch (error) {
@@ -576,6 +646,60 @@ export default function QueueForm({ props }) {
                                 <option value={false}>NÃO</option>
                             </Radio>
                         </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>RAMAIS</legend>
+                        {
+                            Object.values(available).length > 0 &&
+                            <div>{
+                                <Input.Group
+                                    id={`queue-add-option-`}
+                                    label="Adicionar"
+                                >
+                                    <Select
+                                        id="pick"
+                                        label="Adicionar ramal"
+                                        search
+                                        value={pick.id}
+                                        onChange={(event) => handleChange(() => {
+                                            const { value } = event.target;
+                                            const pick = Object.values(available).find(item => item.id == value);
+
+                                            setPick(pick);
+                                        })}
+                                    >
+                                        {
+                                            Object.values(available).map((branch, index) => (
+                                                <option key={index} value={branch.id}>{branch.number}</option>
+                                            ))
+                                        }
+                                    </Select>
+
+                                    <button
+                                        className="main-color-1"
+                                        type="button"
+                                        onClick={() => handleChange(() => addBranch())}
+                                    >
+                                        <MdOutlineAdd fill="white"/>
+                                    </button>
+                                </Input.Group>
+                            }</div>
+                        }
+
+                        {
+                            Object.values(branches).length > 0 &&
+                            <div>
+                                <Reorderable
+                                    state={[branches, setBranches]}
+                                    content={(branch) => (
+                                        <>
+                                            <p>{branch.number}</p>
+                                        </>
+                                    )}
+                                />
+                            </div>
+                        }
                     </fieldset>
 
                     <div className={styles.formActions}>

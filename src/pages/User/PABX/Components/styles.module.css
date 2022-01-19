@@ -544,8 +544,12 @@
 
 /* queues */
 
-.queues .form fieldset > div {
+.queues .form fieldset:first-of-type > div {
     display: grid;
     grid-auto-flow: row;
     grid-template-rows: repeat(2, 1fr);
+}
+
+.queues .form fieldset:last-of-type > div {
+    grid-column: 1;
 }

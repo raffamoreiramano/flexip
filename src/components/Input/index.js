@@ -167,7 +167,7 @@ export default function Input({
 
     let className = styles.formControl;
 
-    if (validation.isInvalid) {
+    if (validation?.isInvalid) {
         className += ` ${styles.invalid}`;
     }
 
@@ -181,7 +181,7 @@ export default function Input({
             {
                 element()
             }
-            <strong className="error-message">{validation.message}</strong>
+            <strong className="error-message">{validation?.message}</strong>
         </div>
     );
 }
@@ -239,7 +239,7 @@ export function Select({
 
     let className = styles.formControl;
 
-    if (validation.isInvalid) {
+    if (validation?.isInvalid) {
         className += ` ${styles.invalid}`;
     }
 
@@ -355,7 +355,7 @@ export function Select({
         <div className={className}>
             <label htmlFor={id}>{label}</label>
                 { element }
-            <strong className="error-message">{validation.message}</strong>
+            <strong className="error-message">{validation?.message}</strong>
         </div>
     );
 }
@@ -375,7 +375,7 @@ export function Radio({
 }) {
     let className = styles.formControl;
 
-    if (validation.isInvalid) {
+    if (validation?.isInvalid) {
         className += ` ${styles.invalid}`;
     }
 
@@ -413,7 +413,7 @@ export function Radio({
                     </li>)
                 }
             />
-            <strong className="error-message">{validation.message}</strong>
+            <strong className="error-message">{validation?.message}</strong>
         </div>
     );
 }
@@ -433,7 +433,7 @@ export function Checkboxes({
 }) {
     let className = styles.formControl;
 
-    if (validation.isInvalid) {
+    if (validation?.isInvalid) {
         className += ` ${styles.invalid}`;
     }
 
@@ -485,7 +485,7 @@ export function Checkboxes({
                     )
                 }
             />
-            <strong className="error-message">{validation.message}</strong>
+            <strong className="error-message">{validation?.message}</strong>
         </div>
     );
 }
@@ -499,9 +499,10 @@ Input.Group = ({
     let group = () => {
         let elements;
         const { type, props } = children;
+        let name = type?.name;
 
         if (!Array.isArray(children)) {
-            switch (type.name) {
+            switch (name) {
                 case "Select":
                     elements = Select({...children.props, id: id + children.props.id}, true);
                     break;
@@ -510,7 +511,7 @@ Input.Group = ({
                     break;
                 default:
                     let suffix = props.id;
-                    suffix ??= type.name || type;
+                    suffix = suffix ? suffix : name || type;
 
                     elements = {...children, props: {...props, id: id + suffix}};
             }
@@ -521,8 +522,9 @@ Input.Group = ({
         elements = children.map((child, index) => {
             let element;
             const { type, props } = child;
+            let name = type?.name;
 
-            switch (type.name) {
+            switch (name) {
                 case "Select":
                     element = Select({...props, id: id + props.id}, true);
                     break;
@@ -531,7 +533,7 @@ Input.Group = ({
                     break;
                 default:
                     let suffix = props.id;
-                    suffix ??= type.name || type;
+                    suffix = suffix ? suffix : name || type;
 
                     element = {...child, props: {...props, id: id + suffix}};
             }
@@ -544,7 +546,7 @@ Input.Group = ({
     
     let className = styles.formControl;
 
-    if (validation.isInvalid) {
+    if (validation?.isInvalid) {
         className += ` ${styles.invalid}`;
     }
 
@@ -552,7 +554,7 @@ Input.Group = ({
         <div className={className}>
             <label htmlFor={id} className="input-label">{label}</label>
                 <div className={styles.group}>{ group() }</div>
-            <strong className="error-message">{validation.message}</strong>
+            <strong className="error-message">{validation?.message}</strong>
         </div>
     );
 }
