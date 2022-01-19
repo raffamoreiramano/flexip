@@ -129,31 +129,59 @@ export default function QueueForm({ props }) {
             }
         }
 
+        if (!seconds) {
+            newValidation.seconds = {
+                isInvalid: true,
+                message: "Valor não inserido!",
+            }
+        }
+
         if (seconds < 0) {
             newValidation.seconds = {
                 isInvalid: true,
-                message: "Tempo curto demais!",
+                message: "Valor inválido!",
+            }
+        }
+
+        if (!callTime) {
+            newValidation.callTime = {
+                isInvalid: true,
+                message: "Valor não inserido!",
             }
         }
 
         if (callTime < 0) {
             newValidation.callTime = {
                 isInvalid: true,
-                message: "Tempo curto demais!",
+                message: "Valor inválido!",
+            }
+        }
+
+        if (!giveUpTime) {
+            newValidation.giveUpTime = {
+                isInvalid: true,
+                message: "Valor não inserido!",
             }
         }
 
         if (giveUpTime < 0) {
             newValidation.giveUpTime = {
                 isInvalid: true,
-                message: "Tempo curto demais!",
+                message: "Valor inválido!",
+            }
+        }
+
+        if (!max) {
+            newValidation.max = {
+                isInvalid: true,
+                message: "Valor não inserido!",
             }
         }
 
         if (max < 0) {
             newValidation.giveUpTime = {
                 isInvalid: true,
-                message: "Limite inválido!",
+                message: "Valor inválido!",
             }
         }
 
