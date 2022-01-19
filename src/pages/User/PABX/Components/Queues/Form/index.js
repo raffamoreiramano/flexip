@@ -621,8 +621,8 @@ export default function QueueForm({ props }) {
                                 id="queue-giveUpTime"
                                 type="number"
                                 name="giveUpTime"
-                                label="Tempo de desistência"
-                                placeholder="Se o cliente desligar dentro do tempo em segundos é contada desistência"
+                                label="Tempo de desistência (segundos)"
+                                placeholder="Se desligada dentro do tempo é contada desistência"
                                 value={giveUpTime}
                                 onChange={(event) => handleChange(() => {
                                     setGiveUpTime(event.target.value);
