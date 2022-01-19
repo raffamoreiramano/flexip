@@ -3,50 +3,43 @@
     position: relative;
 }
 
-/* 
-.list li::after {
-    content: attr(id);
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: rgba(var(--text-color), .5);
-    font-weight: 500;
-}
-*/
-
 .item {
     position: relative;
 
-    padding: 1.1rem 4rem 1.1rem 1rem;
-
     display: flex;
     align-items: center;
-
+    gap: 1rem;
+    
+    padding: 0 1rem;
     border-radius: 1rem;
 }
 
-.item * {
+.item > i {
+    display: contents;
+}
+
+.item > i > svg {
+    margin-left: auto;
+    font-size: 2rem;
+    fill: rgba(var(--text-color), .5);
+    margin-block: .65rem;
+}
+
+.content {
+    display: contents;
+    position: relative;
+}
+
+.content * {
     margin: 0;
+    grid-row: 1;
 }
 
-.item::before,
-.item::after {
-    content: '';
-    position: absolute;
-    width: 1.5rem;
-    height: .2rem;
-    background-color: rgba(var(--text-color), .25);
-    border-radius: 1rem;
-    right: 1.25rem;
-    top: 50%;
-}
-
-.item::before {
-    transform: translateY(-50%) translateY(-.2rem);
-}
-
-.item::after {
-    transform: translateY(-50%)  translateY(.2rem);
-
+/* ordered */
+ol .item::after {
+    content: attr(id);
+    color: rgba(var(--text-color), .5);
+    font-weight: 500;
+    z-index: 1;
+    order: -1;
 }

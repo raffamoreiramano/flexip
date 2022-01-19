@@ -1,5 +1,6 @@
 import React from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { VscGrabber } from 'react-icons/vsc';
 
 import styles from './styles.module.css'
 
@@ -7,6 +8,7 @@ export default function Reorderable({
     id,
     state,
     className,
+    ordered,
     content = (item) => {}
 }) {
     const [list, setList] = state;
@@ -29,12 +31,8 @@ export default function Reorderable({
 
             setList(items);
         }}>
-            <Droppable droppableId={droppableId} children={(provided) => (
-                <ol
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    className={styles.list}
-                >
+            <Droppable droppableId={droppableId} children={(provided) => {
+                const children = (<>
                     {
                         list.map((item, index) => {
                             return (
@@ -48,7 +46,6 @@ export default function Reorderable({
 
                                     return (
                                         <li
-                                            id={index + 1}
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
                                             ref={provided.innerRef}
@@ -57,8 +54,11 @@ export default function Reorderable({
                                                 transition,
                                             }}
                                         >
-                                            <div className={`${styles.item} glass`}>
-                                                { content(item) }
+                                            <div id={index + 1} className={`${styles.item} glass`}>
+                                                <div className={styles.content}>
+                                                    { content(item) }
+                                                </div>
+                                                <i><VscGrabber/></i>
                                             </div>
                                         </li>
                                     );
@@ -67,8 +67,25 @@ export default function Reorderable({
                         })
                     }
                     { provided.placeholder }
-                </ol>
-            )}/>
+                </>);
+                
+                return ordered ? (
+                    <ol
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        className={styles.list}
+                        children={children}
+                    />
+                )
+                : (
+                    <ul
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        className={styles.list}
+                        children={children}
+                    />
+                );
+            }}/>
         </DragDropContext>
     );
 }

@@ -691,6 +691,7 @@ export default function QueueForm({ props }) {
                             Object.values(branches).length > 0 &&
                             <div>
                                 <Reorderable
+                                    ordered
                                     state={[branches, setBranches]}
                                     content={(branch) => (
                                         <>
