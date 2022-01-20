@@ -116,6 +116,12 @@ export default function Input({
                 }
 
                 break;
+            case "datetime-local":
+                inputProps = {
+                    ...inputProps,
+                    type,
+                }
+                break;
             default:
                 inputProps = {
                     ...inputProps,

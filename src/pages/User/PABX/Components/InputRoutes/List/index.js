@@ -130,7 +130,7 @@ export default function InputRouteList({ props }) {
                                             </tr>
                                         );
                                     })
-                                    : <tr><td colSpan="100%">Nenhuma rota encontrado!</td></tr>
+                                    : <tr><td colSpan="100%">Nenhuma rota encontrada!</td></tr>
                                 }
                             </tbody>
                         </Table>

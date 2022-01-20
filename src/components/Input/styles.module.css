@@ -16,6 +16,10 @@
 	font-weight: bold;
 }
 
+.formControl .input:not([type="checkbox"]):not([type="radio"]) {
+	height: 3.125rem;
+}
+
 .formControl .select {
 	position: relative;
 	display: grid;
@@ -244,7 +248,7 @@
 	padding: 0;
 	padding-left: 1em;
 	padding-top: 0.25em;
-	gap: 1em;
+	gap: .5em 1em;
 	margin: 0;
 }
 
