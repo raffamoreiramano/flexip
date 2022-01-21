@@ -1,8 +1,10 @@
 /* branches */
+
 .component {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    overflow: visible;
 }
 
 .component header {
@@ -142,6 +144,10 @@
     flex-direction: column;
 }
 
+.component .form {
+    overflow: visible;
+}
+
 .component .form form {
     display: flex;
     flex-direction: column;
@@ -265,6 +271,10 @@
 
 .component .form .formActions button {
     margin: 0;
+}
+
+.component .list {
+    overflow-x: auto;
 }
 
 .actions button svg {
@@ -496,6 +506,7 @@
     }
 }
 
+
 /* telephones */
 
 .telephones .list .check {
@@ -512,6 +523,7 @@
     cursor: default;
     pointer-events: none;
 }
+
 
 /* audios */
 
@@ -544,11 +556,13 @@
     }
 }
 
+
 /* uras */
 
 .uras .form .options > div {
     grid-column: 1;
 }
+
 
 /* queues */
 
@@ -560,4 +574,43 @@
 
 .queues .form fieldset:last-of-type > div {
     grid-column: 1;
+}
+
+
+/* report */
+
+.report .selected {
+    display: grid;
+    gap: .75rem;
+}
+
+.report .selected > h3 {
+    margin: 0;
+}
+
+.report .selected > audio::-webkit-media-controls-panel {
+    padding: 0;
+}
+
+.report .selected > table {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    gap: 1rem;
+}
+
+.report .selected > table tbody,
+.report .selected > table tr {
+    display: contents;
+}
+
+.report .selected > table tr th {
+    text-align: start;
+    display: inline-flex;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.report .selected > table tr th i {
+    all: unset;
 }

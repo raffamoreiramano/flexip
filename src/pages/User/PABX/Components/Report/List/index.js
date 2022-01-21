@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import styles from '../../styles.module.css';
 import Table from "../../../../../../components/Table";
@@ -27,7 +27,7 @@ export default function ReportList({ props }) {
                         <Table
                             thead={[
                                 { 
-                                    heading: "Data/Horário",
+                                    heading: "Data",
                                     align: "left",
                                     width: "18%",
                                 },
@@ -73,12 +73,7 @@ export default function ReportList({ props }) {
                                             destination,
                                             duration,
                                             value,
-                                            flow,
                                             status,
-                                            type,
-                                            trunk,
-                                            bina,
-                                            full_audio_link: audio,
                                         } = record;
 
                                         return (

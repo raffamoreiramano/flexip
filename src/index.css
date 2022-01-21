@@ -47,7 +47,7 @@ body, #root {
 }
 
 #root {
-	overflow: auto;
+	overflow: hidden auto;
 }
 
 *, * > * {

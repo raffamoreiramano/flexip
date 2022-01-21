@@ -4,7 +4,7 @@ export function BRLMask(value) {
 	if (typeof value === 'number') {
 		digits = value / 10000;
 	} else {
-		digits = parseInt(value.replace(/\D/g, "")) / 10000;
+		digits = parseInt(value?.replace(/\D/g, "")) / 10000;
 	}
 
 	return digits.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 4 });
@@ -281,7 +281,7 @@ export function secondsToTime(value) {
 	if (typeof value === 'number') {
 		number = value;
 	} else {
-		number = parseInt(value.replace(/\D/g, ""));
+		number = parseInt(value?.replace(/\D/g, ""));
 	}
 
 	const hours = Math.floor(number / 3600);

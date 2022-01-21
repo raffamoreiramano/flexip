@@ -1,39 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from 'react-redux';
-import { setIsLoading } from "../../../../../store/actions";
 
-import api from "../../../../../services/api";
-import { API_GUARD } from "../../../../../services/env";
-
-import { IoMdRefresh, IoIosArrowUp } from 'react-icons/io';
+import { IoIosArrowUp } from 'react-icons/io';
 import { AiOutlineFileSearch } from 'react-icons/ai';
 
 import styles from '../styles.module.css';
-import ComponentForm from "./Form";
-import ComponentList from "./List";
 import Alert from "../../../../../components/Modals/Alert";
+import Audio from '../../../../../components/Audio';
 import ReportForm from "./Form";
 import ReportList from "./List";
+import { BRLMask, secondsToTime } from "../../../../../services/helpers";
 
 export default function Report({ props }) {
-    const { PABX } = props
-    const ID = parseInt(PABX.id);
-
-    const dispatch = useDispatch();
-
-    const [isAlertActive, setIsAlertActive] = useState(false);
-    const [alertContent, setAlertContent] = useState({
-        title: "Ops!",
-        message: "Parece que houve um erro... Por favor, tente mais tarde!"
-    });
-    const success = useRef(false);
-
     const [open, setOpen] = useState(false);
     const [fetchedData, setFetchedData] = useState(null);
 
-    const [records, setComponents] = useState(null);
     const [pages, setPages] = useState([]);
     const [current, setCurrent] = useState(0);
+
+    const [selected, setSelected] = useState({});
+    const [isSelectedModalActive, setIsSelectedModalActive] = useState(false);
 
     useEffect(() => {
         const recordsToPages = () => {
@@ -69,29 +54,45 @@ export default function Report({ props }) {
 
     const initialRender = useRef(true);
 
-    const refresh = () => {
-        console.log('refresh');
-    }
-
-    const showAlert = (content, response = false) => {
-        success.current = response;
-
-        setAlertContent(content);
-        setIsAlertActive(true);
-    }
-
     const navigate = (page) => {
         setCurrent(page);
     }
 
-    const select = () => {
-        console.log('select')
+    const select = (record) => {
+        const {
+            date_hour: date,
+            origin,
+            destination,
+            duration,
+            value,
+            flow,
+            status,
+            type,
+            trunk,
+            bina,
+            full_audio_link: audio,
+        } = record;
+
+        setSelected({
+            date,
+            origin,
+            destination,
+            duration,
+            value,
+            flow,
+            status,
+            type,
+            trunk,
+            bina,
+            audio,
+        });
+
+        setIsSelectedModalActive(true);
     }
 
     const Main = () => {
         const filterProps = {
             ...props,
-            refresh,
             setData: setFetchedData,
         }
 
@@ -118,17 +119,6 @@ export default function Report({ props }) {
                 </section>
                 <section className={styles.actions}>
                     <button
-                        className={styles.refresh}
-                        disabled={open ? false : true}
-                        onClick={() => {
-                            if (open) {
-                                refresh();
-                            }
-                        }}
-                    >
-                        <IoMdRefresh/>
-                    </button>
-                    <button
                         className={styles.toggle}
                         onClick={() => setOpen(!open)}
                     >
@@ -142,15 +132,64 @@ export default function Report({ props }) {
             }
 
             <Alert
-                title={alertContent.title}
-                message={alertContent.message}
-                state={[isAlertActive, setIsAlertActive]}
-                onClose={() => {
-                    if (success.current) {
-                        refresh();
+                state={[isSelectedModalActive, setIsSelectedModalActive]}
+                onClose={() => setSelected('')}
+            >
+                <div className={styles.selected}>
+                    {
+                        selected &&
+                        <>
+                            <h3>Gravação</h3>
+                            <Audio src={selected.audio}/>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th>Data <i>: :</i></th>
+                                        <td>{selected.date}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Origem <i>: :</i></th>
+                                        <td>{selected.origin}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Destino <i>: :</i></th>
+                                        <td>{selected.destination}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Fluxo <i>: :</i></th>
+                                        <td>{selected.flow}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Status <i>: :</i></th>
+                                        <td>{selected.status}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tipo <i>: :</i></th>
+                                        <td>{selected.type}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tronco <i>: :</i></th>
+                                        <td>{selected.trunk}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Bina <i>: :</i></th>
+                                        <td>{selected.bina}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Duração <i>: :</i></th>
+                                        <td>{secondsToTime(selected.duration)}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Valor <i>: :</i></th>
+                                        <td>{BRLMask(selected.value)}</td>
+                                    </tr>
+                                </tbody>
+                            </table> 
+                        </>
                     }
-                }}
-            />
+                    
+                </div>
+           </Alert>
         </article>
     );
 }

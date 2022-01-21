@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
 import { setIsLoading } from "../../../../../../store/actions";
 
@@ -6,11 +6,11 @@ import api from "../../../../../../services/api";
 import { API_GUARD } from "../../../../../../services/env";
 
 import styles from '../../styles.module.css';
-import Input, { Radio, Select } from "../../../../../../components/Input";
+import Input, { Select } from "../../../../../../components/Input";
 import Alert from "../../../../../../components/Modals/Alert";
 
 export default function ReportForm({ props }) {
-    const { refresh, setData } = props;
+    const { setData } = props;
 
     const dispatch = useDispatch();
 
@@ -19,7 +19,6 @@ export default function ReportForm({ props }) {
         title: "Ops!",
         message: "Parece que houve um erro... Por favor, tente mais tarde!"
     });
-    const success = useRef(false);
 
     const date = new Date();
     const todayStart = date.toLocaleString().replace(/(^\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(.+)/, "$3-$2-$1T00:00");
@@ -125,9 +124,6 @@ export default function ReportForm({ props }) {
     const cleanFilters = () => {
         setValidation(initialValidation);
 
-        setStart(todayStart);
-        setEnd(todayEnd);
-
         setType('');
         setTrunk('');
 
@@ -149,9 +145,7 @@ export default function ReportForm({ props }) {
         callback.call();
     }
 
-    const showAlert = (content, response = false) => {
-        success.current = response;
-
+    const showAlert = (content) => {
         setAlertContent(content);
         setIsAlertActive(true);
     }
@@ -178,10 +172,18 @@ export default function ReportForm({ props }) {
 
             if (response.status && response.status === 200) {
                 const {
-                    call_detail_records: records,
+                    call_detail_records,
                     total_amount: amount,
                     total_call_duration: duration,
                 } = response.data;
+
+                let records =  call_detail_records;
+                
+                if (!Array.isArray(records)) {
+                    [records] = Object.values(records);
+
+                    records = records ? [records] : [];
+                }
 
                 setData({
                     records,
@@ -278,6 +280,7 @@ export default function ReportForm({ props }) {
                                 })}
                                 validation={validation.disposition}
                             >
+                                <option value="">. . .</option>
                                 <option value="Atendida">Atendida</option>
                                 <option value="Não Atendida">Não Atendida</option>
                                 <option value="Não">Não</option>
@@ -325,6 +328,7 @@ export default function ReportForm({ props }) {
                                 })}
                                 validation={validation.flow}
                             >
+                                <option value="">. . .</option>
                                 <option value="Entrada">Entrada</option>
                                 <option value="Saída">Saída</option>
                             </Select>
@@ -342,6 +346,7 @@ export default function ReportForm({ props }) {
                                 })}
                                 validation={validation.type}
                             >
+                                <option value="">. . .</option>
                                 <option value="Fixo">Fixo</option>
                                 <option value="Móvel">Móvel</option>
                                 <option value="Internacional">Internacional</option>
@@ -383,11 +388,6 @@ export default function ReportForm({ props }) {
                 title={alertContent.title}
                 message={alertContent.message}
                 state={[isAlertActive, setIsAlertActive]}
-                onClose={() => {
-                    if (success.current) {
-                        refresh();
-                    }
-                }}
             />
         </>
     );

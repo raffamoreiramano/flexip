@@ -42,6 +42,10 @@
     border-bottom-right-radius: 1rem;
 }
 
+.table tfoot tr > * {
+    font-weight: bold;
+}
+
 .table button {
     all: initial;
 
