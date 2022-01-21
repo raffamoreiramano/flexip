@@ -307,6 +307,14 @@
     cursor: pointer;
 }
 
+.listItemMenu label svg {
+    transition: 1000ms cubic-bezier(0.5, 3, 0, -0.5);
+}
+
+.listItemMenu label:hover svg {
+    fill: rgb(var(--main-color-1));
+}
+
 .listItemMenu input:checked + label::before {
     content: '';
     position: fixed;

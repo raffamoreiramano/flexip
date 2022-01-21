@@ -29,7 +29,6 @@ export default function Report({ props }) {
     const success = useRef(false);
 
     const [open, setOpen] = useState(false);
-    const [fetched, setFetched] = useState(false);
     const [fetchedData, setFetchedData] = useState(null);
 
     const [records, setComponents] = useState(null);
@@ -38,7 +37,8 @@ export default function Report({ props }) {
 
     useEffect(() => {
         const recordsToPages = () => {
-            const RECORDS = [...records];
+
+            const RECORDS = [...fetchedData.records];
             const rows = 10;
             const total = Math.max(Math.floor(RECORDS.length / rows), 1);
             let pages = [];
@@ -59,7 +59,13 @@ export default function Report({ props }) {
             recordsToPages();
         }
         
-    }, [records]);
+    }, [fetchedData]);
+    
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false;
+        }
+    })
 
     const initialRender = useRef(true);
 
@@ -86,11 +92,12 @@ export default function Report({ props }) {
         const filterProps = {
             ...props,
             refresh,
+            setData: setFetchedData,
         }
 
         const listProps = {
             ...filterProps,
-            records,
+            data: fetchedData,
             pages,
             current,
             navigate,
@@ -99,7 +106,7 @@ export default function Report({ props }) {
 
         return (<>
             <ReportForm props={filterProps}/>
-            { fetched && <ReportList props={listProps}/> }
+            { fetchedData && <ReportList props={listProps}/> }
         </>);
     }
 
@@ -131,7 +138,7 @@ export default function Report({ props }) {
             </header>
 
             {
-                open && <Main/>
+                open && Main()
             }
 
             <Alert

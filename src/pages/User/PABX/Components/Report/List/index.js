@@ -3,16 +3,20 @@ import React, { useState } from "react";
 import styles from '../../styles.module.css';
 import Table from "../../../../../../components/Table";
 import Pagination from "../../../../../../components/Table/Pagination";
-import { MdMoreVert } from 'react-icons/md';
+import { secondsToTime, BRLMask } from '../../../../../../services/helpers';
+
+import { MdReadMore } from 'react-icons/md';
 
 export default function ReportList({ props }) {
     const {
-        records,
+        data,
         pages,
         current,
         navigate,
         select,
     } = props;
+
+    const { records, amount, duration } = data;
     
     return (
         <>
@@ -23,12 +27,37 @@ export default function ReportList({ props }) {
                         <Table
                             thead={[
                                 { 
-                                    heading: "Nome",
+                                    heading: "Data/Horário",
                                     align: "left",
-                                    width: "99%",
+                                    width: "18%",
                                 },
                                 { 
-                                    heading: "Opções",
+                                    heading: "Origem",
+                                    align: "left",
+                                    width: "18%",
+                                },
+                                { 
+                                    heading: "Destino",
+                                    align: "left",
+                                    width: "18%",
+                                },
+                                { 
+                                    heading: "Status",
+                                    align: "left",
+                                    width: "18%",
+                                },
+                                { 
+                                    heading: "Duração",
+                                    align: "left",
+                                    width: "12%",
+                                },
+                                { 
+                                    heading: "Valor",
+                                    align: "left",
+                                    width: "15%",
+                                },
+                                { 
+                                    heading: "Detalhes",
                                     align: "center",
                                     width: "1%",
                                 },
@@ -38,18 +67,42 @@ export default function ReportList({ props }) {
                                 {
                                     pages.length > 0
                                     ? pages[current].map((record, index) => {
+                                        const {
+                                            date_hour: date,
+                                            origin,
+                                            destination,
+                                            duration,
+                                            value,
+                                            flow,
+                                            status,
+                                            type,
+                                            trunk,
+                                            bina,
+                                            full_audio_link: audio,
+                                        } = record;
+
                                         return (
                                             <tr key={index}>
-                                                <td>{index}</td>
-                                                <td>
-                                                    <div></div>
-                                                </td>
+                                                <td>{date}</td>
+                                                <td>{origin}</td>
+                                                <td>{destination}</td>
+                                                <td>{status}</td>
+                                                <td>{secondsToTime(duration)}</td>
+                                                <td>{BRLMask(value)}</td>
+                                                <td><button onClick={() => select(record)}><MdReadMore/></button></td>
                                             </tr>
                                         );
                                     })
                                     : <tr><td colSpan="100%">Nenhum registro encontrado!</td></tr>
                                 }
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th align="start" colSpan={4}>Total:</th>
+                                    <td>{secondsToTime(duration)}</td>
+                                    <td>{BRLMask(amount)}</td>
+                                </tr>
+                            </tfoot>
                         </Table>
                         <div className={styles.listActions}>
                             <Pagination

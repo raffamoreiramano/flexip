@@ -10,7 +10,7 @@ import Input, { Radio, Select } from "../../../../../../components/Input";
 import Alert from "../../../../../../components/Modals/Alert";
 
 export default function ReportForm({ props }) {
-    const { refresh } = props;
+    const { refresh, setData } = props;
 
     const dispatch = useDispatch();
 
@@ -37,9 +37,6 @@ export default function ReportForm({ props }) {
 
     const [flow, setFlow] = useState('');
     const [disposition, setDisposition] = useState('');
-
-
-    const [fetchedData, setFetchedData] = useState(null);
 
     const [isValidated, setIsValidated] = useState(false);
     const initialValidation = {
@@ -165,8 +162,8 @@ export default function ReportForm({ props }) {
         const body = {
             call_type: type,
             disposition,
-            time_call_started: start,
-            time_call_ended: end,
+            time_call_started: start.replace("/", "-").replace("T", " ") + ":00",
+            time_call_ended: end.replace("/", "-").replace("T", " ") + ":00",
             account_code: source,
             destination,
             last_apps_arguments: trunk,
@@ -180,10 +177,17 @@ export default function ReportForm({ props }) {
             });
 
             if (response.status && response.status === 200) {
-                const { title, message } = response.data;
-                const content = { title, message };
+                const {
+                    call_detail_records: records,
+                    total_amount: amount,
+                    total_call_duration: duration,
+                } = response.data;
 
-                showAlert(content, true);
+                setData({
+                    records,
+                    amount,
+                    duration,
+                });
             }
         } catch (error) {
             let content = {
@@ -224,49 +228,6 @@ export default function ReportForm({ props }) {
         } finally {
             dispatch(setIsLoading(false));
         }
-    }
-
-    const initialRender = useRef(true);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const access_token = localStorage.getItem("access_token");
-
-            if (access_token) {
-                try {
-                    const response = await api.get(`/v1/${API_GUARD}/call_detail_record`, {
-                        headers: { Authorization: "Bearer " + access_token }
-                    });
-
-                    if (response.status === 200) {
-                        const {
-                            call_type_select: type,
-                            disposition_select: disposition,
-                        } = response.data;
-
-                        setFetchedData({
-                            type,
-                            disposition,
-                        });
-                    }
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        }
-
-        if (initialRender.current) {
-            initialRender.current = false;
-            dispatch(setIsLoading(true));
-
-            fetchData().finally(() => {
-                dispatch(setIsLoading(false));
-            });
-        }
-    });
-
-    if (!fetchedData) {
-        return <p className={styles.nodata}>. . .</p>
     }
 
     return (
@@ -317,13 +278,12 @@ export default function ReportForm({ props }) {
                                 })}
                                 validation={validation.disposition}
                             >
-                                {
-                                    fetchedData.disposition.map((item, index) => {
-                                        return (
-                                            <option key={index} value={item.pt}>{item.pt}</option>
-                                        );
-                                    })
-                                }
+                                <option value="Atendida">Atendida</option>
+                                <option value="Não Atendida">Não Atendida</option>
+                                <option value="Não">Não</option>
+                                <option value="Ocupado">Ocupado</option>
+                                <option value="Falhou">Falhou</option>
+                                <option value="Desconhecida">Desconhecida</option>
                             </Select>
                         </div>
 
@@ -382,13 +342,10 @@ export default function ReportForm({ props }) {
                                 })}
                                 validation={validation.type}
                             >
-                                {
-                                    fetchedData.type.map((item, index) => {
-                                        return (
-                                            <option key={index} value={item.pt}>{item.pt}</option>
-                                        );
-                                    })
-                                }
+                                <option value="Fixo">Fixo</option>
+                                <option value="Móvel">Móvel</option>
+                                <option value="Internacional">Internacional</option>
+                                <option value="0800">0800</option>
                             </Select>
 
                             <Input

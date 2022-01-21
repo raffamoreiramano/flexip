@@ -274,3 +274,24 @@ export function fileToBase64(file) {
 		reader.readAsDataURL(file);
 	});
 }
+
+export function secondsToTime(value) {
+	let number = 0;
+
+	if (typeof value === 'number') {
+		number = value;
+	} else {
+		number = parseInt(value.replace(/\D/g, ""));
+	}
+
+	const hours = Math.floor(number / 3600);
+	const minutes = Math.floor((number - (hours * 3600)) / 60);
+	const seconds = number - (hours * 3600) - (minutes * 60);
+  
+	const timeString =
+		hours.toString().padStart(2, '0') + ':' +
+		minutes.toString().padStart(2, '0') + ':' +
+		seconds.toString().padStart(2, '0');
+  
+	return timeString;
+}

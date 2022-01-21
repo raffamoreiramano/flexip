@@ -330,6 +330,14 @@ option {
 	background-color: rgb(var(--bg-color-1));
 }
 
+input[type^="date"]::-webkit-calendar-picker-indicator {
+	filter: opacity(.5);
+}
+
+.dark-theme input[type^="date"]::-webkit-calendar-picker-indicator {
+	filter: opacity(.35) invert();
+}
+
 input[value=""] {
     background: rgba(var(--input-color), 0.5);
 }
