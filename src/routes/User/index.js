@@ -16,6 +16,7 @@ import Header from "../../components/Header";
 import Dashboard from "../../pages/User/Dashboard";
 import PABXList from "../../pages/User/PABX";
 import PABX from "../../pages/User/PABX/PABX";
+import Finance from "../../pages/User/Finance";
 
 
 export default function User({ location, history }) {
@@ -35,6 +36,11 @@ export default function User({ location, history }) {
 		{
 			path: "/admin/PABX/:PABX",
 			component: PABX,
+			exact: true
+		},
+		{
+			path: "/admin/financeiro",
+			component: Finance,
 			exact: true
 		},
 		{

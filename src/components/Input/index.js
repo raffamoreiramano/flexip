@@ -99,7 +99,7 @@ export default function Input({
 
                     onChange({...event, target: {...event.target, value: newValue}});
 
-                    if (!filename.value) {
+                    if (!filename.value && filename.onChange) {
                         const str = newValue?.name || '';
                         const noExtName = str.substr(-str.length, str.lastIndexOf("."));
 
@@ -149,6 +149,12 @@ export default function Input({
         }
 
         if (type === "file") {
+            filename = filename.onChange ? filename : {
+                ...filename,
+                onChange: () => {},
+                disabled: true,
+            }
+
             inputElement = (
                 <div className={styles.file}>
                     <input

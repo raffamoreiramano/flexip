@@ -79,16 +79,6 @@ const LOCATIONS = [
         name: "Financeiro",
         key: "/admin/financeiro",
         icon: FaDollarSign,
-        nested: [
-            location({
-                name: "Extrato",
-                key: "/admin/financeiro/extrato"
-            }),
-            location({
-                name: "Inserir Créditos",
-                key: "/admin/financeiro/inserir-creditos"
-            }),
-        ]
     }),
     location({
         name: "Status",

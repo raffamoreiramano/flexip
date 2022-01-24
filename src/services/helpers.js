@@ -1,13 +1,13 @@
-export function BRLMask(value) {
-	let digits = 0;
+export function BRLMask(value, fraction = 10000, digits = 4) {
+	let number = 0;
 
 	if (typeof value === 'number') {
-		digits = value / 10000;
+		number = value / fraction;
 	} else {
-		digits = parseInt(value?.replace(/\D/g, "")) / 10000;
+		number = parseInt(value?.replace(/\D/g, "")) / fraction;
 	}
 
-	return digits.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 4 });
+	return number.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: digits });
 }
 
 export function phoneMask(value) {

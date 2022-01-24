@@ -423,6 +423,15 @@
 	transition: 1000ms cubic-bezier(0.5, 3, 0, -0.5);
 }
 
+.formControl .file .filename:disabled ~ .button {
+	width: 100%;
+	padding-right: 1em;
+}
+
+.formControl .file .filename:disabled ~ .button > *{
+	margin-left: auto;
+}
+
 .formControl .file .button:hover {
 	--light-color: var(--main-color-1);
 	--shadow-color: var(--main-color-1);
