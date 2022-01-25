@@ -429,3 +429,7 @@ button.transparent:hover {
 		font-size: .75em;
 	}
 }
+
+iframe {
+	pointer-events: none;
+}
