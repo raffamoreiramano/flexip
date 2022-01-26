@@ -1,6 +1,6 @@
 import React from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { VscGrabber } from 'react-icons/vsc';
+import { MdDragIndicator } from 'react-icons/md';
 
 import styles from './styles.module.css'
 
@@ -35,8 +35,10 @@ export default function Reorderable({
                 const children = (<>
                     {
                         list.map((item, index) => {
+                            const { id = index} = item;
+
                             return (
-                                <Draggable key={item.id} draggableId={`${item.id}`} index={index} children={(provided, snapshot) => {
+                                <Draggable key={id} draggableId={`${id}`} index={index} children={(provided, snapshot) => {
                                     let { style } = provided.draggableProps;
                                     let { transition } = style;
 
@@ -58,7 +60,7 @@ export default function Reorderable({
                                                 <div className={styles.content}>
                                                     { content(item) }
                                                 </div>
-                                                <i><VscGrabber/></i>
+                                                <i><MdDragIndicator/></i>
                                             </div>
                                         </li>
                                     );

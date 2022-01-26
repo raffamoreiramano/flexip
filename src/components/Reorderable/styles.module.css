@@ -21,8 +21,9 @@
 .item > i > svg {
     margin-left: auto;
     font-size: 2rem;
-    fill: rgba(var(--text-color), .5);
+    fill: rgba(var(--text-color), .3);
     margin-block: .65rem;
+    transform: rotateZ(90deg);
 }
 
 .content {
