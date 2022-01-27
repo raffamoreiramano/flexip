@@ -523,7 +523,10 @@
     margin: 1rem;
 }
 
-
+iframe[id="omnizeButtonFrame"],
+iframe[id="omnizeWgtFrame"] {
+	pointer-events: all;
+}
 
 @media screen and (max-width: 1024px) {
     .navbar ~ main,

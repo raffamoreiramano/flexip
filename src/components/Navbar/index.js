@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setDarkMode, updateUser, updatePABX } from '../../store/actions';
+import { setDarkMode, setIsLoading, updateUser, updatePABX } from '../../store/actions';
 
 import LightLogo from '../../assets/images/logo/flexip.svg';
 import DarkLogo  from '../../assets/images/logo/flexip-white.svg';
@@ -49,6 +49,23 @@ export default function Navbar(props) {
 
     const navigate = (navItem) => {
         props.history.push(navItem.key);
+    }
+
+    const askForHelp = async () => {
+        var JSLink = window.location.protocol + '//omnichatwidget.zenvia.com/main.js';
+        var JSElement = document.createElement('script');
+
+        JSElement.async = !0;
+        JSElement.charset = 'UTF-8';
+        JSElement.src = JSLink;
+        JSElement.onload = OnceLoaded;
+        document.getElementsByTagName('body')[0].appendChild(JSElement);
+
+        function OnceLoaded() {
+            if (typeof omzBao !== 'undefined') {
+                omzBao.init({ id: 17237 }); // eslint-disable-line
+            }
+        }
     }
 
     const logout = () => {
@@ -184,7 +201,11 @@ export default function Navbar(props) {
                             <label
                                 htmlFor="profile-menu-checkbox"
                                 onClick={() => {
-                                    console.log('Suporte')
+                                    dispatch(setIsLoading(true));
+
+                                    askForHelp().finally(() => {
+                                        dispatch(setIsLoading(false));
+                                    });
                                 }}
                             >
                                 Suporte

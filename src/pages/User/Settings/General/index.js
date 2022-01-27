@@ -273,7 +273,7 @@ export default function GeneralSettings() {
         <main className={styles.main}>
             <article>
                 <h2>Alerta de saldo</h2>
-                <p>Habilite o alerta de saldo e quando seu crédito estiver abaixo do esperado você receberá um aviso nos emails cadastrados abaixo!</p>
+                <p>Habilite o alerta de saldo e quando seu crédito estiver abaixo do esperado nós enviaremos um aviso nos e-mails cadastrados!</p>
             </article>
             <div className={styles.form}>
                 <form autoComplete="off" onSubmit={(event) => {
