@@ -297,11 +297,11 @@ export default function Login(props) {
                 </div>
                 <div className={`${styles.advertising} container dark-theme gradient`}>
                     <article>
-                        <img src={Logo} alt="Flex IP" className="logo" />
+                        <img src={Logo} alt="FLEXIP" className="logo" />
                         <h2>Seja bem-vindo!</h2>
-                        <p>Não conhece o <span>Flex IP</span>?
+                        <p>Não conhece o <span>FLEXIP</span>?
                         <br/>
-                        <span>Flex IP</span> é a plataforma de gerenciamento de <strong>PABX</strong>
+                        <span>FLEXIP</span> é a plataforma de gerenciamento de <strong>PABX</strong>
                         <br/>feita pra você!</p>
                         
                         <p>Com ela você tem:</p>
