@@ -109,7 +109,7 @@ export default function BranchForm({ props }) {
         let newValidation = initialValidation;
         let veredict = true;
 
-        if (name.length < 4) {
+        if (!name) {
             newValidation.name = {
                 isInvalid: true,
                 message: "Nome inválido!",
@@ -213,7 +213,7 @@ export default function BranchForm({ props }) {
     const submit = async () => {
         dispatch(setIsLoading(true));
 
-        const selectedExternalNumber = fetchedData.phoneList.find(item => item.id === externalNumber);
+        const selectedExternalNumber = fetchedData.phoneList.find(item => item.id == externalNumber);
         const externalNumberDigits = selectedExternalNumber.ddd + selectedExternalNumber.number;
 
         const body = {

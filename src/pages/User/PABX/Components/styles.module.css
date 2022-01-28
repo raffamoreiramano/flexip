@@ -130,7 +130,7 @@
     cursor: pointer;
 }
 
-.component.open .actions toggle {
+.component.open .actions .toggle {
     transform: rotateZ(180deg);
 }
 

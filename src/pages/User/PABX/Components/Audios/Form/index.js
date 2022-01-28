@@ -37,7 +37,7 @@ export default function AudioForm({ props }) {
 
     const fileConstraints = {
         nameLength: {
-            min: 3,
+            min: 1,
             max: 100,
         },
         size: 10000000,

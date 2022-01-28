@@ -14,7 +14,7 @@ export function phoneMask(value) {
 	if (value) {
 		const digits = value.replace(/\D/g, "");
 
-		if (digits.length <= 5) {
+		if (digits.length <= 7) {
 			return digits;
 		}
 
@@ -143,8 +143,8 @@ export function validatePhone(value) {
 	const digits = value.replace(/\D/g, "");
 	const regex = /(\([0-9]{2}\))/g;
 
-	if (digits.length > 3 && digits.length < 6) {
-		return true;
+	if (digits.length > 1 && digits.length < 8) {
+		return digits.match(/^0/) ? false : true;
 	}
 
 	if (digits.length < 10 || digits.length > 11) {

@@ -101,31 +101,17 @@ export default function QueueForm({ props }) {
         let newValidation = initialValidation;
         let veredict = true;
 
-        if (name.length < 3) {
+        if (!name) {
             newValidation.name = {
                 isInvalid: true,
-                message: "Nome curto demais!",
+                message: "Nome inválido!",
             }
         }
 
-        if (name.length > 40) {
-            newValidation.name = {
-                isInvalid: true,
-                message: "Nome longo demais!",
-            }
-        }
-
-        if (description.length < 3) {
+        if (!description) {
             newValidation.description = {
                 isInvalid: true,
-                message: "Descrição curta demais!",
-            }
-        }
-
-        if (description.length > 140) {
-            newValidation.description = {
-                isInvalid: true,
-                message: "Descrição longa demais!",
+                message: "Descrição inválida!",
             }
         }
 

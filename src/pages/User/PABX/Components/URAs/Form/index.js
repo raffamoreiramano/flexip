@@ -164,31 +164,17 @@ export default function URAForm({ props }) {
         let newValidation = initialValidation;
         let veredict = true;
 
-        if (name.length > 40) {
+        if (!name) {
             newValidation.name = {
                 isInvalid: true,
-                message: "Nome longo demais!",
+                message: "Nome inválido!",
             }
         }
 
-        if (name.length < 3) {
-            newValidation.name = {
-                isInvalid: true,
-                message: "Nome curto demais!",
-            }
-        }
-
-        if (description.length < 3) {
+        if (!description) {
             newValidation.description = {
                 isInvalid: true,
-                message: "Descrição curta demais!",
-            }
-        }
-
-        if (description.length > 140) {
-            newValidation.description = {
-                isInvalid: true,
-                message: "Descrição longa demais!",
+                message: "Descrição inválida!",
             }
         }
 
