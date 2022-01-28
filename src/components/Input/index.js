@@ -514,11 +514,11 @@ Input.Group = ({
         let name = type?.name;
 
         if (!Array.isArray(children)) {
-            switch (name) {
-                case "Select":
+            switch (type) {
+                case Select:
                     elements = Select({...children.props, id: id + children.props.id}, true);
                     break;
-                case "Input":
+                case Input:
                     elements = Input({...children.props, id: id + children.props.id}, true);
                     break;
                 default:
@@ -536,11 +536,11 @@ Input.Group = ({
             const { type, props } = child;
             let name = type?.name;
 
-            switch (name) {
-                case "Select":
+            switch (type) {
+                case Select:
                     element = Select({...props, id: id + props.id}, true);
                     break;
-                case "Input":
+                case Input:
                     element = Input({...props, id: id + props.id}, true);
                     break;
                 default:

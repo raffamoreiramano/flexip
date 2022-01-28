@@ -144,6 +144,10 @@
     flex-direction: column;
 }
 
+.component > section {
+    padding-bottom: 1rem;
+}
+
 .component .form {
     overflow: visible;
 }
@@ -529,6 +533,10 @@
 
 .audios .wrapper {
     padding-top: 1rem;
+}
+
+.audios .wrapper > section {
+    padding-bottom: 1rem;
 }
 
 .audios .wrapper > *:first-child {
