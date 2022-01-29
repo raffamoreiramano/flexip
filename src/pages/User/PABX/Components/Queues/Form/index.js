@@ -115,7 +115,7 @@ export default function QueueForm({ props }) {
             }
         }
 
-        if (!seconds) {
+        if (isNaN(seconds)) {
             newValidation.seconds = {
                 isInvalid: true,
                 message: "Valor não inserido!",
@@ -129,7 +129,7 @@ export default function QueueForm({ props }) {
             }
         }
 
-        if (!callTime) {
+        if (isNaN(callTime)) {
             newValidation.callTime = {
                 isInvalid: true,
                 message: "Valor não inserido!",
@@ -143,7 +143,7 @@ export default function QueueForm({ props }) {
             }
         }
 
-        if (!giveUpTime) {
+        if (isNaN(giveUpTime)) {
             newValidation.giveUpTime = {
                 isInvalid: true,
                 message: "Valor não inserido!",
@@ -157,7 +157,7 @@ export default function QueueForm({ props }) {
             }
         }
 
-        if (!max) {
+        if (isNaN(max)) {
             newValidation.max = {
                 isInvalid: true,
                 message: "Valor não inserido!",

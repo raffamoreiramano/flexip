@@ -185,7 +185,7 @@ export default function URAForm({ props }) {
             }
         }
 
-        if (!seconds) {
+        if (isNaN(seconds)) {
             newValidation.seconds = {
                 isInvalid: true,
                 message: "Valor não inserido!",
