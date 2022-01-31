@@ -257,7 +257,7 @@
     pointer-events: all;
 }
 
-.component .form .fieldsetToggle:checked ~ .fieldsetButton legend i {
+.component .form .fieldsetToggle:not(:checked) ~ .fieldsetButton legend i {
     transform: rotateZ(180deg);
 }
 
