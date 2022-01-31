@@ -1,10 +1,10 @@
 import { IoGrid } from 'react-icons/io5';
 import {
-    FaWrench,
+    FaEllipsisH,
     // FaDirections,
     FaDollarSign,
 } from 'react-icons/fa';
-import { BsTelephoneFill } from 'react-icons/bs';
+import { BsFillMenuButtonWideFill } from 'react-icons/bs';
 // import { RiBarChart2Fill } from 'react-icons/ri';
 
 function location({
@@ -38,24 +38,9 @@ const LOCATIONS = [
         icon: IoGrid,
     }),
     location({
-        name: "Administração",
-        key: "/admin",
-        icon: FaWrench,
-        nested: [
-            location({
-                name: "Usuários",
-                key: "/admin/usuarios"
-            }),
-            location({
-                name: "Configurações Gerais",
-                key: "/admin/configuracoes-gerais"
-            }),
-        ]
-    }),
-    location({
         name: "PABX",
         key: "/admin/PABX",
-        icon: BsTelephoneFill,
+        icon: BsFillMenuButtonWideFill,
     }),
     // location({
     //     name: "Recepção",
@@ -90,6 +75,21 @@ const LOCATIONS = [
     //     icon: RiBarChart2Fill,
     //     disabled: true,
     // }),
+    location({
+        name: "Administração",
+        key: "/admin",
+        icon: FaEllipsisH,
+        nested: [
+            location({
+                name: "Usuários",
+                key: "/admin/usuarios"
+            }),
+            location({
+                name: "Configurações Gerais",
+                key: "/admin/configuracoes-gerais"
+            }),
+        ]
+    }),
 ];
 
 export default LOCATIONS;
