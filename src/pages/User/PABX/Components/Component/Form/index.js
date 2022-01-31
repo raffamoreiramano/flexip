@@ -301,7 +301,7 @@ export default function ComponentForm({ props }) {
                                 className="main-color-2"
                                 type="submit"
                             >
-                                Editar
+                                Salvar
                             </button>
                             : <button
                                 className="main-color-1"

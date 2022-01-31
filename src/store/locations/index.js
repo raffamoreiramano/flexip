@@ -1,7 +1,11 @@
 import { IoGrid } from 'react-icons/io5';
-import { FaWrench, FaDirections, FaDollarSign } from 'react-icons/fa';
+import {
+    FaWrench,
+    // FaDirections,
+    FaDollarSign,
+} from 'react-icons/fa';
 import { BsTelephoneFill } from 'react-icons/bs';
-import { RiBarChart2Fill } from 'react-icons/ri';
+// import { RiBarChart2Fill } from 'react-icons/ri';
 
 function location({
     icon,
@@ -53,39 +57,39 @@ const LOCATIONS = [
         key: "/admin/PABX",
         icon: BsTelephoneFill,
     }),
-    location({
-        name: "Recepção",
-        key: "/admin/recepcao",
-        icon: FaDirections,
-        nested: [
-            location({
-                name: "Status de Ramais",
-                key: "/admin/recepcao/status-de-ramais",
-                disabled: true,
-            }),
-            location({
-                name: "Chamadas Online",
-                key: "/admin/recepcao/chamadas-online",
-                disabled: true,
-            }),
-            location({
-                name: "Detalhes Fila",
-                key: "/admin/recepcao/detalhes-fila",
-                disabled: true,
-            }),
-        ]
-    }),
+    // location({
+    //     name: "Recepção",
+    //     key: "/admin/recepcao",
+    //     icon: FaDirections,
+    //     nested: [
+    //         location({
+    //             name: "Status de Ramais",
+    //             key: "/admin/recepcao/status-de-ramais",
+    //             disabled: true,
+    //         }),
+    //         location({
+    //             name: "Chamadas Online",
+    //             key: "/admin/recepcao/chamadas-online",
+    //             disabled: true,
+    //         }),
+    //         location({
+    //             name: "Detalhes Fila",
+    //             key: "/admin/recepcao/detalhes-fila",
+    //             disabled: true,
+    //         }),
+    //     ]
+    // }),
     location({
         name: "Financeiro",
         key: "/admin/financeiro",
         icon: FaDollarSign,
     }),
-    location({
-        name: "Status",
-        key: "/admin/status",
-        icon: RiBarChart2Fill,
-        disabled: true,
-    })
+    // location({
+    //     name: "Status",
+    //     key: "/admin/status",
+    //     icon: RiBarChart2Fill,
+    //     disabled: true,
+    // }),
 ];
 
 export default LOCATIONS;

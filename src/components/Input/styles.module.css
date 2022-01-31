@@ -2,7 +2,7 @@
 	min-width: 350px;
 
 	display: grid;
-	grid-template-rows: repeat(3, auto);
+	grid-template-rows: minmax(1rem, auto) minmax(3rem, auto) minmax(1rem, auto);
 	grid-template-columns: auto;
 	row-gap: 0.5em;
 
@@ -264,8 +264,8 @@
 	transition: 1000ms cubic-bezier(0.5, 3, 0, -0.5);
 }
 
-.formControl .checkboxes .input:not([disabled]):hover ~ .label,
-.formControl .radio .input:not([disabled]):not([checked]):hover ~ .label {
+.formControl .checkboxes .input:not(:disabled):hover ~ .label,
+.formControl .radio .input:not(:disabled):not(:checked):hover ~ .label {
 	opacity: 1;
 	width: 100%;
 

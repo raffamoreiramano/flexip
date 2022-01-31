@@ -474,7 +474,7 @@ export default function BranchForm({ props }) {
                                 label="Senha bloqueada"
                                 value={blockedPassword}
                                 onChange={(event) => handleChange(() => {
-                                    setBlockedPassword(event.value);
+                                    setBlockedPassword(event.target.value);
                                 })}
                                 validation={validation.blockedPassword}
                             >
@@ -620,14 +620,27 @@ export default function BranchForm({ props }) {
                                     }
                                 </Select>
 
-                                <Select
+                                <Radio 
+                                    id="branch-latency"
+                                    name="latency"
+                                    label="Latência"
+                                    value={latency}
+                                    onChange={(event) => handleChange(() => {
+                                        setLatency(event.target.value);
+                                    })}
+                                    validation={validation.latency}
+                                >
+                                    <option value={true}>Sim</option>
+                                    <option value={false}>Não</option>
+                                </Radio>
+
+                                <Checkboxes 
                                     id="branch-pickUpGroup"
                                     name="pickUpGroup"
                                     label="Grupo de captura"
-                                    search
                                     value={pickUpGroup}
                                     onChange={(event) => handleChange(() => {
-                                        setPickUpGroup(event.target.value);
+                                        setPickUpGroup(event.value);
                                     })}
                                     validation={validation.pickUpGroup}
                                 >
@@ -638,21 +651,7 @@ export default function BranchForm({ props }) {
                                             );
                                         })
                                     }
-                                </Select>
-
-                                <Radio 
-                                    id="branch-latency"
-                                    name="latency"
-                                    label="Latência"
-                                    value={latency}
-                                    onChange={(event) => handleChange(() => {
-                                        setLatency(event.value);
-                                    })}
-                                    validation={validation.latency}
-                                >
-                                    <option value={true}>Sim</option>
-                                    <option value={false}>Não</option>
-                                </Radio>
+                                </Checkboxes>
                             </div>
                         </div>
                     </fieldset>
@@ -671,7 +670,7 @@ export default function BranchForm({ props }) {
                                 className="main-color-2"
                                 type="submit"
                             >
-                                Editar
+                                Salvar
                             </button>
                             : <button
                                 className="main-color-1"

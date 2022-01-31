@@ -33,7 +33,7 @@ export default function QueueForm({ props }) {
     const [max, setMax] = useState('');
     const [sound, setSound] = useState('');
     const [playSound, setPlaySound] = useState(true);
-    const [callTime, setCallTime] = useState('');
+    const [callTime, setCallTime] = useState(1800);
     const [record, setRecord] = useState(true);
     const [seconds, setSeconds] = useState('');
     const [strategy, setStrategy] = useState('');
@@ -517,7 +517,7 @@ export default function QueueForm({ props }) {
                                 id="queue-callTime"
                                 type="number"
                                 name="callTime"
-                                label="Tempo de chamada na fila"
+                                label="Tempo de chamada na fila (segundos)"
                                 placeholder="Em segundos"
                                 value={callTime}
                                 onChange={(event) => handleChange(() => {
@@ -553,7 +553,7 @@ export default function QueueForm({ props }) {
                                 label="Distribuir chamadas..."
                                 value={distribute}
                                 onChange={(event) => handleChange(() => {
-                                    setDistribute(event.value);
+                                    setDistribute(event.target.value);
                                 })}
                                 validation={validation.distribute}
                             >
@@ -729,7 +729,7 @@ export default function QueueForm({ props }) {
                                 className="main-color-2"
                                 type="submit"
                             >
-                                Editar
+                                Salvar
                             </button>
                             : <button
                                 className="main-color-1"

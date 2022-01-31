@@ -414,7 +414,7 @@ export function Radio({
 
                                 value = (value === "false") ? false : (value === "true") ? true : value;
 
-                                onChange({...event, value});
+                                onChange({...event, target: { ...event.target, value }});
                             }}
                         />
                         <label

@@ -287,7 +287,7 @@ export default function UserForm({ props }) {
                             label="Senha bloqueada"
                             value={blockedPassword}
                             onChange={(event) => handleChange(() => {
-                                setBlockedPassword(event.value);
+                                setBlockedPassword(event.target.value);
                             })}
                             validation={validation.blockedPassword}
                         >

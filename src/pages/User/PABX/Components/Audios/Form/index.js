@@ -356,7 +356,7 @@ export default function AudioForm({ props }) {
                                 className="main-color-2"
                                 type="submit"
                             >
-                                Editar
+                                Salvar
                             </button>
                             : <button
                                 className="main-color-1"

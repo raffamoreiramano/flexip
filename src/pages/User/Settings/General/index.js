@@ -291,7 +291,7 @@ export default function GeneralSettings() {
                                 label="Alerta"
                                 value={enable}
                                 onChange={(event) => handleChange(() => {
-                                    setEnable(event.value);
+                                    setEnable(event.target.value);
                                 })}
                                 validation={validation.enable}
                             >

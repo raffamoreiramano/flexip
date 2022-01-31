@@ -417,7 +417,7 @@ export default function InputRouteForm({ props }) {
                             label="Gravar chamadas"
                             value={recordCalls}
                             onChange={(event) => handleChange(() => {
-                                setRecordCalls(event.value);
+                                setRecordCalls(event.target.value);
                             })}
                             validation={validation.recordCalls}
                         >
@@ -462,7 +462,7 @@ export default function InputRouteForm({ props }) {
                                 className="main-color-2"
                                 type="submit"
                             >
-                                Editar
+                                Salvar
                             </button>
                             : <button
                                 className="main-color-1"

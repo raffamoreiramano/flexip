@@ -211,12 +211,12 @@ export default function Audios({ props }) {
                 const switcher = (
                     <Radio
                         id="audio-category"
-                        label="Áudios de. . ."
+                        label="Categoria"
                         name="category"
                         value={category}
                         onChange={(event) => setCategory(event.target.value)}
                     >
-                        <option value={"sound"}>RETORNO</option>
+                        <option value={"sound"}>GERAL</option>
                         <option value={"moh"}>ESPERA</option>
                     </Radio>
                 );
