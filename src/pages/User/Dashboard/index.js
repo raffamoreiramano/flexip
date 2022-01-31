@@ -107,6 +107,14 @@ export default function Dashboard() {
                             total_value: chargedValue,
                         } = response.data;
 
+                        Object.keys(callDisposition).forEach((key) => {
+                            let { percentage } = callDisposition[key];
+
+                            percentage = Math.round(percentage * 100) / 100;
+                            
+                            callDisposition[key].percentage = percentage;
+                        });
+
                         const {
                             total,
                             answered,
