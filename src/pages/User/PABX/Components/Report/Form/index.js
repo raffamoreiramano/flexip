@@ -20,9 +20,9 @@ export default function ReportForm({ props }) {
         message: "Parece que houve um erro... Por favor, tente mais tarde!"
     });
 
-    const date = new Date();
-    const todayStart = date.toLocaleString().replace(/(^\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(.+)/, "$3-$2-$1T00:00");
-    const todayEnd = date.toLocaleString().replace(/(^\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(.+)/, "$3-$2-$1T23:59");
+    const date = new Date(Date.now());
+    const todayStart = date.toJSON().slice(0, 10) + "T00:00";
+    const todayEnd = date.toJSON().slice(0, 10) + "T23:59";
 
 
     const [start, setStart] = useState(todayStart);
