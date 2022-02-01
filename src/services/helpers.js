@@ -295,3 +295,9 @@ export function secondsToTime(value) {
   
 	return timeString;
 }
+
+export function roundPercentage(value) {
+	let number = isNaN(value) ? 0 : parseFloat(value);
+
+	return Math.round(number * 100) / 100;
+}

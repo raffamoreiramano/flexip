@@ -22,7 +22,7 @@ import api from "../../../services/api";
 import { API_GUARD } from "../../../services/env";
 
 import styles from './styles.module.css';
-import { BRLMask } from "../../../services/helpers";
+import { BRLMask, roundPercentage } from "../../../services/helpers";
 
 export default function Dashboard() {
     const dispatch = useDispatch();
@@ -109,10 +109,8 @@ export default function Dashboard() {
 
                         Object.keys(callDisposition).forEach((key) => {
                             let { percentage } = callDisposition[key];
-
-                            percentage = Math.round(percentage * 100) / 100;
                             
-                            callDisposition[key].percentage = percentage;
+                            callDisposition[key].percentage = roundPercentage(percentage);
                         });
 
                         const {
@@ -134,10 +132,10 @@ export default function Dashboard() {
                         setCallsPerHour(callsPerHour.reverse());
 
                         const callsPerType = [
-                            { name: 'Fixo', value: callTypesPercentage["fixed_telephone_tariff"] },
-                            { name: 'Móvel', value: callTypesPercentage["mobile_telephone_tariff"] },
-                            { name: '0800', value: callTypesPercentage["0800_telephone_tariff"] },
-                            { name: 'Internacional', value: callTypesPercentage["international_telephone_tariff"] },
+                            { name: 'Fixo', value: roundPercentage(callTypesPercentage["fixed_telephone_tariff"]) },
+                            { name: 'Móvel', value: roundPercentage(callTypesPercentage["mobile_telephone_tariff"]) },
+                            { name: '0800', value: roundPercentage(callTypesPercentage["0800_telephone_tariff"]) },
+                            { name: 'Internacional', value: roundPercentage(callTypesPercentage["international_telephone_tariff"]) },
                         ];
 
                         setCallsPerType(callsPerType);
@@ -209,21 +207,21 @@ export default function Dashboard() {
                         <div>
                             <section>
                                 <h3>Atendida</h3>
-                                <p>{answered.total} <small>{answered.percentage}%</small></p>
+                                <p>{answered.total} <small>{roundPercentage(answered.percentage)}%</small></p>
                             </section>
                             <section>
                                 <h3>Ocupada</h3>
-                                <p>{busy.total} <small>{busy.percentage}%</small></p>
+                                <p>{busy.total} <small>{roundPercentage(busy.percentage)}%</small></p>
                             </section>
                         </div>
                         <div>
                             <section>
                                 <h3>Não atendida</h3>
-                                <p>{notAnswered.total} <small>{notAnswered.percentage}%</small></p>
+                                <p>{notAnswered.total} <small>{roundPercentage(notAnswered.percentage)}%</small></p>
                             </section>
                             <section>
                                 <h3>Sem resposta</h3>
-                                <p>{noResponse.total} <small>{noResponse.percentage}%</small></p>
+                                <p>{noResponse.total} <small>{roundPercentage(noResponse.percentage)}%</small></p>
                             </section>
                         </div>
                     </div>
@@ -239,21 +237,21 @@ export default function Dashboard() {
                         <div>
                             <section>
                                 <h3>Atendidas</h3>
-                                <p>{answered.total} <small>{answered.percentage}%</small></p>
+                                <p>{answered.total} <small>{roundPercentage(answered.percentage)}%</small></p>
                             </section>
                             <section>
                                 <h3>Ocupadas</h3>
-                                <p>{busy.total} <small>{busy.percentage}%</small></p>
+                                <p>{busy.total} <small>{roundPercentage(busy.percentage)}%</small></p>
                             </section>
                         </div>
                         <div>
                             <section>
                                 <h3>Não atendidas</h3>
-                                <p>{notAnswered.total} <small>{notAnswered.percentage}%</small></p>
+                                <p>{notAnswered.total} <small>{roundPercentage(notAnswered.percentage)}%</small></p>
                             </section>
                             <section>
                                 <h3>Sem resposta</h3>
-                                <p>{noResponse.total} <small>{noResponse.percentage}%</small></p>
+                                <p>{noResponse.total} <small>{roundPercentage(noResponse.percentage)}%</small></p>
                             </section>
                         </div>
                     </div>
@@ -559,11 +557,11 @@ export default function Dashboard() {
 
     return (
         <main className={styles.main}>
-            <CallDisposition />
-            <CallsPerHour />
-            <CallsPerType />
-            <CallsPerQueue />
-            <Balance />
+            <CallDisposition/>
+            <CallsPerHour/>
+            <CallsPerType/>
+            <CallsPerQueue/>
+            <Balance/>
         </main>
     );
 }
