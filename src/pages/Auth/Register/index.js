@@ -198,7 +198,7 @@ export default function Register(props) {
         switch (step) {
             // name,
             // email,
-            // phoneNumber,
+            // password,
             case 1: 
                 if (!validateName(name)) {
                     newValidation.name = {
@@ -469,10 +469,11 @@ export default function Register(props) {
         let inputs;
 
         switch (step) {
+            default:
             case 1:
                 // name,
                 // email,
-                // phoneNumber,
+                // password,
                 inputs = (<>
                     <Input
                         id="register-name"
@@ -687,44 +688,6 @@ export default function Register(props) {
                     }
                 </>);
                 break;
-            default:
-                inputs = (<>
-                    <Input
-                        id="register-name"
-                        type="text"
-                        label="Nome"
-                        placeholder="Nome do responsável legal"
-                        name="name"
-                        value={name}
-                        onChange={(event) => handleChange(() => {
-                            setName(event.target.value);
-                        })}
-                        validation={validation.name}
-                    />
-                    <Input
-                        id="register-email"
-                        type="email"
-                        label="E-mail"
-                        placeholder="Endereço de e-mail"
-                        name="email"
-                        value={email}
-                        onChange={(event) => {
-                            setEmail(event.target.value);
-                        }}
-                        validation={validation.email}
-                    />
-                    <Input
-                        id="register-password"
-                        type="password"
-                        label="Senha"
-                        name="password"
-                        value={password}
-                        onChange={(event) => handleChange(() => {
-                            setPassword(event.target.value);
-                        })}
-                        validation={validation.password}
-                    />
-                </>);
         }
 
         return inputs;
@@ -732,14 +695,15 @@ export default function Register(props) {
 
     const Legend = () => {
         switch (step) {
+            default:
+            case 1:
+                return "Acesso";
             case 2:
                 return "Contato";
             case 3:
                 return "PABX";
             case 4:
                 return "Ramais";
-            default:
-                return "Acesso";
         }
     }
 

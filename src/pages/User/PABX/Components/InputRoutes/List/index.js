@@ -59,27 +59,30 @@ export default function InputRouteList({ props }) {
                                 {
                                     pages.length > 0
                                     ? pages[current].map((route, index) => {
-                                        const { destination, telephone: phone } = route;
+                                        const { name, telephone } = route;
+                                        let { destination } = route;
 
                                         switch (destination) {
+                                            default:
+                                            case "branch":
+                                                destination = "Ramal"
+                                                break;
                                             case "queue":
-                                                route.destination = "Fila de atendimento"
+                                                destination = "Fila de atendimento"
                                                 break;
                                             case "ura":
-                                                route.destination = "URA"
+                                                destination = "URA"
                                                 break;
-                                            case "branch":
-                                                route.destination = "IP"
+                                            case "ip":
+                                                destination = "IP"
                                                 break;
-                                            default:
-                                                route.destination = "Ramal"
                                         }
 
                                         return (
                                             <tr key={index}>
-                                                <td>{route.name}</td>
-                                                <td>{route.destination}</td>
-                                                <td>{phoneMask(phone.ddd + phone.number)}</td>
+                                                <td>{name}</td>
+                                                <td>{destination}</td>
+                                                <td>{phoneMask(telephone.ddd + telephone.number)}</td>
                                                 <td>
                                                     <div className={styles.listItemMenu}>
                                                         <input
