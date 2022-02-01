@@ -12,6 +12,7 @@
 
     display: grid;
     grid-template-rows: 1fr minmax(29rem, min-content) 1fr;
+    grid-template-columns: minmax(22rem, 1fr);
 }
 
 .register > h1 {
@@ -22,8 +23,10 @@
     display: contents;
 }
 
-.form button ~ button {
-    margin-left: 1rem;
+.form fieldset legend {
+    padding-inline: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 .form a {
@@ -33,9 +36,20 @@
 }
 
 .actions {
+    margin-inline: auto;
+
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
+    column-gap: 1rem;
+    flex-wrap: wrap;
+
     justify-content: center;
 
     height: fit-content;
+}
+
+@media screen and (max-width: 768px) {
+    .actions {
+        width: min-content;
+    }
 }

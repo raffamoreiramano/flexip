@@ -43,7 +43,7 @@
 
 @media only screen and (max-width: 768px) {
     .main {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(22rem, 1fr);
     }
 
     .login {
@@ -51,10 +51,15 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        min-width: 22rem;
     }
 
     .form {
         display: contents;
+    }
+
+    .form fieldset {
+        width: 100%;
     }
 
     .form button {

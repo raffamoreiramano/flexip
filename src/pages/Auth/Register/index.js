@@ -465,7 +465,7 @@ export default function Register(props) {
         }
     }
 
-    const fieldset = () => {
+    const Fieldset = () => {
         let inputs;
 
         switch (step) {
@@ -519,7 +519,7 @@ export default function Register(props) {
                     <Input
                         id="register-phoneNumber"
                         type="tel"
-                        label="Telefone para contato"
+                        label="Telefone"
                         placeholder="Telefone fixo ou móvel"
                         name="phoneNumber"
                         value={phoneNumber}
@@ -574,7 +574,7 @@ export default function Register(props) {
                     <Input
                         id="register-PABXName"
                         type="text"
-                        label="PABX"
+                        label="Nome"
                         placeholder="Nome do PABX"
                         name="PABXName"
                         value={PABXName}
@@ -637,7 +637,7 @@ export default function Register(props) {
                     <Input
                         id="register-branchesAmount"
                         type="number"
-                        label="Ramais"
+                        label="Quantia"
                         placeholder="Quantos deseja contratar"
                         name="branchesAmount"
                         value={branchesAmount}
@@ -730,14 +730,27 @@ export default function Register(props) {
         return inputs;
     }
 
+    const Legend = () => {
+        switch (step) {
+            case 2:
+                return "Contato";
+            case 3:
+                return "PABX";
+            case 4:
+                return "Ramais";
+            default:
+                return "Acesso";
+        }
+    }
+
     return (
         <>
             <main className={styles.main}>
-                <div className={`${styles.register} container`}>
-                    <h1>Cadastro <strong><span>Passo {step}</span></strong></h1>
+                <div className={styles.register}>
+                    <h1>Cadastro | <strong><span>{Legend()}</span></strong></h1>
                     <form ref={formRef} className={styles.form} autoComplete="off" onSubmit={(event) => event.preventDefault()}>
                         <fieldset>
-                            {fieldset()}
+                            { Fieldset() }
                             {
                                 step <= 1 &&
                                 <a 
@@ -753,6 +766,22 @@ export default function Register(props) {
                             }
                         </fieldset>
                         <div className={styles.actions}>
+                            <button
+                                className={step <= 3 ? "main-color-1" : "main-color-2"}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    
+                                    if (validateStep()) {
+                                        if (step < 4) {
+                                            setStep(step + 1);
+                                        } else {
+                                            register();
+                                        }
+                                    }
+                                }}
+                            >
+                                {step <= 3 ? "Continuar" : "Cadastrar"}
+                            </button> 
                             {
                                 step > 1 &&
                                 <button
@@ -771,23 +800,6 @@ export default function Register(props) {
                                     Voltar
                                 </button>
                             }
-                            <button
-                                className={step <= 3 ? "main-color-1" : "main-color-2"}
-                                type="button"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    
-                                    if (validateStep()) {
-                                        if (step < 4) {
-                                            setStep(step + 1);
-                                        } else {
-                                            register();
-                                        }
-                                    }
-                                }}
-                            >
-                                {step <= 3 ? "Continuar" : "Cadastrar"}
-                            </button>                            
                         </div>                        
                     </form>
                 </div>

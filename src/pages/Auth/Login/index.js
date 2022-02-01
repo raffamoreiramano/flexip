@@ -234,7 +234,7 @@ export default function Login(props) {
     return (
         <>
             <main className={styles.main}>
-                <div className={`${styles.login} container`}>
+                <div className={styles.login}>
                     <form className={styles.form} onSubmit={(event) => {
                         event.preventDefault();
 
