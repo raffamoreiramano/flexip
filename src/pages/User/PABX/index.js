@@ -136,7 +136,7 @@ export default function PABXList({ history }) {
                                             <tbody className={styles.mainData}>
                                                 <tr>
                                                     <th>Número padrão:</th>
-                                                    <td>{phoneMask(pabx.telephone.ddd + pabx.telephone.number)}</td>
+                                                    <td>{phoneMask(pabx.telephone_main.ddd + pabx.telephone_main.number)}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Ramais contratados:</th>
