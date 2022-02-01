@@ -25,36 +25,37 @@ export default function PABX(props) {
 
     const initialRender = useRef(true);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const access_token = localStorage.getItem("access_token");
+    const fetchPABX = async () => {
+        const access_token = localStorage.getItem("access_token");
 
-            if (access_token) {
-                try {
-                    const response = await api.get(`/v1/${API_GUARD}/pabx/${ID}`, {
-                        headers: { Authorization: "Bearer " + access_token }
-                    });
-
-                    if (response.status === 200) {
-                        const { pabx } = response.data;
-
-                        setPABX(pabx);
-                    }
-                } catch (error) {
-                    setPABX('');
-
-                    console.log(error);
-                }
-            }
-        }
-
-        if (initialRender.current) {
-            initialRender.current = false;
+        if (access_token) {
             dispatch(setIsLoading(true));
 
-            fetchData().finally(() => {
+            try {
+                const response = await api.get(`/v1/${API_GUARD}/pabx/${ID}`, {
+                    headers: { Authorization: "Bearer " + access_token }
+                });
+
+                if (response.status === 200) {
+                    const { pabx } = response.data;
+
+                    setPABX(pabx);
+                }
+            } catch (error) {
+                setPABX('');
+
+                console.log(error);
+            } finally {
                 dispatch(setIsLoading(false));
-            });
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false;
+
+            fetchPABX();
         }
     });
 
@@ -66,8 +67,10 @@ export default function PABX(props) {
         if (PABX) {
             const properties = {
                 ...props,
-                PABX
+                PABX,
+                fetchPABX,
             };
+
             return (
                 <>
                     <Branches props={properties}/>
@@ -87,7 +90,7 @@ export default function PABX(props) {
 
     return (
         <main className={styles.main}>
-            <Panel/>
+            { Panel() }
         </main>
     );
 }

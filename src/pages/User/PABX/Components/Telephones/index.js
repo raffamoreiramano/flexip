@@ -14,7 +14,7 @@ import TelephoneList from "./List";
 import Alert from "../../../../../components/Modals/Alert";
 
 export default function Telephones({ props }) {
-    const { PABX } = props
+    const { PABX, fetchPABX } = props
     const ID = parseInt(PABX.id);
 
     const dispatch = useDispatch();
@@ -129,6 +129,8 @@ export default function Telephones({ props }) {
             });
 
             if (response.status && response.status === 200) {
+                fetchPABX();
+
                 refresh();
             }
         } catch (error) {

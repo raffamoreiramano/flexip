@@ -15,7 +15,7 @@ import BranchList from "./List";
 import Alert from "../../../../../components/Modals/Alert";
 
 export default function Branches({ props }) {
-    const { history, PABX } = props
+    const { history, PABX, fetchPABX } = props
     const ID = parseInt(PABX.id);
 
     const dispatch = useDispatch();
@@ -273,7 +273,7 @@ export default function Branches({ props }) {
                                 <td>{PABX.company.name} ({PABX.company.code})</td>
                             </tr>
                             <tr>
-                                <td>{phoneMask(PABX.telephone.ddd + PABX.telephone.number)}</td>
+                                <td>{phoneMask(PABX.telephone_main.ddd + PABX.telephone_main.number)}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -305,10 +305,11 @@ export default function Branches({ props }) {
                     </button>
                     <button
                         className={styles.refresh}
-                        disabled={open ? false : true}
                         onClick={() => {
                             if (open) {
                                 refresh();
+                            } else {
+                                fetchPABX();
                             }
                         }}
                     >
