@@ -11,7 +11,7 @@
     min-height: 100vh;
 
     display: grid;
-    grid-template-rows: 1fr minmax(28.25em, min-content) 1fr;
+    grid-template-rows: 1fr minmax(29rem, min-content) 1fr;
 }
 
 .register > h1 {

@@ -7,14 +7,14 @@
         "form article";
 }
 
-.main > .login {
+.login {
     border-radius: 0;
     grid-area: form;
     justify-self: center;
     align-self: center;
 }
 
-.main > .advertising {
+.advertising {
     border-radius: 0;
     padding: 1.25rem 4rem;
     display: flex;
@@ -42,6 +42,29 @@
 }
 
 @media only screen and (max-width: 768px) {
+    .main {
+        grid-template-columns: 1fr;
+    }
+
+    .login {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .form {
+        display: contents;
+    }
+
+    .form button {
+        margin: 1rem 0;
+    }
+
+    .form a {
+        margin: 2em 0 4em 0;
+    }
+
     .main > .advertising {
         display: none;
         user-select: none;
