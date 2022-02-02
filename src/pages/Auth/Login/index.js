@@ -129,13 +129,6 @@ export default function Login(props) {
                     title: title || content.title,
                     message: message || content.message,
                 }
-
-                if (error.response.status === 401) {
-                    content = {
-                        title: "Ops!",
-                        message: "Usuário e/ou senha inválidos...",
-                    }
-                }
                 
                 if (error.response.status === 422) {
                     content = {
