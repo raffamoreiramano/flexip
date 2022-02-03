@@ -520,7 +520,7 @@ export default function Register(props) {
                     <Input
                         id="register-phoneNumber"
                         type="tel"
-                        label="Telefone"
+                        label="Telefone para contato"
                         placeholder="Telefone fixo ou móvel"
                         name="phoneNumber"
                         value={phoneNumber}
@@ -575,7 +575,7 @@ export default function Register(props) {
                     <Input
                         id="register-PABXName"
                         type="text"
-                        label="Nome"
+                        label="PABX"
                         placeholder="Nome do PABX"
                         name="PABXName"
                         value={PABXName}
@@ -638,7 +638,7 @@ export default function Register(props) {
                     <Input
                         id="register-branchesAmount"
                         type="number"
-                        label="Quantia"
+                        label="Ramais"
                         placeholder="Quantos deseja contratar"
                         name="branchesAmount"
                         value={branchesAmount}
@@ -697,13 +697,23 @@ export default function Register(props) {
         switch (step) {
             default:
             case 1:
-                return "Acesso";
+                return "Dados de acesso";
             case 2:
-                return "Contato";
+                return "Dados pessoais";
             case 3:
-                return "PABX";
+                return "Dados do PABX";
             case 4:
-                return "Ramais";
+                return "Dados do Ramal";
+
+            // default:
+            //     case 1:
+            //         return "Acesso";
+            //     case 2:
+            //         return "Contato";
+            //     case 3:
+            //         return "PABX";
+            //     case 4:
+            //         return "Ramais";
         }
     }
 
@@ -711,7 +721,8 @@ export default function Register(props) {
         <>
             <main className={styles.main}>
                 <div className={styles.register}>
-                    <h1>Cadastro | <strong><span>{Legend()}</span></strong></h1>
+                    {/* <h1>Cadastro | <strong><span>{Legend()}</span></strong></h1> */}
+                    <h1><strong><span>Passo {step}</span></strong> | {Legend()}</h1>
                     <form ref={formRef} className={styles.form} autoComplete="off" onSubmit={(event) => event.preventDefault()}>
                         <fieldset>
                             { Fieldset() }
