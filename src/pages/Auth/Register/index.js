@@ -7,7 +7,6 @@ import Input, { Select } from "../../../components/Input";
 import { 
     CPMask,
     validateEmail,
-    validateName,
     validatePassword,
     validatePhone,
     validateCPF,
@@ -199,8 +198,8 @@ export default function Register(props) {
             // name,
             // email,
             // password,
-            case 1: 
-                if (!validateName(name)) {
+            case 1:
+                if (!name) {
                     newValidation.name = {
                         isInvalid: true,
                         message: "Nome inválido!",

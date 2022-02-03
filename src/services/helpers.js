@@ -110,11 +110,12 @@ export function validateEmail(value) {
 	// e-mail.local_part@domain.com.br
 	const characters = '[0-9a-z\u00C0-\u00FF]';
 	const punctuation = '[0-9a-z\u00C0-\u00FF+-.]';
-	const special = '[0-9a-z\u00C0-\u00FF!#$%&*+-_.]';
+	const special = '[!#$%&*+-_.]';
 	const regex = new RegExp(
 		'^' +
 		characters + '+' +
-		special + '{3,}@' +
+		special + '*' +
+		characters + '+@' +
 		characters + '+' +
 		punctuation + '*' +
 		characters + '+$',
