@@ -74,7 +74,7 @@ export default function Recovery(props) {
         }
 
         if (password !== passwordConfirm) {
-            newValidation.password = {
+            newValidation.passwordConfirm = {
                 isInvalid: true,
                 message: "As senhas não correspondem uma com a outra!",
             }
