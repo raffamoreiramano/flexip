@@ -29,6 +29,12 @@ export default function PABXList({ history }) {
                     if (response.status === 200) {
                         const { pabxList } = response.data;
 
+                        pabxList.forEach(item => {
+                            if (!item.telephone_main) {
+                                item.telephone_main = item.telephone || { ddd: "000", number: "000000000" };
+                            }
+                        });
+
                         setList(pabxList);
                     }
                 } catch (error) {

@@ -38,11 +38,15 @@ export default function PABX(props) {
 
                 if (response.status === 200) {
                     const { pabx } = response.data;
+                    
+                    if (!pabx.telephone_main) {
+                        pabx.telephone_main = pabx.telephone || {ddd: "000", number: "000000000"};
+                    }
 
                     setPABX(pabx);
                 }
             } catch (error) {
-                setPABX('');
+                setPABX(null);
 
                 console.log(error);
             } finally {
