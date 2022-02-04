@@ -32,6 +32,8 @@ export default function Register(props) {
         message: "Parece que houve um erro... Por favor, tente mais tarde!"
     });
 
+    const success = useRef(false);
+
     const APIFields = {
         'name': 'name',
         'email': 'email',
@@ -135,6 +137,13 @@ export default function Register(props) {
         },
     };
     const [validation, setValidation] = useState(initialValidation);
+
+    const showAlert = (content, response = false) => {
+        success.current = response;
+
+        setAlertContent(content);
+        setIsAlertActive(true);
+    }
 
     useEffect(() => {
         const fetchCities = async () => {
@@ -425,15 +434,11 @@ export default function Register(props) {
             const response = await api.post(`/v1/${API_GUARD}/auth/register`, body);
 
             if (response.status && response.status === 200) {
-                dispatch(setIsLoading(false));
+                const { title, message } = response.data;
 
-                props.history.push('/auth');
-
-                console.log(response.data);
+                showAlert({ title: title || "Pronto!", message }, true);
             }
         } catch(error) {
-            dispatch(setIsLoading(false));
-
             let content = {
                 title: "Ops!",
                 message: "Parece que houve um erro... Por favor, tente mais tarde!",
@@ -459,8 +464,9 @@ export default function Register(props) {
                 }
             }
 
-            setAlertContent(content);
-            setIsAlertActive(true);
+            showAlert(content);
+        } finally {
+            dispatch(setIsLoading(false));
         }
     }
 
@@ -782,6 +788,11 @@ export default function Register(props) {
                 title={alertContent.title}
                 message={alertContent.message}
                 state={[isAlertActive, setIsAlertActive]}
+                onClose={() => {
+                    if (success.current) {
+                        props.history.push('/auth');
+                    }
+                }}
             />
         </>
     );

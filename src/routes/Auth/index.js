@@ -5,6 +5,7 @@ import { setIsLoading } from "../../store/actions";
 
 import Login from "../../pages/Auth/Login";
 import Register from "../../pages/Auth/Register";
+import Recovery from "../../pages/Auth/Recovery";
 
 export default function Auth(props) {
 	const dispatch = useDispatch();
@@ -18,9 +19,11 @@ export default function Auth(props) {
 	return (
 		<>
 			<Switch>
-				<Route exact path="/auth/cadastrar" component={Register} />
-				<Route exact path="/auth" component={Login} />
-				<Route path="/" component={Login} />
+				<Route exact path="/auth/cadastrar" component={Register}/>
+				<Route exact path="/auth/email/:token" component={Login}/>
+				<Route exact path="/auth/senha/nova-senha/:token" component={Recovery}/>
+				<Route exact path="/auth" component={Login}/>
+				<Route path="/" component={Login}/>
 			</Switch>
 		</>
 	);

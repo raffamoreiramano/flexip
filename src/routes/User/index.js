@@ -110,9 +110,11 @@ export default function User({ location, history }) {
 			<Header />
 			<Switch>
 				<Route exact path="/" component={Dashboard} />
-				{routes.map((route, i) => (
-					<Route key={i} {...route} />
-				))}
+				{
+					routes.map((route, i) => (
+						<Route key={i} {...route} />
+					))
+				}
 			</Switch>
 		</>
 	);

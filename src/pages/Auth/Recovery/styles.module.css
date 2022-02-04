@@ -1,0 +1,55 @@
+.main {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.recovery {
+    border-radius: 0;
+    min-height: 100vh;
+
+    display: grid;
+    grid-template-rows: 1fr minmax(25rem, min-content) 1fr;
+    grid-template-columns: minmax(22rem, 1fr);
+}
+
+.recovery h1 {
+    margin-top: auto;
+}
+
+.form {
+    display: contents;
+}
+
+.form fieldset legend {
+    padding-inline: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.form a {
+    margin-top: 2em;
+    text-align: center;
+    width: 100%;
+}
+
+.actions {
+    margin-inline: auto;
+
+    display: flex;
+    flex-direction: row;
+    column-gap: 1rem;
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    height: fit-content;
+}
+
+@media screen and (max-width: 768px) {
+    .actions {
+        width: min-content;
+    }
+}

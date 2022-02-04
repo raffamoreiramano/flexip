@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setIsLoading, updatePABX, updateUser } from "../../../store/actions";
 
@@ -15,8 +15,11 @@ import { API_GUARD } from "../../../services/env";
 import styles from './styles.module.css';
 import Alert from "../../../components/Modals/Alert";
 import Prompt from "../../../components/Modals/Prompt";
+import { useRef } from "react";
 
 export default function Login(props) {
+    const { token } = props.match.params;
+
     const dispatch = useDispatch();
 
     const [isAlertActive, setIsAlertActive] = useState(false);
@@ -223,6 +226,67 @@ export default function Login(props) {
             setIsAlertActive(true);
         }
     }
+
+    const verify = async () => {
+        dispatch(setIsLoading(true));
+
+        try {
+            const response = await api.get(`/v1/${API_GUARD}/auth/verify/${token}`);
+
+            if (response.status && response.status === 200) {
+                const { title, message } = response.data;
+
+                let content = { title: title || "Pronto!", message };
+
+                if (!!!response.data.success && response.data.error) {
+                    content = {
+                        title: "Erro ao verificar e-mail!",
+                        message: "Código de verificação inválido..."
+                    }
+                }
+
+                setAlertContent(content);
+                setIsAlertActive(true);
+            }
+        } catch (error) {
+            let content = {
+                title: "Erro ao verificar e-mail!",
+                message: "Por favor, tente mais tarde!",
+            }            
+
+            if (error.response) {
+                const { title, message } = error.response.data;
+
+                content = {
+                    title: title || content.title,
+                    message: message || content.message,
+                }
+                
+                if (error.response.status === 422) {
+                    const [message] = error.response.data.errors;
+
+                    content.message = message;
+                }
+            }
+
+            setAlertContent(content);
+            setIsAlertActive(true);
+        } finally {
+            dispatch(setIsLoading(false));
+        }
+    }
+
+    const initialRender = useRef(true);
+
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false;
+
+            if (token) {
+                verify();
+            }
+        }
+    });
 
     return (
         <>
