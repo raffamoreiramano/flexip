@@ -65,37 +65,37 @@ export default function PABXList({ history }) {
         }
 
         const onSearch = (event) => {
-            const search = event.target.value.toLocaleLowerCase();
+            const search = event.target.value.toLocaleLowerCase().normalize("NFD").replace(/[^\s\w]/g, "");
             const digits = search.replace(/\D/g, "");
-    
+
             if (search.length > 0) {
                 const filtered = list.filter(pabx => {
-                    if (pabx.name.match(search)) {
-                        return pabx;
+                    if (pabx.name.toLocaleLowerCase().match(search)) {
+                        return true;
                     }
                     
-                    if (pabx.code.toString().match(search)) {
-                        return pabx;
+                    if (pabx.code.toString().toLocaleLowerCase().match(search)) {
+                        return true;
                     }
                     
-                    if (pabx.company.name.match(search)) {
-                        return pabx;
+                    if ((`${pabx.company.name} ${pabx.company.code}`).toLocaleLowerCase().match(search)) {
+                        return true;
                     }
                     
-                    if (pabx.company.code.toString().match(search)) {
-                        return pabx;
+                    if (digits.length > 0 && (pabx.telephone_main?.ddd + pabx.telephone_main?.number).match(digits)) {
+                        return true;
                     }
                     
-                    if (digits.length > 0 && (pabx.telephone.ddd + pabx.telephone.number).match(digits)) {
-                        return pabx;
+                    if (digits.length > 0 && (pabx.telephone?.ddd + pabx.telephone?.number).match(digits)) {
+                        return true;
                     }
         
                     if (search === "bloqueado" && !!pabx.blocked) {
-                        return pabx;
+                        return true;
                     }
         
                     if (search === "desbloqueado" && !!!pabx.blocked) {
-                        return pabx;
+                        return true;
                     }
         
                     return false;
