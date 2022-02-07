@@ -22,7 +22,7 @@ import api from "../../../services/api";
 import { API_GUARD } from "../../../services/env";
 
 import styles from './styles.module.css';
-import { BRLMask, roundPercentage } from "../../../services/helpers";
+import { BRLMask, roundPercentage, secondsToTime } from "../../../services/helpers";
 
 export default function Dashboard() {
     const dispatch = useDispatch();
@@ -173,7 +173,7 @@ export default function Dashboard() {
         const { answered, busy, notAnswered, noResponse } = callDisposition;
         let children = (
             <>
-                <h2>Nenhuma ligação realizada</h2>
+                <h2>Nenhuma chamada</h2>
                 <div>
                     <div>
                         <section>
@@ -202,7 +202,7 @@ export default function Dashboard() {
         if (total === 1) {
             children = (
                 <>
-                    <h2><strong>1</strong> ligação realizada</h2>
+                    <h2><strong>1</strong> chamada</h2>
                     <div>
                         <div>
                             <section>
@@ -232,7 +232,7 @@ export default function Dashboard() {
         if (total > 1) {
             children = (
                 <>
-                    <h2><strong>{total}</strong> chamadas realizadas</h2>
+                    <h2><strong>{total}</strong> chamadas</h2>
                     <div>
                         <div>
                             <section>
@@ -532,12 +532,12 @@ export default function Dashboard() {
                     </tbody>
                     <tbody className="glass">
                         <tr>
-                            <th>Minutos falados</th>
-                            <td>{balance.spokenMinutes}</td>
+                            <th>Tempo falado</th>
+                            <td>{secondsToTime(balance.spokenMinutes)}</td>
                         </tr>
                         <tr>
-                            <th>Minutos cobrados</th>
-                            <td>{balance.chargedMinutes}</td>
+                            <th>Tempo cobrado</th>
+                            <td>{secondsToTime(balance.chargedMinutes * 60)}</td>
                         </tr>
                     </tbody>
                     <tbody>
