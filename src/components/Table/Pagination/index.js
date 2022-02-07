@@ -34,7 +34,7 @@ export default function Pagination({
 
 
     return (
-        <nav className={styles.pagination} style={{ visibility: total > 1 ? 'visible' : 'hidden' }}>
+        <nav className={styles.pagination} style={{ display: total > 1 ? 'flex' : 'none' }}>
             <label>Página {(current + 1)} de {total}</label>
             <div className={styles.buttons}>
                 <button

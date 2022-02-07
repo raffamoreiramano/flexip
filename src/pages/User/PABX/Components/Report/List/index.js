@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import styles from '../../styles.module.css';
 import Table from "../../../../../../components/Table";
@@ -6,6 +6,7 @@ import Pagination from "../../../../../../components/Table/Pagination";
 import { secondsToTime, BRLMask } from '../../../../../../services/helpers';
 
 import { MdReadMore } from 'react-icons/md';
+import Rowler from "../../../../../../components/Table/Rowler";
 
 export default function ReportList({ props }) {
     const {
@@ -14,13 +15,19 @@ export default function ReportList({ props }) {
         current,
         navigate,
         select,
+        recordsToPages,
     } = props;
 
     const { records, amount, duration } = data;
+
+    const [rows, setRows] = useState(10);
     
     return (
         <>
             <section className={styles.list}>
+                <div className={styles.listActions}>
+                    <Rowler rows={rows} onChange={rows => {recordsToPages(rows); setRows(rows)}}/>
+                </div>
                 {
                     records
                     ? <>
@@ -105,6 +112,14 @@ export default function ReportList({ props }) {
                                 total={pages.length}
                                 onChange={page => navigate(page)}
                             />
+                            <button
+                                className="main-color-2"
+                                onClick={() => {
+                                    console.log('export...');
+                                }}
+                            >
+                                Exportar
+                            </button>
                         </div>
                     </>
                     : <p className={styles.nodata}>. . .</p>

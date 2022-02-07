@@ -300,8 +300,16 @@
     margin-block: 1rem;
 }
 
+.listActions > *:nth-last-child(2) {
+    flex-grow: 1;
+}
+
 .listActions button {
     margin: 0;
+}
+
+.listActions button:only-child {
+    margin-left: auto;
 }
 
 .listItemMenu {

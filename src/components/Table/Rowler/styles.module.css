@@ -1,0 +1,17 @@
+.rowler {
+    width: max-content;
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    gap: 1rem;
+}
+
+.rowler input {
+    max-width: 5rem;
+    padding: 1rem;
+    font-size: 1rem;
+}
+
+.rowler label {
+    margin-bottom: .25rem;
+}

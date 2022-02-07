@@ -20,30 +20,28 @@ export default function Report({ props }) {
     const [selected, setSelected] = useState({});
     const [isSelectedModalActive, setIsSelectedModalActive] = useState(false);
 
-    useEffect(() => {
-        const recordsToPages = () => {
+    const recordsToPages = (rows = 10) => {
+        const RECORDS = [...fetchedData.records];
+        const total = Math.max(Math.floor(RECORDS.length / rows), 1);
+        let pages = [];
+        
+        for (let i = total; i >= 0; i--) {
+            const slice = RECORDS.splice(0, rows);
 
-            const RECORDS = [...fetchedData.records];
-            const rows = 10;
-            const total = Math.max(Math.floor(RECORDS.length / rows), 1);
-            let pages = [];
-            
-            for (let i = total; i >= 0; i--) {
-                const slice = RECORDS.splice(0, rows);
-
-                if (slice.length > 0) {
-                    pages.push(slice);
-                }
+            if (slice.length > 0) {
+                pages.push(slice);
             }
-
-            setPages(pages);
-            setCurrent(0);
         }
 
+        setPages(pages);
+        setCurrent(0);
+    }
+
+    useEffect(() => {
         if (!initialRender.current) {
             recordsToPages();
         }
-        
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchedData]);
     
     useEffect(() => {
@@ -103,6 +101,7 @@ export default function Report({ props }) {
             current,
             navigate,
             select,
+            recordsToPages,
         }
 
         return (<>
