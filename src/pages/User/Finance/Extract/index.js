@@ -59,7 +59,7 @@ export default function Extract({ data }) {
             <Table>
                 <thead>
                     <tr>
-                        <th>Unidade</th>
+                        <th>Descrição</th>
                         <th>Quantidade</th>
                         <th>Valor unitário</th>
                         <th>Valor somatório</th>
