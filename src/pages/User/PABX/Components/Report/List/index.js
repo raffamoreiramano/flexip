@@ -16,6 +16,7 @@ export default function ReportList({ props }) {
         navigate,
         select,
         recordsToPages,
+        handleExport,
     } = props;
 
     const { records, amount, duration } = data;
@@ -114,9 +115,7 @@ export default function ReportList({ props }) {
                             />
                             <button
                                 className="main-color-2"
-                                onClick={() => {
-                                    console.log('export...');
-                                }}
+                                onClick={handleExport}
                             >
                                 Exportar
                             </button>

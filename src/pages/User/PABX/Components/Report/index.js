@@ -5,10 +5,12 @@ import { AiOutlineFileSearch } from 'react-icons/ai';
 
 import styles from '../styles.module.css';
 import Alert from "../../../../../components/Modals/Alert";
+import Confirm from "../../../../../components/Modals/Confirm";
 import Audio from '../../../../../components/Audio';
 import ReportForm from "./Form";
 import ReportList from "./List";
 import { BRLMask, secondsToTime } from "../../../../../services/helpers";
+import { Radio } from "../../../../../components/Input";
 
 export default function Report({ props }) {
     const [open, setOpen] = useState(false);
@@ -19,6 +21,10 @@ export default function Report({ props }) {
 
     const [selected, setSelected] = useState({});
     const [isSelectedModalActive, setIsSelectedModalActive] = useState(false);
+    
+    const [isConfirmActive, setIsConfirmActive] = useState(false);
+
+    const [scope, setScope] = useState('current');
 
     const recordsToPages = (rows = 10) => {
         const RECORDS = [...fetchedData.records];
@@ -88,6 +94,68 @@ export default function Report({ props }) {
         setIsSelectedModalActive(true);
     }
 
+    const convertToCSV = (name, array) => {
+        const labels = [   
+            'Data',
+            'Origem',
+            'Destino',
+            'Fluxo',
+            'Status',
+            'Tipo',
+            'Tronco',
+            'Bina',
+            'Duracao',
+            'Valor',
+        ];
+
+        const content = labels.join(';') + '\n' + array.map(row =>
+            row.date_hour + ';' +
+            row.origin + ';' +
+            row.destination + ';' +
+            row.flow.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + ';' +
+            row.status.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + ';' +
+            row.type.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + ';' +
+            row.trunk + ';' +
+            row.bina + ';' +
+            secondsToTime(row.duration) + ';' +
+            BRLMask(row.value).replace(/\D/g, "").replace(/^(\d{1})(\d+)/, "$1,$2")
+        ).join('\n');
+
+        const blob = new Blob([content], { type: 'text/csv', endings: 'native' });
+
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob, { type: "text/plain" });
+        link.download = `${name}.csv`;
+        document.body.appendChild(link);
+
+        link.click();
+    }
+
+    const exportRecords = () => {
+        let records = [];
+
+        const first = fetchedData.records[0];
+        const last = fetchedData.records[fetchedData.records.length - 1];
+
+        const start = first.date_hour.replace(/\//g, "-").replace(/\s/g, "_H");
+        const end = last.date_hour.replace(/\//g, "-").replace(/\s/g, "_H");
+
+        let name = `Relatorio_D${start}_-_D${end}`;
+
+        switch (scope) {
+            default:
+            case 'current':
+                records = [...pages[current]];
+                name += `_pagina-${current + 1}`
+                break;
+            case 'all':
+                records = [...fetchedData.records];
+                break;
+        }
+
+        convertToCSV(name, records);
+    }
+
     const Main = () => {
         const filterProps = {
             ...props,
@@ -102,6 +170,7 @@ export default function Report({ props }) {
             navigate,
             select,
             recordsToPages,
+            handleExport: () => setIsConfirmActive(true),
         }
 
         return (<>
@@ -186,9 +255,29 @@ export default function Report({ props }) {
                             </table> 
                         </>
                     }
-                    
                 </div>
            </Alert>
+
+            <Confirm
+                state={[isConfirmActive, setIsConfirmActive]}
+                onConfirm={exportRecords}
+            >
+                <form>
+                    <h3>Exportar para CSV</h3>
+                    <Radio
+                        id="export-scope"
+                        name="scope"
+                        label="Conteúdo:"
+                        value={scope}
+                        onChange={(event) => {
+                            setScope(event.target.value);
+                        }}
+                    >
+                        <option value="current">Página {current + 1}</option>
+                        <option value="all">Tudo</option>
+                    </Radio>
+                </form>
+            </Confirm>
         </article>
     );
 }
