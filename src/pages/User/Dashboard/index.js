@@ -537,7 +537,7 @@ export default function Dashboard() {
                         </tr>
                         <tr>
                             <th>Tempo cobrado</th>
-                            <td>{secondsToTime(balance.chargedMinutes * 60)}</td>
+                            <td>{secondsToTime(balance.chargedMinutes)}</td>
                         </tr>
                     </tbody>
                     <tbody>
