@@ -119,7 +119,7 @@ export default function Report({ props }) {
             row.trunk + ';' +
             row.bina + ';' +
             secondsToTime(row.duration) + ';' +
-            row.full_audio_link + ';' +
+            row.full_audio_link?.substr(row.full_audio_link?.lastIndexOf('/') + 1) + ';' +
             BRLMask(row.value).replace(/\D/g, "").replace(/^(\d{1})(\d+)/, "$1,$2")
         ).join('\n');
 
