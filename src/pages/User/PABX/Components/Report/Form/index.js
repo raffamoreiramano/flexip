@@ -21,6 +21,8 @@ export default function ReportForm({ props }) {
     });
 
     const date = new Date(Date.now());
+    date.setHours(date.getHours() - date.getTimezoneOffset() / 60);
+
     const todayStart = date.toJSON().slice(0, 10) + "T00:00";
     const todayEnd = date.toJSON().slice(0, 10) + "T23:59";
 
