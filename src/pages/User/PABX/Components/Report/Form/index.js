@@ -347,6 +347,8 @@ export default function ReportForm({ props }) {
                                 <option value="Móvel">Móvel</option>
                                 <option value="Internacional">Internacional</option>
                                 <option value="0800">0800</option>
+                                <option value="Fila">Fila</option>
+                                <option value="URA">URA</option>
                             </Select>
 
                             <Input
