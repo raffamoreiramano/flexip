@@ -179,13 +179,7 @@ export default function ReportForm({ props }) {
                     total_call_duration: duration,
                 } = response.data;
 
-                let records =  call_detail_records;
-                
-                if (!Array.isArray(records)) {
-                    [records] = Object.values(records);
-
-                    records = records ? [records] : [];
-                }
+                const records = Array.isArray(call_detail_records) ? call_detail_records : Object.values(call_detail_records) || [];
 
                 setData({
                     records,
