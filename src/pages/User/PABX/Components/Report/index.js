@@ -64,31 +64,29 @@ export default function Report({ props }) {
 
     const select = (record) => {
         const {
+            full_audio_link: audio,
             date_hour: date,
             origin,
             destination,
-            duration,
-            value,
+            bina,
+            type,
             flow,
             status,
-            type,
-            trunk,
-            bina,
-            full_audio_link: audio,
+            duration,
+            value,
         } = record;
 
         setSelected({
+            audio,
             date,
             origin,
             destination,
-            duration,
-            value,
+            bina,
+            type,
             flow,
             status,
-            type,
-            trunk,
-            bina,
-            audio,
+            duration,
+            value,
         });
 
         setIsSelectedModalActive(true);
@@ -99,11 +97,10 @@ export default function Report({ props }) {
             'Data',
             'Origem',
             'Destino',
+            'Bina',
+            'Tipo',
             'Fluxo',
             'Status',
-            'Tipo',
-            'Tronco',
-            'Bina',
             'Duracao',
             'Gravacao',
             'Valor',
@@ -113,11 +110,10 @@ export default function Report({ props }) {
             row.date_hour + ';' +
             row.origin + ';' +
             row.destination + ';' +
+            row.bina + ';' +
+            row.type.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + ';' +
             row.flow.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + ';' +
             row.status.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + ';' +
-            row.type.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + ';' +
-            row.trunk + ';' +
-            row.bina + ';' +
             secondsToTime(row.duration) + ';' +
             row.full_audio_link?.substr(row.full_audio_link?.lastIndexOf('/') + 1) + ';' +
             BRLMask(row.value).replace(/\D/g, "").replace(/^(\d{1})(\d+)/, "$1,$2")
@@ -226,24 +222,20 @@ export default function Report({ props }) {
                                         <td>{selected.destination}</td>
                                     </tr>
                                     <tr>
-                                        <th>Fluxo <i>: :</i></th>
-                                        <td>{selected.flow}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Status <i>: :</i></th>
-                                        <td>{selected.status}</td>
+                                        <th>Bina <i>: :</i></th>
+                                        <td>{selected.bina}</td>
                                     </tr>
                                     <tr>
                                         <th>Tipo <i>: :</i></th>
                                         <td>{selected.type}</td>
                                     </tr>
                                     <tr>
-                                        <th>Tronco <i>: :</i></th>
-                                        <td>{selected.trunk}</td>
+                                        <th>Fluxo <i>: :</i></th>
+                                        <td>{selected.flow}</td>
                                     </tr>
                                     <tr>
-                                        <th>Bina <i>: :</i></th>
-                                        <td>{selected.bina}</td>
+                                        <th>Status <i>: :</i></th>
+                                        <td>{selected.status}</td>
                                     </tr>
                                     <tr>
                                         <th>Duração <i>: :</i></th>

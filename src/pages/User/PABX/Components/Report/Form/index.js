@@ -26,17 +26,15 @@ export default function ReportForm({ props }) {
     const todayStart = date.toJSON().slice(0, 10) + "T00:00";
     const todayEnd = date.toJSON().slice(0, 10) + "T23:59";
 
-
     const [start, setStart] = useState(todayStart);
     const [end, setEnd] = useState(todayEnd);
-
-    const [type, setType] = useState('');
-    const [trunk, setTrunk] = useState('');
-
+    
     const [source, setSource] = useState('');
     const [destination, setDestination] = useState('');
-
+    
+    const [type, setType] = useState('');
     const [flow, setFlow] = useState('');
+
     const [disposition, setDisposition] = useState('');
 
     const [isValidated, setIsValidated] = useState(false);
@@ -58,10 +56,6 @@ export default function ReportForm({ props }) {
             message: '',
         },
         type: {
-            isInvalid: false,
-            message: '',
-        },
-        trunk: {
             isInvalid: false,
             message: '',
         },
@@ -99,7 +93,6 @@ export default function ReportForm({ props }) {
             'destination': 'destination',
             'destination_context': 'flow',
             'call_type': 'type',
-            'last_apps_arguments': 'trunk',
         }
 
         const fields = Object.keys(errors);
@@ -126,13 +119,12 @@ export default function ReportForm({ props }) {
     const cleanFilters = () => {
         setValidation(initialValidation);
 
-        setType('');
-        setTrunk('');
-
         setSource('');
         setDestination('');
-
+        
+        setType('');
         setFlow('');
+
         setDisposition('');
 
         setIsValidated(true);
@@ -162,7 +154,6 @@ export default function ReportForm({ props }) {
             time_call_ended: end.replace("/", "-").replace("T", " ") + ":00",
             account_code: source,
             destination,
-            last_apps_arguments: trunk,
             destination_context: flow,
         }
 
@@ -264,26 +255,6 @@ export default function ReportForm({ props }) {
                                 })}
                                 validation={validation.end}
                             />
-
-                            <Select
-                                id="filter-disposition"
-                                name="disposition"
-                                label="Status"
-                                value={disposition}
-                                placeholder={'. . .'}
-                                onChange={(event) => handleChange(() => {
-                                    setDisposition(event.target.value);
-                                })}
-                                validation={validation.disposition}
-                            >
-                                <option value="">. . .</option>
-                                <option value="Atendida">Atendida</option>
-                                <option value="Não Atendida">Não Atendida</option>
-                                <option value="Não">Não</option>
-                                <option value="Ocupado">Ocupado</option>
-                                <option value="Falhou">Falhou</option>
-                                <option value="Desconhecida">Desconhecida</option>
-                            </Select>
                         </div>
 
                         <div>
@@ -312,22 +283,6 @@ export default function ReportForm({ props }) {
                                 })}
                                 validation={validation.destination}
                             />
-
-                            <Select
-                                id="filter-flow"
-                                name="flow"
-                                label="Fluxo"
-                                value={flow}
-                                placeholder={'. . .'}
-                                onChange={(event) => handleChange(() => {
-                                    setFlow(event.target.value);
-                                })}
-                                validation={validation.flow}
-                            >
-                                <option value="">. . .</option>
-                                <option value="Entrada">Entrada</option>
-                                <option value="Saída">Saída</option>
-                            </Select>
                         </div>
 
                         <div>
@@ -351,17 +306,44 @@ export default function ReportForm({ props }) {
                                 <option value="URA">URA</option>
                             </Select>
 
-                            <Input
-                                id="filter-trunk"
-                                name="trunk"
-                                label="Tronco"
-                                value={trunk}
+                            <Select
+                                id="filter-flow"
+                                name="flow"
+                                label="Fluxo"
+                                value={flow}
                                 placeholder={'. . .'}
                                 onChange={(event) => handleChange(() => {
-                                    setTrunk(event.target.value);
+                                    setFlow(event.target.value);
                                 })}
-                                validation={validation.trunk}
-                            />
+                                validation={validation.flow}
+                            >
+                                <option value="">. . .</option>
+                                <option value="Entrada">Entrada</option>
+                                <option value="Saída">Saída</option>
+                                <option value="Interno">Interno</option>
+                            </Select>
+                        </div>
+
+                        <div>
+                            <Select
+                                id="filter-disposition"
+                                name="disposition"
+                                label="Status"
+                                value={disposition}
+                                placeholder={'. . .'}
+                                onChange={(event) => handleChange(() => {
+                                    setDisposition(event.target.value);
+                                })}
+                                validation={validation.disposition}
+                            >
+                                <option value="">. . .</option>
+                                <option value="Atendida">Atendida</option>
+                                <option value="Não Atendida">Não Atendida</option>
+                                <option value="Não">Não</option>
+                                <option value="Ocupado">Ocupado</option>
+                                <option value="Falhou">Falhou</option>
+                                <option value="Desconhecida">Desconhecida</option>
+                            </Select>
                         </div>
                     </fieldset>
 
