@@ -144,7 +144,6 @@ export default function AudioForm({ props }) {
 
     const preview = useMemo(() => {
         cleanValidation();
-
         
         if (fileConstraints.types.includes(file?.type)) {
             const nameInput = document.getElementById('audio-file-filename');
@@ -273,9 +272,11 @@ export default function AudioForm({ props }) {
                                 return blob;
                             })
                             .then(blob => {
-                                return URL.createObjectURL(blob);
+                                const file = new File([blob], "file", { type: blob.type });
+
+                                return file;
                             })
-                            .catch((error) => {
+                            .catch(() => {
                                 return null;
                             });
                         }
