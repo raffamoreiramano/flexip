@@ -485,7 +485,7 @@ export function Checkboxes({
                                     }
                                 }
 
-                                onChange({...event, value: list});
+                                onChange({...event, target: { ...event.target, value: list }});
                             }}
                         />
                         <label

@@ -585,7 +585,7 @@ export default function BranchForm({ props }) {
                                     label="CODEC"
                                     value={CODEC}
                                     onChange={(event) => handleChange(() => {
-                                        setCODEC(event.value);
+                                        setCODEC(event.target.value);
                                     })}
                                     validation={validation.CODEC}
                                 >
@@ -640,7 +640,7 @@ export default function BranchForm({ props }) {
                                     label="Grupo de captura"
                                     value={pickUpGroup}
                                     onChange={(event) => handleChange(() => {
-                                        setPickUpGroup(event.value);
+                                        setPickUpGroup(event.target.value);
                                     })}
                                     validation={validation.pickUpGroup}
                                 >

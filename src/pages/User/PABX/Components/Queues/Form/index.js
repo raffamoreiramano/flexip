@@ -589,7 +589,7 @@ export default function QueueForm({ props }) {
                                 label="Reproduzir..."
                                 value={playSound}
                                 onChange={(event) => handleChange(() => {
-                                    setPlaySound(event.value);
+                                    setPlaySound(event.target.value);
                                 })}
                                 validation={validation.playSound}
                             >
@@ -636,7 +636,7 @@ export default function QueueForm({ props }) {
                                 label="Entrar na fila mesmo sem ramais"
                                 value={join}
                                 onChange={(event) => handleChange(() => {
-                                    setJoin(event.value);
+                                    setJoin(event.target.value);
                                 })}
                                 validation={validation.join}
                             >
@@ -650,7 +650,7 @@ export default function QueueForm({ props }) {
                                 label="Gravar chamadas que passarem da fila"
                                 value={record}
                                 onChange={(event) => handleChange(() => {
-                                    setRecord(event.value);
+                                    setRecord(event.target.value);
                                 })}
                                 validation={validation.record}
                             >
